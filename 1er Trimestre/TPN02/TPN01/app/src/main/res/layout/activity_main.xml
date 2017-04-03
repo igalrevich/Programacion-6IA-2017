@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.revich.mobile.tpn01.MainActivity">
+
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="left|top"
+        android:weightSum="1">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ingrese su Nombre"
+            android:id="@+id/tvIngreseSuNombre"
+            android:textSize="24dp"
+            android:textIsSelectable="false" />
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edtNombre"
+            android:layout_weight="0.03" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ingrese su Email"
+            android:id="@+id/tvIngreseSuEmail"
+            android:textSize="24dp"
+            android:textIsSelectable="false" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edtEmail"
+            android:layout_weight="0.03"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sexo"
+            android:id="@+id/textView"
+            android:textSize="24dp"
+            android:textIsSelectable="false" />
+        <RadioGroup
+            android:id="@+id/radio_Genero"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+            <RadioButton android:id="@+id/radio_Masculino"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Masculino"
+                android:textSize="20dp"
+                />
+            <RadioButton android:id="@+id/radio_Femenino"
+                android:layout_width="109dp"
+                android:layout_height="wrap_content"
+                android:text="Femenino"
+                android:textSize="20dp"
+                android:layout_weight="0.65" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nivel de satisfaccion"
+            android:id="@+id/tvNivelDeSatisfaccion"
+            android:textSize="24dp"
+            android:textIsSelectable="false" />
+
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/skNivelSatisfaccion"
+            android:thumb="@android:drawable/btn_default"
+            android:progressDrawable="@android:color/holo_orange_light" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvProgressSeekBar"
+            android:layout_gravity="center_horizontal" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Practica Deportes"
+            android:id="@+id/chbPracticaDeportes" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Text"
+            android:onClick="btn_click"
+            android:id="@+id/btnText" />
+
+
+    </LinearLayout>
+
+</RelativeLayout>
