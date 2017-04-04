@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     String strSexo;
     int SelectedId;
+    String strErrores;
 
 
     @Override
@@ -51,47 +52,98 @@ public class MainActivity extends AppCompatActivity {
         edtEmail            = (EditText) findViewById(R.id.edtEmail);
         chbPracticaDeportes = (CheckBox) findViewById(R.id.chbPracticaDeportes);
 
-        //SelectedId          = radio_Genero.getCheckedRadioButtonId();
-        //if(SelectedId!=-1)
-        //{radio_sexo=(RadioButton) findViewById(SelectedId);}
+
 
     }
 
     private void     SetearListeners()
     {
         btnText.setOnClickListener(btnText_Click);
+        radio_Genero.setOnCheckedChangeListener(radio_Genero_Click);
+        skNivelSatisfaccion.setOnSeekBarChangeListener(skNivelSatisfaccion_Move);
+
+
     }
 
     private View.OnClickListener btnText_Click = new View.OnClickListener(){
         public void onClick(View v){
-            Toast.makeText(getApplicationContext(), "Click" , Toast.LENGTH_SHORT).show();
+            if(DatosValidos())
+            {
+                IniciarSegundaActividad();
+            }
+            else
+            {
+                Toast msg=Toast.makeText(getApplicationContext(),strErrores,Toast.LENGTH_SHORT);
+                msg.show();
+            }
         }
     };
 
-
-
-
-
-
-    private Boolean DatosValidos()
-    {
-        boolean EsValido=true;
-        String strErrores= "";
-        if(edtNombre.getText().toString().isEmpty())
-        {
-            EsValido=false;
-            strErrores= strErrores + " Complete el nombre.";
+    private RadioGroup.OnCheckedChangeListener radio_Genero_Click = (new RadioGroup.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(RadioGroup radioGroup, int i) {
+            radio_sexo=(RadioButton) findViewById(i);
+            strSexo=radio_sexo.getText().toString();
+            Toast msg = Toast.makeText(getApplicationContext(),"Seleccionaste "+strSexo,Toast.LENGTH_SHORT);
+            msg.show();
         }
-        if(edtEmail.getText().toString().isEmpty())
+    });
+
+    private SeekBar.OnSeekBarChangeListener skNivelSatisfaccion_Move = (new SeekBar.OnSeekBarChangeListener()
+    {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int Progress, boolean fromUser)
         {
-            EsValido=false;
-            strErrores= strErrores + " Complete el mail.";
+            tvProgressSeekBar.setText(String.valueOf(Progress)+" %");
+
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+        }
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private Boolean DatosValidos() {
+        boolean EsValido = true;
+        strErrores = "";
+        SelectedId=radio_Genero.getCheckedRadioButtonId();
+        if (edtNombre.getText().toString().isEmpty()) {
+            EsValido = false;
+            strErrores = strErrores + " Complete el nombre.";
+        }
+        if (edtEmail.getText().toString().isEmpty()) {
+            EsValido = false;
+            strErrores = strErrores + " Complete el mail.";
+        }
+        if (!(edtEmail.getText().toString().contains("@")))
+        {
+            EsValido = false;
+            strErrores = strErrores + " El mail no es valido.";
         }
         if(SelectedId==-1)
         {
             EsValido=false;
             strErrores= strErrores + " Seleccione su genero.";
         }
+
         return  EsValido;
 
     }
@@ -121,84 +173,8 @@ public class MainActivity extends AppCompatActivity {
         ElBundle.putString("PracticaDeportes",strPracticaNoPracticaDeportes);
         intent.putExtras(ElBundle);
         startActivity(intent);
-    }
+    }}
 
 
 
-    radio_Genero.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(RadioGroup Group, int CheckedId)
-        {
-            SelectedId=CheckedId;
-            radio_sexo=(RadioButton) findViewById(SelectedId);
-            strSexo=radio_sexo.getText().toString();
-            Toast msg = Toast.makeText(getApplicationContext(),"Seleccionaste "+strSexo,Toast.LENGTH_SHORT);
-            msg.show();
-        }
-    });
 
-    skNivelSatisfaccion.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int Progress, boolean fromUser)
-        {
-            tvProgressSeekBar.setText(String.valueOf(Progress)+" %");
-
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-
-        }
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-
-        }
-    });
-    private void setButtonOnClick(int IdDelBoton, View.OnClickListener ElListener )
-    {
-        Button elBoton = (Button)this.findViewById(IdDelBoton);
-        elBoton.setOnClickListener(ElListener);
-    }
-    private OnClickListener ElListener = new OnClickListener()
-    {
-        public void onClick(View v)
-        {}
-    }
-        /*btnText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String strNombre;
-                String strEmail;
-                int SeekBarProgress;
-                String strPorcentajeSeekBar;
-                String PracticaNoPracticaDeportes;
-
-                strNombre = edtNombre.getText().toString();
-                strEmail = edtEmail.getText().toString();
-                SelectedId=radio_Genero.getCheckedRadioButtonId();
-                radio_sexo=(RadioButton) findViewById(SelectedId);
-                strSexo=radio_sexo.getText().toString();
-                SeekBarProgress=skNivelSatisfaccion.getProgress();
-                strPorcentajeSeekBar=SeekBarProgress+" %";
-                chbPracticaDeportes=(CheckBox) findViewById(R.id.chbPracticaDeportes);
-                if(chbPracticaDeportes.isChecked())
-                {
-                   PracticaNoPracticaDeportes="SI te gusta el deporte" ;
-                }
-                else
-                {
-                    PracticaNoPracticaDeportes="NO te gusta el deporte";
-                }
-                Toast msg = Toast.makeText(getApplicationContext(),"Hola, "+strNombre+"\n"+"("+strEmail+")"+"\n"+"sos "+strSexo+"\n"+PracticaNoPracticaDeportes+"\n"+" y tu nivel de satisfaccion es de ("+strPorcentajeSeekBar+")",Toast.LENGTH_SHORT);
-                msg.show();
-
-
-
-            }*/
-});
-        }
-
-
-
-        }

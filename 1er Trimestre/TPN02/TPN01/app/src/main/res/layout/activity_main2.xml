@@ -9,4 +9,50 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.revich.mobile.tpn01.Main2Activity">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/tvNombre"
+            android:textSize="24dp"
+            android:textIsSelectable="false" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/tvEmail"
+            android:textSize="24dp"
+            android:textIsSelectable="false" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/tvGenero"
+            android:textSize="24dp"
+            android:textIsSelectable="false" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/tvSatisfaccion"
+            android:textSize="24dp"
+            android:textIsSelectable="false" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/tvPracticaDeportes"
+            android:textSize="24dp"
+            android:textIsSelectable="false" />
+
+    </LinearLayout>
 </RelativeLayout>
