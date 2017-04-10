@@ -41,7 +41,7 @@ public class Main2Activity extends AppCompatActivity {
         tvGenero.setText(ElBundle.getString("Genero"));
         tvSatisfaccion.setText(ElBundle.getString("PorcentajeSatisfaccion"));
         tvPracticaDeportes.setText(ElBundle.getString("PracticaDeportes"));
-        Nombre=tvNombre.toString();
+        Nombre=tvNombre.getText().toString();
         btnExtras.setOnClickListener(btnExtras_Click_);
     }
 
@@ -84,62 +84,59 @@ public class Main2Activity extends AppCompatActivity {
     };
     private int DevolverCantidadLetrasTieneNombre(String Nombre)
     {   int CantLetrasNombre=0;
+        Nombre=Nombre.trim();
         if(Nombre.contains(" "))
         {
-            String[] NombreSeparado = Nombre.split(" ");
-            for(int i=0 ; i<NombreSeparado.length;i++)
-            {
-                CantLetrasNombre=CantLetrasNombre+NombreSeparado[i].length();
-            }
+            Nombre=Nombre.replace(" ","");
+
         }
-        else
-        {
-            CantLetrasNombre=Nombre.length();
-        }
+        CantLetrasNombre=Nombre.length();
         return CantLetrasNombre;
     }
 
     private String Devolver3LetrasNombre(String Nombre, String Operacion)
     {   String TresLetrasNombre="";
-
+        String NombreSinEspacios="";
+        NombreSinEspacios=Nombre.trim();
+        if(NombreSinEspacios.contains(" "))
+        {
+            NombreSinEspacios=NombreSinEspacios.replaceAll(" ","");
+        }
         if(Operacion=="3PrimerasLetras")
         {
             TresLetrasNombre="";
-            try
+            if(NombreSinEspacios.length()>=3)
             {
-                TresLetrasNombre=Nombre.substring(0,2);
+                TresLetrasNombre=NombreSinEspacios.substring(0,3);
             }
-            catch(Exception MiExcepcion)
+            else
             {
-                Toast msg= Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_SHORT);
-                msg.show();
+                TresLetrasNombre="Su nombre tiene menos de 3 letras";
             }
         }
         if(Operacion=="3UltimasLetras")
         {
             TresLetrasNombre="";
-            try
+            if(NombreSinEspacios.length()>=3)
             {
-              TresLetrasNombre=Nombre.substring(Nombre.length()-1,Nombre.length()-3);
+                TresLetrasNombre=NombreSinEspacios.substring(NombreSinEspacios.length()-3,NombreSinEspacios.length());
             }
-            catch(Exception MiExcepcion)
+            else
             {
-                Toast msg= Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_SHORT);
-                msg.show();
+                TresLetrasNombre="Su nombre tiene menos de 3 letras";
             }
 
         }
         if(Operacion=="3PrimerasLetrasDespuesDeLaTercera")
         {
             TresLetrasNombre="";
-            try
+            if(NombreSinEspacios.length()>=6)
             {
-                TresLetrasNombre=Nombre.substring(3,5);
+                TresLetrasNombre=NombreSinEspacios.substring(3,6);
             }
-            catch(Exception MiExcepcion)
+            else
             {
-                Toast msg= Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_SHORT);
-                msg.show();
+                TresLetrasNombre="Su nombre tiene menos de 6 letras";
             }
         }
         return TresLetrasNombre;
