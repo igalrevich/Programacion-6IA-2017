@@ -54,5 +54,12 @@
             android:textSize="24dp"
             android:textIsSelectable="false" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Datos adicionales"
+            android:id="@+id/btnExtras"
+            android:layout_gravity="center_horizontal" />
+
     </LinearLayout>
 </RelativeLayout>
