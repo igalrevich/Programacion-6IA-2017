@@ -15,7 +15,7 @@ public class Main2Activity extends AppCompatActivity {
     TextView tvGenero;
     TextView tvSatisfaccion;
     TextView tvPracticaDeportes;
-    Button btnExtras;
+    Button btnExtras, btnVolverAlFormulario;
 
     String Nombre;
     int CantidadLetrasNombre;
@@ -43,6 +43,7 @@ public class Main2Activity extends AppCompatActivity {
         tvPracticaDeportes.setText(ElBundle.getString("PracticaDeportes"));
         Nombre=tvNombre.getText().toString();
         btnExtras.setOnClickListener(btnExtras_Click_);
+        btnVolverAlFormulario.setOnClickListener(btnVolverAlFormulario_Click_);
     }
 
     private View.OnClickListener btnExtras_Click_ = new View.OnClickListener()
@@ -60,6 +61,14 @@ public class Main2Activity extends AppCompatActivity {
             msg.show();
         }
     };
+    private View.OnClickListener btnVolverAlFormulario_Click_ = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View view)
+        {
+            VolverALaActivityAnterior();
+        }
+    };
 
 
 
@@ -73,6 +82,7 @@ public class Main2Activity extends AppCompatActivity {
         tvSatisfaccion  = (TextView)findViewById(R.id.tvSatisfaccion);
         tvPracticaDeportes  = (TextView)findViewById(R.id.tvPracticaDeportes);
         btnExtras = (Button) findViewById(R.id.btnExtras);
+        btnVolverAlFormulario = (Button) findViewById(R.id.btnVolverAlFormulario);
 
     }
     private View.OnClickListener btnExtras_Click = new View.OnClickListener()
@@ -140,6 +150,12 @@ public class Main2Activity extends AppCompatActivity {
             }
         }
         return TresLetrasNombre;
+    }
+
+    private void VolverALaActivityAnterior()
+    {
+        Intent intent= new Intent(Main2Activity.this,MainActivity.class);
+        startActivity(intent);
     }
 
 }

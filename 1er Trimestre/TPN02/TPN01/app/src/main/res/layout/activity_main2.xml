@@ -14,7 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:weightSum="1">
 
         <TextView
             android:layout_width="match_parent"
@@ -60,6 +61,14 @@
             android:text="Datos adicionales"
             android:id="@+id/btnExtras"
             android:layout_gravity="center_horizontal" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Volver al formulario"
+            android:id="@+id/btnVolverAlFormulario"
+            android:layout_weight="0.09"
+            android:layout_marginTop="70px" />
 
     </LinearLayout>
 </RelativeLayout>
