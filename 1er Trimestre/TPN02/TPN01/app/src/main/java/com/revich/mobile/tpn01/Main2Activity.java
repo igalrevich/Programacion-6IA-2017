@@ -66,7 +66,7 @@ public class Main2Activity extends AppCompatActivity {
         @Override
         public void onClick(View view)
         {
-            VolverALaActivityAnterior();
+            finish();
         }
     };
 
@@ -85,13 +85,7 @@ public class Main2Activity extends AppCompatActivity {
         btnVolverAlFormulario = (Button) findViewById(R.id.btnVolverAlFormulario);
 
     }
-    private View.OnClickListener btnExtras_Click = new View.OnClickListener()
-    {
-        @Override
-        public void onClick(View view) {
-
-        }
-    };
+   
     private int DevolverCantidadLetrasTieneNombre(String Nombre)
     {   int CantLetrasNombre=0;
         Nombre=Nombre.trim();
