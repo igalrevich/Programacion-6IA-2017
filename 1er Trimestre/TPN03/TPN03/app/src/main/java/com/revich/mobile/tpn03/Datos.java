@@ -37,14 +37,15 @@ public class Datos extends AppCompatActivity {
         @Override
         public void onClick(View view) {
              Nombre= edtNombre.getText().toString();
-             if(Nombre!="")
+             if(Nombre.isEmpty())
              {
-                 IniciarSegundaActivity();
+
+                 Toast msg= Toast.makeText(getApplicationContext(),"Ingrese su nombre",Toast.LENGTH_SHORT);
+                 msg.show();
              }
             else
              {
-                 Toast msg= Toast.makeText(getApplicationContext(),"Ingrese su nombre",Toast.LENGTH_SHORT);
-                 msg.show();
+                 IniciarSegundaActivity();
              }
         }
     };
