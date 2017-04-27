@@ -3,6 +3,7 @@ package com.revich.mobile.tpn03;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import java.util.Random;
@@ -19,6 +20,7 @@ public class Juego extends AppCompatActivity {
     Button btn07;
     Button btn08;
     Button btn09;
+    Button [] VecBotones= new Button[9];
     int NumRandom;
     int resId;
     String btn;
@@ -29,7 +31,10 @@ public class Juego extends AppCompatActivity {
         setContentView(R.layout.activity_juego);
         LlenarVectorJugadas();
         ObtenerReferencias();
+        LLenarVectorBotones();
+        LlenarEstados();
         AsignarEstadoBotones();
+        SetearListeners();
 
 
 
@@ -47,6 +52,68 @@ public class Juego extends AppCompatActivity {
         Jugadas[7]="8,9,5,7";
         Jugadas[8]="9,6,8";
     }
+    private  void LLenarVectorBotones()
+    {
+        for(int i=0;i<9;i++)
+        {
+            switch (i)
+            {
+                case 0:
+                VecBotones[i]=btn01;
+                break;
+                case 1:
+                    VecBotones[i]=btn02;
+                    break;
+                case 2:
+                    VecBotones[i]=btn03;
+                    break;
+                case 3:
+                    VecBotones[i]=btn04;
+                    break;
+                case 4:
+                    VecBotones[i]=btn05;
+                    break;
+                case 5:
+                    VecBotones[i]=btn06;
+                    break;
+                case 6:
+                    VecBotones[i]=btn07;
+                    break;
+                case 7:
+                    VecBotones[i]=btn08;
+                    break;
+                case 8:
+                    VecBotones[i]=btn09;
+                    break;
+            }
+        }
+    }
+
+    private void LlenarEstados()
+    {   boolean Checkear1= true;
+        boolean Checkear2= true;
+        for(int i=0;i<9;i++)
+        {
+          NumRandom=rand.nextInt(2) ;
+          EstadosBotones[i]=NumRandom;
+        }
+        for(int i=0;i<9;i++)
+        {
+            if(EstadosBotones[i]==0)
+            {
+              Checkear1=false;
+            }
+            else
+            {
+                Checkear2=false;
+            }
+        }
+        if(!(Checkear1==false && Checkear2==false))
+        {
+            LlenarEstados();
+        }
+
+    }
     private void ObtenerReferencias()
     {
         btn01=(Button) findViewById(R.id.btn01);
@@ -60,167 +127,52 @@ public class Juego extends AppCompatActivity {
         btn09=(Button) findViewById(R.id.btn09);
     }
     private void AsignarEstadoBotones()
-    {
+    {   int color;
         for(int i=0;i<9;i++)
         {
-            btn = "btn0" + String.valueOf(i + 1);
-            CambiarColoresConNumerosAlAzar(btn);
-            EstadosBotones[i]=NumRandom;
-        }
-            int ContSectoresVectorEstados=1;
-            int Estado= EstadosBotones[0];
-            ContSectoresVectorEstados++;
-            while(EstadosBotones[ContSectoresVectorEstados-1]==Estado || ContSectoresVectorEstados!=10 )
+            if(EstadosBotones[i]==0)
             {
-                ContSectoresVectorEstados++;
-            }
-            if(ContSectoresVectorEstados==10)
-            {
-                NumRandom=rand.nextInt(1-10);
-                btn= "btn0"+String.valueOf(NumRandom );
-              CambiarColoresConNumerosAlAzar(btn);
+                color= Color.parseColor("#FFD0C8C8");
+                VecBotones[i].setBackgroundColor(color);
             }
             else
             {
-                ContSectoresVectorEstados=1;
-                ContSectoresVectorEstados++;
-                while(EstadosBotones[ContSectoresVectorEstados-1]!=Estado || ContSectoresVectorEstados!=10 )
-                {
-                    ContSectoresVectorEstados++;
-                }
-                if(ContSectoresVectorEstados==10)
-                {
-                    NumRandom=rand.nextInt(1-10);
-                    btn= "btn0"+String.valueOf(NumRandom );
-                    CambiarColoresConNumerosAlAzar(btn);
-                }
+                color= Color.parseColor("#FFF31010");
+                VecBotones[i].setBackgroundColor(color);
             }
-
-
-
-
-    }
-    private void CambiarColoresConNumerosAlAzar(String btn)
-    {
-
-
-        NumRandom=rand.nextInt(0-2);
-        resId=getResources().getIdentifier(btn, "id", getPackageName());
-        switch (resId)
-        {
-            case R.id.btn01:
-
-                if(NumRandom==0)
-                {
-                    btn01.setBackgroundColor(Color.parseColor("#d0c8c8"));
-                }
-                else
-                {
-                    btn01.setBackgroundColor(Color.parseColor("#f51010"));
-
-                }
-
-                break;
-            case R.id.btn02:
-
-                if(NumRandom==0)
-                {
-                    btn02.setBackgroundColor(Color.parseColor("#d0c8c8"));
-                }
-                else
-                {
-                    btn02.setBackgroundColor(Color.parseColor("#f51010"));
-
-                }
-                break;
-            case R.id.btn03:
-
-                if(NumRandom==0)
-                {
-                    btn03.setBackgroundColor(Color.parseColor("#d0c8c8"));
-                }
-                else
-                {
-                    btn03.setBackgroundColor(Color.parseColor("#f51010"));
-
-                }
-                break;
-            case R.id.btn04:
-
-                if(NumRandom==0)
-                {
-                    btn04.setBackgroundColor(Color.parseColor("#d0c8c8"));
-                }
-                else
-                {
-                    btn04.setBackgroundColor(Color.parseColor("#f51010"));
-
-                }
-                break;
-            case R.id.btn05:
-
-                if(NumRandom==0)
-                {
-                    btn05.setBackgroundColor(Color.parseColor("#d0c8c8"));
-                }
-                else
-                {
-                    btn05.setBackgroundColor(Color.parseColor("#f51010"));
-
-                }
-                break;
-            case R.id.btn06:
-
-                if(NumRandom==0)
-                {
-                    btn06.setBackgroundColor(Color.parseColor("#d0c8c8"));
-                }
-                else
-                {
-                    btn06.setBackgroundColor(Color.parseColor("#f51010"));
-
-                }
-                break;
-            case R.id.btn07:
-
-                if(NumRandom==0)
-                {
-                    btn07.setBackgroundColor(Color.parseColor("#d0c8c8"));
-                }
-                else
-                {
-                    btn07.setBackgroundColor(Color.parseColor("#f51010"));
-
-                }
-                break;
-            case R.id.btn08:
-
-                if(NumRandom==0)
-                {
-                    btn08.setBackgroundColor(Color.parseColor("#d0c8c8"));
-                }
-                else
-                {
-                    btn08.setBackgroundColor(Color.parseColor("#f51010"));
-
-                }
-                break;
-            case R.id.btn09:
-
-                if(NumRandom==0)
-                {
-                    btn09.setBackgroundColor(Color.parseColor("#d0c8c8"));
-                }
-                else
-                {
-                    btn09.setBackgroundColor(Color.parseColor("#f51010"));
-
-                }
-
-                break;
-
         }
+
+
     }
+    private void SetearListeners()
+    {
+        btn01.setOnClickListener(btn_click);
+        btn02.setOnClickListener(btn_click);
+        btn03.setOnClickListener(btn_click);
+        btn04.setOnClickListener(btn_click);
+        btn05.setOnClickListener(btn_click);
+        btn06.setOnClickListener(btn_click);
+        btn07.setOnClickListener(btn_click);
+        btn08.setOnClickListener(btn_click);
+        btn09.setOnClickListener(btn_click);
+    }
+    private View.OnClickListener btn_click= new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View view) {
+            int id= view.getId();
+            String Texto=getResources().getResourceEntryName( id);
+            int NumBoton= Texto.indexOf(Texto.length()-1);
+            String CasilleroVectorJugadas=Jugadas[NumBoton-1];
+            String[] VecNumerosBotonesAModificar=CasilleroVectorJugadas.split(",");
+            for(int i=0;i<VecNumerosBotonesAModificar.length;i++)
+            {
+                String btn= "btn0" + VecNumerosBotonesAModificar[i];
+                VecBotones[VecNumerosBotonesAModificar[i]-1]= (Button)
+            }
+        }
+    };
+
 
 
 }
