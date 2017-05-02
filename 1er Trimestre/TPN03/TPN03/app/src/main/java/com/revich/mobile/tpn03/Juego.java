@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Juego extends AppCompatActivity {
     String[] Jugadas= new String[9];
+    ArrayList<String> ListaJugadas= new ArrayList<String>();
     int[] EstadosBotones= new int[9];
     Button btn01;
     Button btn02;
@@ -20,6 +22,7 @@ public class Juego extends AppCompatActivity {
     Button btn07;
     Button btn08;
     Button btn09;
+    Button btnResultados;
     Button [] VecBotones= new Button[9];
     int NumRandom;
     int resId;
@@ -34,6 +37,7 @@ public class Juego extends AppCompatActivity {
         LLenarVectorBotones();
         LlenarEstados();
         AsignarEstadoBotones();
+        ListaJugadas.clear();
         SetearListeners();
 
 
@@ -125,6 +129,7 @@ public class Juego extends AppCompatActivity {
         btn07=(Button) findViewById(R.id.btn07);
         btn08=(Button) findViewById(R.id.btn08);
         btn09=(Button) findViewById(R.id.btn09);
+        btnResultados=(Button) findViewById(R.id.btnResultados);
     }
     private void AsignarEstadoBotones()
     {   int color;
@@ -155,23 +160,84 @@ public class Juego extends AppCompatActivity {
         btn07.setOnClickListener(btn_click);
         btn08.setOnClickListener(btn_click);
         btn09.setOnClickListener(btn_click);
+        btnResultados.setOnClickListener(btnResultados_click);
     }
     private View.OnClickListener btn_click= new View.OnClickListener()
     {
         @Override
-        public void onClick(View view) {
-            int id= view.getId();
-            String Texto=getResources().getResourceEntryName( id);
-            int NumBoton= Texto.indexOf(Texto.length()-1);
-            String CasilleroVectorJugadas=Jugadas[NumBoton-1];
-            String[] VecNumerosBotonesAModificar=CasilleroVectorJugadas.split(",");
-            for(int i=0;i<VecNumerosBotonesAModificar.length;i++)
+        public void onClick(View view)
+        {
+            int IndiceVec=EncontrarIndiceAModificar(view);
+            ModificarBotones(IndiceVec);
+
+        }
+
+    };
+    private View.OnClickListener btnResultados_click= new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View view)
+        {
+            int IndiceVec=EncontrarIndiceAModificar(view);
+            ModificarBotones(IndiceVec);
+
+        }
+
+    };
+    private int EncontrarIndiceAModificar(View view)
+    {
+        int id= view.getId();
+        int IndiceVec=0;
+        boolean IdVecIgualIdBoton=false;
+        while(IdVecIgualIdBoton==false)
+        {
+            int IdVec=VecBotones[IndiceVec].getId();
+            if(id==IdVec)
             {
-                String btn= "btn0" + VecNumerosBotonesAModificar[i];
-                VecBotones[VecNumerosBotonesAModificar[i]-1]= (Button)
+                IdVecIgualIdBoton=true;
+            }
+            else
+            {
+             IndiceVec++;
             }
         }
-    };
+        return IndiceVec;
+    }
+    private void ModificarBotones(int IndiceVec)
+    {   int color;
+        String[]BotonesAModificar=Jugadas[IndiceVec].split(",");
+        for(int i=0;i<BotonesAModificar.length;i++)
+        {
+            if(i==0)
+            {
+             ListaJugadas.add(BotonesAModificar[i]+":");
+            }
+            else
+            {
+                if(i==BotonesAModificar.length-1)
+                {
+                    ListaJugadas.add(BotonesAModificar[i]);
+                }
+                else
+                {
+                    ListaJugadas.add(BotonesAModificar[i]+"-");
+                }
+            }
+            int IndiceVecAModificar= Integer.parseInt(BotonesAModificar[i])-1;
+            if(EstadosBotones[IndiceVecAModificar]==0)
+            {
+                color= Color.parseColor("#FFF31010");
+                VecBotones[IndiceVecAModificar].setBackgroundColor(color);
+                EstadosBotones[IndiceVecAModificar]=1;
+            }
+            else
+            {
+                color= Color.parseColor("#FFD0C8C8");
+                VecBotones[IndiceVecAModificar].setBackgroundColor(color);
+                EstadosBotones[IndiceVecAModificar]=0;
+            }
+        }
+    }
 
 
 
