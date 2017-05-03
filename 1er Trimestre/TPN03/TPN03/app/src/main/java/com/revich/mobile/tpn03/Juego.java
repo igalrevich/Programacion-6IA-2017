@@ -1,5 +1,6 @@
 package com.revich.mobile.tpn03;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,7 +12,6 @@ import java.util.Random;
 
 public class Juego extends AppCompatActivity {
     String[] Jugadas= new String[9];
-    ArrayList<String> ListaJugadas= new ArrayList<String>();
     int[] EstadosBotones= new int[9];
     Button btn01;
     Button btn02;
@@ -22,11 +22,12 @@ public class Juego extends AppCompatActivity {
     Button btn07;
     Button btn08;
     Button btn09;
-    Button btnResultados;
+    Button btnResultados,btnAutomatico;
     Button [] VecBotones= new Button[9];
-    int NumRandom;
+    int NumRandom,IndiceVec;
     int resId;
     String btn;
+    String JugadasHechas="";
     Random rand= new Random();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,6 @@ public class Juego extends AppCompatActivity {
         LLenarVectorBotones();
         LlenarEstados();
         AsignarEstadoBotones();
-        ListaJugadas.clear();
         SetearListeners();
 
 
@@ -130,6 +130,7 @@ public class Juego extends AppCompatActivity {
         btn08=(Button) findViewById(R.id.btn08);
         btn09=(Button) findViewById(R.id.btn09);
         btnResultados=(Button) findViewById(R.id.btnResultados);
+        btnAutomatico=(Button) findViewById(R.id.btnAutomatico);
     }
     private void AsignarEstadoBotones()
     {   int color;
@@ -161,14 +162,21 @@ public class Juego extends AppCompatActivity {
         btn08.setOnClickListener(btn_click);
         btn09.setOnClickListener(btn_click);
         btnResultados.setOnClickListener(btnResultados_click);
+        btnAutomatico.setOnClickListener(btnAutomatico_click);
     }
     private View.OnClickListener btn_click= new View.OnClickListener()
     {
         @Override
         public void onClick(View view)
         {
-            int IndiceVec=EncontrarIndiceAModificar(view);
+            IndiceVec=EncontrarIndiceAModificar(view);
             ModificarBotones(IndiceVec);
+            JugadasHechas=JugadasHechas+String.valueOf(IndiceVec+1)+":"+Jugadas[IndiceVec]+"\n";
+            boolean Gano= CheckearSiGano();
+            if(Gano)
+            {
+                JugadasHechas=JugadasHechas+"Ganaste" ;
+            }
 
         }
 
@@ -178,12 +186,29 @@ public class Juego extends AppCompatActivity {
         @Override
         public void onClick(View view)
         {
-            int IndiceVec=EncontrarIndiceAModificar(view);
-            ModificarBotones(IndiceVec);
+            IniciarTerceraActivity();
 
         }
 
     };
+    private View.OnClickListener btnAutomatico_click= new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View view)
+        {  boolean Gano=false;
+            while(Gano==false)
+            {
+                NumRandom=rand.nextInt(9);
+                ModificarBotones(NumRandom);
+                Gano=CheckearSiGano();
+
+            }
+
+        }
+
+    };
+
+
     private int EncontrarIndiceAModificar(View view)
     {
         int id= view.getId();
@@ -208,21 +233,7 @@ public class Juego extends AppCompatActivity {
         String[]BotonesAModificar=Jugadas[IndiceVec].split(",");
         for(int i=0;i<BotonesAModificar.length;i++)
         {
-            if(i==0)
-            {
-             ListaJugadas.add(BotonesAModificar[i]+":");
-            }
-            else
-            {
-                if(i==BotonesAModificar.length-1)
-                {
-                    ListaJugadas.add(BotonesAModificar[i]);
-                }
-                else
-                {
-                    ListaJugadas.add(BotonesAModificar[i]+"-");
-                }
-            }
+
             int IndiceVecAModificar= Integer.parseInt(BotonesAModificar[i])-1;
             if(EstadosBotones[IndiceVecAModificar]==0)
             {
@@ -237,6 +248,33 @@ public class Juego extends AppCompatActivity {
                 EstadosBotones[IndiceVecAModificar]=0;
             }
         }
+    }
+    private void IniciarTerceraActivity()
+    {
+        Intent MiIntent= new Intent(this,Resultados.class);
+        Bundle ElBundle= new Bundle();
+        ElBundle.putString("JugadasHechas",JugadasHechas);
+        MiIntent.putExtras(ElBundle);
+        startActivity(MiIntent);
+    }
+    private boolean CheckearSiGano()
+    {
+        int ContCasillerosVectorEstados=0;
+        boolean EstadosDistintos=false;
+        boolean Gano=false;
+        while (EstadosDistintos==false || ContCasillerosVectorEstados<8)
+        {
+            if(EstadosBotones[ContCasillerosVectorEstados]!=EstadosBotones[ContCasillerosVectorEstados+1])
+            {
+              EstadosDistintos=true;
+            }
+            ContCasillerosVectorEstados++;
+        }
+        if(EstadosDistintos==false)
+        {
+            Gano=true;
+        }
+        return Gano;
     }
 
 

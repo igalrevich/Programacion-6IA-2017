@@ -126,4 +126,18 @@
         android:layout_marginLeft="130dp"
         android:layout_marginTop="30dp"
         android:textColor="#ffffff" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Automatico"
+        android:id="@+id/btnAutomatico"
+        android:layout_row="3"
+        android:layout_column="2"
+        android:background="#000000"
+        android:layout_columnSpan="2"
+        android:layout_alignBottom="@+id/gridLayout"
+        android:layout_marginTop="30dp"
+        android:textColor="#ffffff"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
