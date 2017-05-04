@@ -125,7 +125,8 @@
         android:layout_alignBottom="@+id/gridLayout"
         android:layout_marginLeft="130dp"
         android:layout_marginTop="30dp"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:layout_marginRight="30dp" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -140,4 +141,20 @@
         android:textColor="#ffffff"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="Jugadores"
+        android:id="@+id/btnJugadores"
+        android:layout_row="3"
+        android:layout_column="3"
+        android:background="#000000"
+        android:layout_columnSpan="2"
+        android:layout_marginTop="30dp"
+        android:textColor="#ffffff"
+        android:layout_alignRight="@+id/gridLayout"
+        android:layout_alignEnd="@+id/gridLayout"
+        android:layout_alignBottom="@+id/gridLayout"
+        android:layout_toRightOf="@+id/btnResultados"
+        android:layout_toEndOf="@+id/btnResultados" />
 </RelativeLayout>

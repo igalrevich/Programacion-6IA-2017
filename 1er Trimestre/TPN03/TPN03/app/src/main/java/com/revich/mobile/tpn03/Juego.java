@@ -22,7 +22,7 @@ public class Juego extends AppCompatActivity {
     Button btn07;
     Button btn08;
     Button btn09;
-    Button btnResultados,btnAutomatico;
+    Button btnResultados,btnAutomatico,btnJugadores;
     Button [] VecBotones= new Button[9];
     int NumRandom,IndiceVec;
     int resId;
@@ -131,6 +131,8 @@ public class Juego extends AppCompatActivity {
         btn09=(Button) findViewById(R.id.btn09);
         btnResultados=(Button) findViewById(R.id.btnResultados);
         btnAutomatico=(Button) findViewById(R.id.btnAutomatico);
+        btnJugadores= (Button) findViewById(R.id.btnJugadores);
+
     }
     private void AsignarEstadoBotones()
     {   int color;
@@ -163,7 +165,10 @@ public class Juego extends AppCompatActivity {
         btn09.setOnClickListener(btn_click);
         btnResultados.setOnClickListener(btnResultados_click);
         btnAutomatico.setOnClickListener(btnAutomatico_click);
+
+
     }
+
     private View.OnClickListener btn_click= new View.OnClickListener()
     {
         @Override
@@ -195,7 +200,8 @@ public class Juego extends AppCompatActivity {
     {
         @Override
         public void onClick(View view)
-        {  boolean Gano=false;
+        {
+            boolean Gano=false;
             while(Gano==false)
             {
                 NumRandom=rand.nextInt(9);
@@ -229,7 +235,9 @@ public class Juego extends AppCompatActivity {
         return IndiceVec;
     }
     private void ModificarBotones(int IndiceVec)
-    {   int color;
+    {
+
+        int color;
         String[]BotonesAModificar=Jugadas[IndiceVec].split(",");
         for(int i=0;i<BotonesAModificar.length;i++)
         {
@@ -262,7 +270,7 @@ public class Juego extends AppCompatActivity {
         int ContCasillerosVectorEstados=0;
         boolean EstadosDistintos=false;
         boolean Gano=false;
-        while (EstadosDistintos==false || ContCasillerosVectorEstados<8)
+        while (EstadosDistintos==false && ContCasillerosVectorEstados<8)
         {
             if(EstadosBotones[ContCasillerosVectorEstados]!=EstadosBotones[ContCasillerosVectorEstados+1])
             {
