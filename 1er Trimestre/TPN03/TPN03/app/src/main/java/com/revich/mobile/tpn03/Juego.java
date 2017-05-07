@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -13,6 +14,7 @@ import java.util.Random;
 public class Juego extends AppCompatActivity {
     String[] Jugadas= new String[9];
     int[] EstadosBotones= new int[9];
+    ArrayList<String> Jugadores= new ArrayList<>();
     Button btn01;
     Button btn02;
     Button btn03;
@@ -35,6 +37,10 @@ public class Juego extends AppCompatActivity {
         setContentView(R.layout.activity_juego);
         LlenarVectorJugadas();
         ObtenerReferencias();
+        Intent ElIntentQueVino= getIntent();
+        Bundle ElBundle= ElIntentQueVino.getExtras();
+        String Jugador= ElBundle.getString("Nombre");
+        Jugadores.add(Jugador);
         LLenarVectorBotones();
         LlenarEstados();
         AsignarEstadoBotones();
@@ -43,6 +49,17 @@ public class Juego extends AppCompatActivity {
 
 
     }
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putStringArrayList("ListaJugadores",Jugadores);
+    }
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Jugadores=savedInstanceState.getStringArrayList("ListaJugadores");
+    }
+
     private void LlenarVectorJugadas()
     {
 
@@ -180,7 +197,8 @@ public class Juego extends AppCompatActivity {
             boolean Gano= CheckearSiGano();
             if(Gano)
             {
-                JugadasHechas=JugadasHechas+"Ganaste" ;
+                Toast msg= Toast.makeText(getApplicationContext(),"Ganaste",Toast.LENGTH_SHORT);
+                msg.show();
             }
 
         }
