@@ -14,7 +14,7 @@ import java.util.Random;
 public class Juego extends AppCompatActivity {
     String[] Jugadas= new String[9];
     int[] EstadosBotones= new int[9];
-    ArrayList<String> Jugadores= new ArrayList<>();
+    String Jugadores="";
     Button btn01;
     Button btn02;
     Button btn03;
@@ -40,7 +40,7 @@ public class Juego extends AppCompatActivity {
         Intent ElIntentQueVino= getIntent();
         Bundle ElBundle= ElIntentQueVino.getExtras();
         String Jugador= ElBundle.getString("Nombre");
-        Jugadores.add(Jugador);
+        Jugadores=Jugadores+Jugador+"\n";
         LLenarVectorBotones();
         LlenarEstados();
         AsignarEstadoBotones();
@@ -49,16 +49,7 @@ public class Juego extends AppCompatActivity {
 
 
     }
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putStringArrayList("ListaJugadores",Jugadores);
-    }
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        Jugadores=savedInstanceState.getStringArrayList("ListaJugadores");
-    }
+
 
     private void LlenarVectorJugadas()
     {
@@ -182,6 +173,7 @@ public class Juego extends AppCompatActivity {
         btn09.setOnClickListener(btn_click);
         btnResultados.setOnClickListener(btnResultados_click);
         btnAutomatico.setOnClickListener(btnAutomatico_click);
+        btnJugadores.setOnClickListener(btnJugadores_click);
 
 
     }
@@ -209,7 +201,17 @@ public class Juego extends AppCompatActivity {
         @Override
         public void onClick(View view)
         {
-            IniciarTerceraActivity();
+            IniciarTerceraActivityJugadasHechas();
+
+        }
+
+    };
+    private View.OnClickListener btnJugadores_click= new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View view)
+        {
+            IniciarTerceraActivityJugadores();
 
         }
 
@@ -275,11 +277,21 @@ public class Juego extends AppCompatActivity {
             }
         }
     }
-    private void IniciarTerceraActivity()
+    private void IniciarTerceraActivityJugadasHechas()
     {
         Intent MiIntent= new Intent(this,Resultados.class);
         Bundle ElBundle= new Bundle();
         ElBundle.putString("JugadasHechas",JugadasHechas);
+        ElBundle.putBoolean("Jugadas",true);
+        MiIntent.putExtras(ElBundle);
+        startActivity(MiIntent);
+    }
+    private void IniciarTerceraActivityJugadores()
+    {
+        Intent MiIntent= new Intent(this,Resultados.class);
+        Bundle ElBundle= new Bundle();
+        ElBundle.putString("Jugadores",Jugadores);
+        ElBundle.putBoolean("Jugadas",false);
         MiIntent.putExtras(ElBundle);
         startActivity(MiIntent);
     }
