@@ -226,20 +226,14 @@ public class Juego extends AppCompatActivity {
         public void onClick(View view)
         {
             Gano=false;
-            new Handler().post(new Runnable() {
-                @Override
-                public void run() {
-                    while(!CheckearSiGano())
-                    {
-                        NumRandom=rand.nextInt(9);
-                        ModificarBotones(NumRandom);
-                        try {
-                            Thread.sleep(200);
-                        } catch (Exception e) {}
-                    }
+            while(Gano==false)
+            {
+                NumRandom=rand.nextInt(9);
+                ModificarBotones(NumRandom);
+                JugadasHechas=JugadasHechas+String.valueOf(NumRandom+1)+":"+Jugadas[NumRandom]+"\n";
+                Gano=CheckearSiGano();
+            }
 
-                }
-            });
         }
     };
 

@@ -62,16 +62,25 @@ public class Datos extends AppCompatActivity {
                      }
                      else
                      {
-                         TextoResultadoCaptcha=Integer.parseInt(TextoCaptcha);
-                         if(TextoResultadoCaptcha==ResultadoCaptcha)
+                         try
                          {
-                             IniciarSegundaActivity();
+                             TextoResultadoCaptcha=Integer.parseInt(TextoCaptcha);
+                             if(TextoResultadoCaptcha==ResultadoCaptcha)
+                             {
+                                 IniciarSegundaActivity();
+                             }
+                             else
+                             {
+                                 Toast msg= Toast.makeText(getApplicationContext(),"Resultado equivocado",Toast.LENGTH_SHORT);
+                                 msg.show();
+                             }
                          }
-                         else
+                         catch (Exception e)
                          {
                              Toast msg= Toast.makeText(getApplicationContext(),"Resultado equivocado",Toast.LENGTH_SHORT);
                              msg.show();
                          }
+
                      }
 
                  }

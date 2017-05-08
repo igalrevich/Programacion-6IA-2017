@@ -31,7 +31,7 @@ public class Resultados extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putString("Jugadores",Jugadores);
+        savedInstanceState.putString("Jugadores",tvJugadas.getText().toString());
 
     }
     @Override
@@ -40,4 +40,5 @@ public class Resultados extends AppCompatActivity {
         Jugadores=savedInstanceState.getString("Jugadores");
         tvJugadas.setText(Jugadores);
     }
+
 }
