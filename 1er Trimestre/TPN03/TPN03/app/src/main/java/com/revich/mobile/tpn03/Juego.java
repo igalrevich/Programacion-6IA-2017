@@ -2,6 +2,9 @@ package com.revich.mobile.tpn03;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -27,6 +30,7 @@ public class Juego extends AppCompatActivity {
     Button btnResultados,btnAutomatico,btnJugadores;
     Button [] VecBotones= new Button[9];
     int NumRandom,IndiceVec;
+    boolean Gano;
     int resId;
     String btn;
     String JugadasHechas="";
@@ -221,17 +225,22 @@ public class Juego extends AppCompatActivity {
         @Override
         public void onClick(View view)
         {
-            boolean Gano=false;
-            while(Gano==false)
-            {
-                NumRandom=rand.nextInt(9);
-                ModificarBotones(NumRandom);
-                Gano=CheckearSiGano();
+            Gano=false;
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    while(!CheckearSiGano())
+                    {
+                        NumRandom=rand.nextInt(9);
+                        ModificarBotones(NumRandom);
+                        try {
+                            Thread.sleep(200);
+                        } catch (Exception e) {}
+                    }
 
-            }
-
+                }
+            });
         }
-
     };
 
 
