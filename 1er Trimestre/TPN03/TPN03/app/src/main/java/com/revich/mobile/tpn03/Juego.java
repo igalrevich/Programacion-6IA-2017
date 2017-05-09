@@ -27,7 +27,7 @@ public class Juego extends AppCompatActivity {
     Button btn07;
     Button btn08;
     Button btn09;
-    Button btnResultados,btnAutomatico,btnJugadores;
+    Button btnResultados,btnAutomatico,btnJugadores,btnMezclarTablero;
     Button [] VecBotones= new Button[9];
     int NumRandom,IndiceVec;
     boolean Gano;
@@ -35,6 +35,7 @@ public class Juego extends AppCompatActivity {
     String btn;
     String JugadasHechas="";
     Random rand= new Random();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,17 +45,20 @@ public class Juego extends AppCompatActivity {
         Intent ElIntentQueVino= getIntent();
         Bundle ElBundle= ElIntentQueVino.getExtras();
         String Jugador= ElBundle.getString("Nombre");
-        Jugadores=Jugadores+Jugador+"\n";
-        LLenarVectorBotones();
-        LlenarEstados();
-        AsignarEstadoBotones();
+        AdministracionDeUsuarios.AgregarJugadorALista(Jugador,AdministracionDeUsuarios.ObtenerLista());
+        MezclarTablero();
         SetearListeners();
 
 
 
     }
 
-
+    private void MezclarTablero()
+    {
+        LLenarVectorBotones();
+        LlenarEstados();
+        AsignarEstadoBotones();
+    }
     private void LlenarVectorJugadas()
     {
 
@@ -144,6 +148,7 @@ public class Juego extends AppCompatActivity {
         btnResultados=(Button) findViewById(R.id.btnResultados);
         btnAutomatico=(Button) findViewById(R.id.btnAutomatico);
         btnJugadores= (Button) findViewById(R.id.btnJugadores);
+        btnMezclarTablero= (Button) findViewById(R.id.btnMezclarTablero);
 
     }
     private void AsignarEstadoBotones()
@@ -178,6 +183,7 @@ public class Juego extends AppCompatActivity {
         btnResultados.setOnClickListener(btnResultados_click);
         btnAutomatico.setOnClickListener(btnAutomatico_click);
         btnJugadores.setOnClickListener(btnJugadores_click);
+        btnMezclarTablero.setOnClickListener(btnMezclarTablero_click);
 
 
     }
@@ -199,6 +205,14 @@ public class Juego extends AppCompatActivity {
 
         }
 
+    };
+    private View.OnClickListener btnMezclarTablero_click= new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View view) {
+          MezclarTablero();
+            JugadasHechas="";
+        }
     };
     private View.OnClickListener btnResultados_click= new View.OnClickListener()
     {
@@ -293,7 +307,7 @@ public class Juego extends AppCompatActivity {
     {
         Intent MiIntent= new Intent(this,Resultados.class);
         Bundle ElBundle= new Bundle();
-        ElBundle.putString("Jugadores",Jugadores);
+        //ElBundle.putStringArrayList("Jugadores",MiAdminUsuarios.ListaJugadores);
         ElBundle.putBoolean("Jugadas",false);
         MiIntent.putExtras(ElBundle);
         startActivity(MiIntent);

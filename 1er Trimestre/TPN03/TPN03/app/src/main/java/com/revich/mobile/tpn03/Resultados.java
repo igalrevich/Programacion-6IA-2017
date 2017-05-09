@@ -24,21 +24,13 @@ public class Resultados extends AppCompatActivity {
         }
         else
         {
-            Jugadores=ElBundle.getString("Jugadores");
+            for(int i=0;i<AdministracionDeUsuarios.ObtenerLista().size();i++)
+            {
+                Jugadores=Jugadores+AdministracionDeUsuarios.ObtenerLista().get(i)+"\n";
+            }
             tvJugadas.setText(Jugadores);
         }
     }
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putString("Jugadores",tvJugadas.getText().toString());
 
-    }
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        Jugadores=savedInstanceState.getString("Jugadores");
-        tvJugadas.setText(Jugadores);
-    }
 
 }
