@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Juego extends AppCompatActivity {
     String[] Jugadas= new String[9];
@@ -29,7 +31,7 @@ public class Juego extends AppCompatActivity {
     Button btn09;
     Button btnResultados,btnAutomatico,btnJugadores,btnMezclarTablero;
     Button [] VecBotones= new Button[9];
-    int NumRandom,IndiceVec;
+    int NumRandom,IndiceVec, NumJugadas=0;
     boolean Gano;
     int resId;
     String btn;
@@ -196,16 +198,34 @@ public class Juego extends AppCompatActivity {
             IndiceVec=EncontrarIndiceAModificar(view);
             ModificarBotones(IndiceVec);
             JugadasHechas=JugadasHechas+String.valueOf(IndiceVec+1)+":"+Jugadas[IndiceVec]+"\n";
+            NumJugadas=NumJugadas+1;
             boolean Gano= CheckearSiGano();
             if(Gano)
             {
-                Toast msg= Toast.makeText(getApplicationContext(),"Ganaste",Toast.LENGTH_SHORT);
-                msg.show();
+                AdministracionDeUsuarios.AgregarNumJugadasALista(NumJugadas,AdministracionDeUsuarios.ObtenerListaNumJuagdas());
+                FijarseSiGanoConMinimoJugadas();
             }
 
         }
 
     };
+    private void FijarseSiGanoConMinimoJugadas()
+    {   int IndiceLista=0;
+        while(NumJugadas>Integer.parseInt(AdministracionDeUsuarios.ObtenerListaNumJuagdas().get(IndiceLista)) && IndiceLista<AdministracionDeUsuarios.ObtenerListaNumJuagdas().size()-1)
+        {
+            IndiceLista++;
+        }
+        if(IndiceLista==AdministracionDeUsuarios.ObtenerListaNumJuagdas().size()-1)
+        {
+            Toast msg= Toast.makeText(getApplicationContext(),"Ganaste, pero no con el minimo de jugadas",Toast.LENGTH_SHORT);
+            msg.show();
+        }
+        else
+        {
+            Toast msg= Toast.makeText(getApplicationContext(),"GANASTE, CON EL MINIMO DE JUGADAS",Toast.LENGTH_SHORT);
+            msg.show();
+        }
+    }
     private View.OnClickListener btnMezclarTablero_click= new View.OnClickListener()
     {
         @Override
@@ -240,13 +260,31 @@ public class Juego extends AppCompatActivity {
         public void onClick(View view)
         {
             Gano=false;
-            while(Gano==false)
-            {
-                NumRandom=rand.nextInt(9);
-                ModificarBotones(NumRandom);
-                JugadasHechas=JugadasHechas+String.valueOf(NumRandom+1)+":"+Jugadas[NumRandom]+"\n";
-                Gano=CheckearSiGano();
-            }
+            final Timer timer= new Timer();
+            TimerTask timerTask= new TimerTask() {
+                @Override
+                public void run() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            NumRandom=rand.nextInt(9);
+                            ModificarBotones(NumRandom);
+                            JugadasHechas=JugadasHechas+String.valueOf(NumRandom+1)+":"+Jugadas[NumRandom]+"\n";
+                            NumJugadas=NumJugadas+1;
+                            Gano=CheckearSiGano();
+                            if(Gano)
+                            {
+                                AdministracionDeUsuarios.AgregarNumJugadasALista(NumJugadas,AdministracionDeUsuarios.ObtenerListaNumJuagdas());
+                                FijarseSiGanoConMinimoJugadas();
+                                timer.cancel();
+                            }
+                        }
+                    });
+                }
+            };
+            timer.schedule(timerTask,0,100);
+
+
 
         }
     };

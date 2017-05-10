@@ -16,4 +16,15 @@ public class AdministracionDeUsuarios {
     public static ArrayList<String> ObtenerLista(){
         return ListaJugadores;
     }
+
+        private static ArrayList<String> ListaNumJugadas = new ArrayList<String>();
+
+    public static ArrayList<String> ObtenerListaNumJuagdas(){
+        return ListaNumJugadas;
+    }
+
+    public static void AgregarNumJugadasALista(int Jugadas, ArrayList<String> ListaNumJugadas)
+    {
+        ListaNumJugadas.add(String.valueOf(Jugadas));
+    }
 }
