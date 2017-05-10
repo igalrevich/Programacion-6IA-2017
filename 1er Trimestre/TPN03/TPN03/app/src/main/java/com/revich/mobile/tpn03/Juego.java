@@ -48,6 +48,10 @@ public class Juego extends AppCompatActivity {
         Bundle ElBundle= ElIntentQueVino.getExtras();
         String Jugador= ElBundle.getString("Nombre");
         AdministracionDeUsuarios.AgregarJugadorALista(Jugador,AdministracionDeUsuarios.ObtenerLista());
+        if(AdministracionDeUsuarios.ObtenerLista().size()==1)
+        {
+          AdministracionDeUsuarios.ObtenerListaNumJuagdas().clear();
+        }
         MezclarTablero();
         SetearListeners();
 
@@ -199,6 +203,7 @@ public class Juego extends AppCompatActivity {
             ModificarBotones(IndiceVec);
             JugadasHechas=JugadasHechas+String.valueOf(IndiceVec+1)+":"+Jugadas[IndiceVec]+"\n";
             NumJugadas=NumJugadas+1;
+            setTitle(String.valueOf(NumJugadas));
             boolean Gano= CheckearSiGano();
             if(Gano)
             {
@@ -217,8 +222,18 @@ public class Juego extends AppCompatActivity {
         }
         if(IndiceLista==AdministracionDeUsuarios.ObtenerListaNumJuagdas().size()-1)
         {
-            Toast msg= Toast.makeText(getApplicationContext(),"Ganaste, pero no con el minimo de jugadas",Toast.LENGTH_SHORT);
-            msg.show();
+
+            if(AdministracionDeUsuarios.ObtenerListaNumJuagdas().size()==1)
+            {
+                Toast msg= Toast.makeText(getApplicationContext(),"GANASTE, CON EL MINIMO DE JUGADAS",Toast.LENGTH_SHORT);
+                msg.show();
+            }
+            else
+            {
+                Toast msg= Toast.makeText(getApplicationContext(),"Ganaste, pero no con el minimo de jugadas",Toast.LENGTH_SHORT);
+                msg.show();
+            }
+
         }
         else
         {
@@ -271,6 +286,7 @@ public class Juego extends AppCompatActivity {
                             ModificarBotones(NumRandom);
                             JugadasHechas=JugadasHechas+String.valueOf(NumRandom+1)+":"+Jugadas[NumRandom]+"\n";
                             NumJugadas=NumJugadas+1;
+                            setTitle(String.valueOf(NumJugadas));
                             Gano=CheckearSiGano();
                             if(Gano)
                             {
