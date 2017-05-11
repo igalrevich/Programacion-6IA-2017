@@ -32,7 +32,7 @@ public class Juego extends AppCompatActivity {
     Button btnResultados,btnAutomatico,btnJugadores,btnMezclarTablero;
     Button [] VecBotones= new Button[9];
     int NumRandom,IndiceVec, NumJugadas=0;
-    boolean Gano;
+    boolean Gano,ApretoMezclarTablero;
     int resId;
     String btn;
     String JugadasHechas="";
@@ -44,11 +44,13 @@ public class Juego extends AppCompatActivity {
         setContentView(R.layout.activity_juego);
         LlenarVectorJugadas();
         ObtenerReferencias();
+        btnAutomatico.setEnabled(true);
         Intent ElIntentQueVino= getIntent();
         Bundle ElBundle= ElIntentQueVino.getExtras();
         String Jugador= ElBundle.getString("Nombre");
         AdministracionDeUsuarios.AgregarJugadorALista(Jugador,AdministracionDeUsuarios.ObtenerLista());
-        if(AdministracionDeUsuarios.ObtenerLista().size()==1)
+        AdministracionDeUsuarios.NuevoJuego(AdministracionDeUsuarios.ObtenerCantidadVecesJugadoJuego());
+        if(AdministracionDeUsuarios.ObtenerLista().size()==1 && AdministracionDeUsuarios.ObtenerCantidadVecesJugadoJuego()==1)
         {
           AdministracionDeUsuarios.ObtenerListaNumJuagdas().clear();
         }
@@ -61,6 +63,10 @@ public class Juego extends AppCompatActivity {
 
     private void MezclarTablero()
     {
+        btnAutomatico.setEnabled(true);
+        NumJugadas=0;
+        JugadasHechas="";
+        setTitle("TPN03");
         LLenarVectorBotones();
         LlenarEstados();
         AsignarEstadoBotones();
@@ -207,6 +213,7 @@ public class Juego extends AppCompatActivity {
             boolean Gano= CheckearSiGano();
             if(Gano)
             {
+
                 AdministracionDeUsuarios.AgregarNumJugadasALista(NumJugadas,AdministracionDeUsuarios.ObtenerListaNumJuagdas());
                 FijarseSiGanoConMinimoJugadas();
             }
@@ -245,8 +252,8 @@ public class Juego extends AppCompatActivity {
     {
         @Override
         public void onClick(View view) {
-          MezclarTablero();
-            JugadasHechas="";
+            MezclarTablero();
+
         }
     };
     private View.OnClickListener btnResultados_click= new View.OnClickListener()
@@ -274,6 +281,7 @@ public class Juego extends AppCompatActivity {
         @Override
         public void onClick(View view)
         {
+            btnMezclarTablero.setEnabled(false);
             Gano=false;
             final Timer timer= new Timer();
             TimerTask timerTask= new TimerTask() {
@@ -288,11 +296,13 @@ public class Juego extends AppCompatActivity {
                             NumJugadas=NumJugadas+1;
                             setTitle(String.valueOf(NumJugadas));
                             Gano=CheckearSiGano();
-                            if(Gano)
+                            if(Gano )
                             {
                                 AdministracionDeUsuarios.AgregarNumJugadasALista(NumJugadas,AdministracionDeUsuarios.ObtenerListaNumJuagdas());
                                 FijarseSiGanoConMinimoJugadas();
                                 timer.cancel();
+                                btnMezclarTablero.setEnabled(true);
+                                btnAutomatico.setEnabled(false);
                             }
                         }
                     });

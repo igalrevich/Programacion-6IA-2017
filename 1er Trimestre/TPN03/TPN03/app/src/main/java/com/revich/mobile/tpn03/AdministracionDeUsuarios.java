@@ -7,10 +7,19 @@ import java.util.ArrayList;
  */
 public class AdministracionDeUsuarios {
     private static ArrayList<String> ListaJugadores = new ArrayList<String>();
+    private static  int CantVecesJugadoJuego=0;
 
     public static void AgregarJugadorALista(String Jugador, ArrayList<String> ListaJugadores)
     {
       ListaJugadores.add(Jugador);
+    }
+    public static int ObtenerCantidadVecesJugadoJuego()
+    {
+        return CantVecesJugadoJuego;
+    }
+    public static void NuevoJuego(int CantVecesJuego)
+    {
+        CantVecesJuego++;
     }
 
     public static ArrayList<String> ObtenerLista(){
