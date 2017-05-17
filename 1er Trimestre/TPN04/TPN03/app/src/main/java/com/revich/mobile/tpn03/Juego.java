@@ -48,6 +48,7 @@ public class Juego extends AppCompatActivity {
         Intent ElIntentQueVino= getIntent();
         Bundle ElBundle= ElIntentQueVino.getExtras();
         String Jugador= ElBundle.getString("Nombre");
+        AdministracionDeUsuarios.ObtenerListaJugadas().clear();
         AdministracionDeUsuarios.AgregarJugadorALista(Jugador,AdministracionDeUsuarios.ObtenerLista());
         AdministracionDeUsuarios.NuevoJuego(AdministracionDeUsuarios.ObtenerCantidadVecesJugadoJuego());
         if(AdministracionDeUsuarios.ObtenerLista().size()==1 && AdministracionDeUsuarios.ObtenerCantidadVecesJugadoJuego()==1)
@@ -207,7 +208,8 @@ public class Juego extends AppCompatActivity {
         {
             IndiceVec=EncontrarIndiceAModificar(view);
             ModificarBotones(IndiceVec);
-            JugadasHechas=JugadasHechas+String.valueOf(IndiceVec+1)+":"+Jugadas[IndiceVec]+"\n";
+            JugadasHechas=String.valueOf(IndiceVec+1)+":"+Jugadas[IndiceVec]+"\n";
+            AdministracionDeUsuarios.AgregarJugadaALista(JugadasHechas,AdministracionDeUsuarios.ObtenerListaJugadas());
             NumJugadas=NumJugadas+1;
             setTitle(String.valueOf(NumJugadas));
             boolean Gano= CheckearSiGano();
@@ -292,7 +294,8 @@ public class Juego extends AppCompatActivity {
                         public void run() {
                             NumRandom=rand.nextInt(9);
                             ModificarBotones(NumRandom);
-                            JugadasHechas=JugadasHechas+String.valueOf(NumRandom+1)+":"+Jugadas[NumRandom]+"\n";
+                            JugadasHechas=String.valueOf(IndiceVec+1)+":"+Jugadas[IndiceVec]+"\n";
+                            AdministracionDeUsuarios.AgregarJugadaALista(JugadasHechas,AdministracionDeUsuarios.ObtenerListaJugadas());
                             NumJugadas=NumJugadas+1;
                             setTitle(String.valueOf(NumJugadas));
                             Gano=CheckearSiGano();

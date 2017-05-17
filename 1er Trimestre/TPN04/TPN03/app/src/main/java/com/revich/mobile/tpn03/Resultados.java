@@ -42,10 +42,10 @@ public class Resultados extends AppCompatActivity {
     private void GenerarAdapterSpinner(boolean JugadasHechas)
     {
         ArrayList<String> ListaJugadores=AdministracionDeUsuarios.ObtenerLista();
-        ArrayList<String> ListaNumJugadas=AdministracionDeUsuarios.ObtenerListaNumJuagdas();
+        ArrayList<String> ListaJugadas=AdministracionDeUsuarios.ObtenerListaJugadas();
         if(JugadasHechas)
         {
-            adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,ListaNumJugadas);
+            adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,ListaJugadas);
         }
         else
         {

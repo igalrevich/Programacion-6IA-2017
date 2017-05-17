@@ -8,7 +8,14 @@ import java.util.ArrayList;
 public class AdministracionDeUsuarios {
     private static ArrayList<String> ListaJugadores = new ArrayList<String>();
     private static  int CantVecesJugadoJuego=0;
-
+    private static ArrayList<String> ListaJugadas=new ArrayList<String>();
+    public static ArrayList<String> ObtenerListaJugadas(){
+        return ListaJugadas;
+    }
+    public static void AgregarJugadaALista(String Jugada, ArrayList<String> ListaJugadas)
+    {
+        ListaJugadas.add(Jugada);
+    }
     public static void AgregarJugadorALista(String Jugador, ArrayList<String> ListaJugadores)
     {
       ListaJugadores.add(Jugador);
