@@ -82,7 +82,8 @@ public class Datos extends AppCompatActivity {
                              TextoResultadoCaptcha=Integer.parseInt(TextoCaptcha);
                              if(TextoResultadoCaptcha==ResultadoCaptcha)
                              {
-                                 IniciarSegundaActivity();
+                                 Dialog MiDialog=CrearDialogoConfirmacion();
+                                 MiDialog.show();
                              }
                              else
                              {
@@ -121,16 +122,17 @@ public class Datos extends AppCompatActivity {
         builder.setTitle("Ir a Segunda actividad");
         builder.setMessage("Esta seguro de ir a la segunda actividad");
         builder.setPositiveButton("si", btnSi_click);
-        /*builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        }btnSi_click);*/
         builder.setNegativeButton("No",btnNo_click);
         return builder.create();
     }
     private DialogInterface.OnClickListener btnSi_click = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            IniciarSegundaActivity();
+            dialogInterface.cancel();
+        }
+    };
+    private DialogInterface.OnClickListener btnNo_click = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
             dialogInterface.cancel();

@@ -17,4 +17,20 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:textSize="30dp" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cmbJugadores"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lstJugadas"
+        android:layout_below="@+id/cmbJugadores"
+        android:layout_alignRight="@+id/cmbJugadores"
+        android:layout_alignEnd="@+id/cmbJugadores" />
 </RelativeLayout>
