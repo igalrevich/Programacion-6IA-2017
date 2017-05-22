@@ -254,6 +254,7 @@ public class Juego extends AppCompatActivity {
     {
         @Override
         public void onClick(View view) {
+            AdministracionDeUsuarios.ObtenerListaJugadas().clear();
             MezclarTablero();
 
         }
