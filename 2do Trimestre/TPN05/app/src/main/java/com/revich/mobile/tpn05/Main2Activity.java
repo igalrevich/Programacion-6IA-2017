@@ -23,14 +23,12 @@ public class Main2Activity extends AppCompatActivity {
         ArrayAdapter<Alumnos> adapterAlumnos= new ArrayAdapter<Alumnos>(this,android.R.layout.simple_list_item_1,ListaAlumnos);
         lstRegistros.setAdapter(adapterAlumnos);
 
-
     }
 
     private void SelectRegistros()
     {
-        ListaAlumnos.clear();
         SQLiteDatabase db =alumnosSQLiteHelper.getReadableDatabase();
-        Cursor c= db.rawQuery("SELECT * FROM Almunos", null);
+        Cursor c= db.rawQuery("SELECT * FROM Alumnos", null);
         ListaAlumnos= new ArrayList<>();
         if(c.moveToFirst())
         {
@@ -44,6 +42,7 @@ public class Main2Activity extends AppCompatActivity {
                ListaAlumnos.add(MiAlumno);
             } while (c.moveToNext());
         }
+        c.close();
         db.close();
     }
 

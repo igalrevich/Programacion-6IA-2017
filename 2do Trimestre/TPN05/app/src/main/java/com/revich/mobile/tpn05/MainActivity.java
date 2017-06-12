@@ -60,23 +60,27 @@ public class MainActivity extends AppCompatActivity {
         nuevoRegistro.put("FechaNacimiento","2000/02/03");
         db.insert("Alumnos",null,nuevoRegistro);
         db.close();
+        int IdIngresado= SelectConId(0,true);
+        Toast msg= Toast.makeText(getApplicationContext(), "Se hizo un INSERT con el id "+String.valueOf(IdIngresado), Toast.LENGTH_SHORT);
+        msg.show();
+
     }
     private void ActualizarBaseDeDatos(int Id, String Nombre)
     {
         SQLiteDatabase db =alumnosSQLiteHelper.getWritableDatabase();
-        db.execSQL("UPDATE Alumnos SET Nombre="+Nombre+" WHERE id="+Id);
+        db.execSQL("UPDATE Alumnos SET Nombre=\""+Nombre+"\" WHERE id="+Id);
         db.close();
-        int RegistrosAfectados=SelectConId(Id);
+        int RegistrosAfectados=SelectConId(Id,false);
         Toast msg= Toast.makeText(getApplicationContext(), "Se hizo un UPDATE a "+String.valueOf(RegistrosAfectados)+ " registros", Toast.LENGTH_SHORT);
         msg.show();
     }
     private void EliminarBaseDeDatos( int Id)
     {
+        int RegistrosAfectados=SelectConId(Id,false);
         SQLiteDatabase db =alumnosSQLiteHelper.getWritableDatabase();
         db.execSQL("DELETE FROM Alumnos WHERE id="+Id);
         db.close();
-        int RegistrosAfectados=SelectConId(Id);
-        Toast msg= Toast.makeText(getApplicationContext(), "Se hizo un UPDATE a "+String.valueOf(RegistrosAfectados)+ " registros", Toast.LENGTH_SHORT);
+        Toast msg= Toast.makeText(getApplicationContext(), "Se hizo un DELETE a "+String.valueOf(RegistrosAfectados)+ " registros", Toast.LENGTH_SHORT);
         msg.show();
     }
     private void SetearListeners()
@@ -86,20 +90,39 @@ public class MainActivity extends AppCompatActivity {
         btnActualizar.setOnClickListener(btnActualizar_click);
         btnRegistrosOtraActivity.setOnClickListener(btnRegistrosOtraActivity_click);
     }
-    private int SelectConId(int Id)
+    private int SelectConId(int Id , boolean Insert)
     {
         SQLiteDatabase db =alumnosSQLiteHelper.getReadableDatabase();
-        Cursor c= db.rawQuery("SELECT * FROM Almunos WHERE id="+Id, null);
-        int ContRegistrosAfectados=0;
-        if(c.moveToFirst())
+        if(Insert==false)
         {
-            do
+            Cursor c= db.rawQuery("SELECT * FROM Alumnos WHERE id="+Id, null);
+            int ContRegistrosAfectados=0;
+            if(c.moveToFirst())
             {
-              ContRegistrosAfectados++;
-            }while (c.moveToNext());
+                do
+                {
+                    ContRegistrosAfectados++;
+                }while (c.moveToNext());
+            }
+            c.close();
+            db.close();
+            return  ContRegistrosAfectados;
         }
-        db.close();
-        return  ContRegistrosAfectados;
+        else
+        {
+            Cursor c= db.rawQuery("SELECT MAX(id) FROM Alumnos",null);
+            int IdIngresado=0;
+            if(c.moveToFirst())
+            {
+                do
+                {
+                   IdIngresado=c.getInt(0);
+                }while (c.moveToNext());
+            }
+            c.close();
+            db.close();
+            return IdIngresado;
+        }
     }
 
     private void IniciarSegundaActivity()
