@@ -11,24 +11,50 @@ import android.util.Log;
  */
 public class AlumnosSQLiteHelper extends SQLiteOpenHelper {
 
-    String sqlCreate= "CREATE TABLE Alumnos (id INTEGER PRIMARY KEY, Nombre TEXT, Casado TEXT, FechaNacimiento TEXT NULL)";
+    String strSQL="";
     public AlumnosSQLiteHelper(Context contexto, String Nombre, CursorFactory cursorFactory,int Version)
     {
-      super(contexto,Nombre,cursorFactory,Version);
+        super(contexto,Nombre,cursorFactory,Version);
+    }
+
+    public AlumnosSQLiteHelper(Context contexto)
+    {
+        super(contexto,"DBAlumnos",null,2);
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d("Igal", "onCreate");
-        db.execSQL(sqlCreate);
+        strSQL = AlumnosManager.CreateTableScript();
+        db.execSQL(strSQL);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int VersionAnterior, int VersionNueva) {
         Log.d("Igal", "onUpgrade");
-     if(VersionAnterior!=VersionNueva)
-     {
-       db.execSQL("DROP TABLE IF EXISTS Alumnos");
-       db.execSQL(sqlCreate);
-     }
+        if(VersionAnterior!=VersionNueva)
+        {
+            db.execSQL("DROP TABLE IF EXISTS Alumnos");
+            strSQL = AlumnosManager.CreateTableScript();
+            db.execSQL(strSQL);
+        }
+    }
+
+    public SQLiteDatabase open (boolean forWriting){
+        return forWriting ? this.getWritableDatabase() : this.getReadableDatabase();
+    }
+
+    //
+    // Cierra una SQLiteDatabase
+    //
+    public void close(SQLiteDatabase db) {
+        try {
+            if (db.inTransaction()) {
+                db.endTransaction();
+            }
+            db.close();
+        } catch (RuntimeException e) {
+            //Log.d(LOG_TAG, "Error", e);
+
+        }
     }
 }

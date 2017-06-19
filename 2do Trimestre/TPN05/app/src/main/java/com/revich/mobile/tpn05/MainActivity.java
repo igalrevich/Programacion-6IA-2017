@@ -43,43 +43,39 @@ public class MainActivity extends AppCompatActivity {
     }
     private void InsertarBaseDeDatos()
     {
-        SQLiteDatabase db =alumnosSQLiteHelper.getWritableDatabase();
-        ContentValues nuevoRegistro= new ContentValues();
         String Nombre= edtInsertarNombre.getText().toString();
-        nuevoRegistro.put("Nombre",Nombre);
-        Random rand= new Random();
+        Alumnos MiAlumno= new Alumnos();
+        MiAlumno.setNombre(Nombre);
+         Random rand= new Random();
         int TrueOFalse= rand.nextInt(2);
         if(TrueOFalse==0)
         {
-            nuevoRegistro.put("Casado","false");
+            MiAlumno.setCasado("false");
         }
         else
         {
-            nuevoRegistro.put("Casado","true");
+            MiAlumno.setCasado("true");
         }
-        nuevoRegistro.put("FechaNacimiento","2000/02/03");
-        db.insert("Alumnos",null,nuevoRegistro);
-        db.close();
-        int IdIngresado= SelectConId(0,true);
+        MiAlumno.setFechaNacimiento("2000/02/03");
+        AlumnosManager alumnosManager= new AlumnosManager(this);
+        int IdIngresado= alumnosManager.InsertarBaseDeDatos(MiAlumno);
         Toast msg= Toast.makeText(getApplicationContext(), "Se hizo un INSERT con el id "+String.valueOf(IdIngresado), Toast.LENGTH_SHORT);
         msg.show();
-
     }
     private void ActualizarBaseDeDatos(int Id, String Nombre)
     {
-        SQLiteDatabase db =alumnosSQLiteHelper.getWritableDatabase();
-        db.execSQL("UPDATE Alumnos SET Nombre=\""+Nombre+"\" WHERE id="+Id);
-        db.close();
-        int RegistrosAfectados=SelectConId(Id,false);
+        Alumnos MiAlumno= new Alumnos();
+        AlumnosManager alumnosManager= new AlumnosManager(this);
+        MiAlumno.setId(Id);
+        MiAlumno.setNombre(Nombre);
+        int RegistrosAfectados=alumnosManager.ActualizarBaseDeDatos(MiAlumno);
         Toast msg= Toast.makeText(getApplicationContext(), "Se hizo un UPDATE a "+String.valueOf(RegistrosAfectados)+ " registros", Toast.LENGTH_SHORT);
         msg.show();
     }
     private void EliminarBaseDeDatos( int Id)
     {
-        int RegistrosAfectados=SelectConId(Id,false);
-        SQLiteDatabase db =alumnosSQLiteHelper.getWritableDatabase();
-        db.execSQL("DELETE FROM Alumnos WHERE id="+Id);
-        db.close();
+        AlumnosManager alumnosManager= new AlumnosManager(this);
+        int RegistrosAfectados= alumnosManager.EliminarBaseDeDatos(Id);
         Toast msg= Toast.makeText(getApplicationContext(), "Se hizo un DELETE a "+String.valueOf(RegistrosAfectados)+ " registros", Toast.LENGTH_SHORT);
         msg.show();
     }
@@ -89,40 +85,6 @@ public class MainActivity extends AppCompatActivity {
         btnEliminar.setOnClickListener(btnEliminar_click);
         btnActualizar.setOnClickListener(btnActualizar_click);
         btnRegistrosOtraActivity.setOnClickListener(btnRegistrosOtraActivity_click);
-    }
-    private int SelectConId(int Id , boolean Insert)
-    {
-        SQLiteDatabase db =alumnosSQLiteHelper.getReadableDatabase();
-        if(Insert==false)
-        {
-            Cursor c= db.rawQuery("SELECT * FROM Alumnos WHERE id="+Id, null);
-            int ContRegistrosAfectados=0;
-            if(c.moveToFirst())
-            {
-                do
-                {
-                    ContRegistrosAfectados++;
-                }while (c.moveToNext());
-            }
-            c.close();
-            db.close();
-            return  ContRegistrosAfectados;
-        }
-        else
-        {
-            Cursor c= db.rawQuery("SELECT MAX(id) FROM Alumnos",null);
-            int IdIngresado=0;
-            if(c.moveToFirst())
-            {
-                do
-                {
-                   IdIngresado=c.getInt(0);
-                }while (c.moveToNext());
-            }
-            c.close();
-            db.close();
-            return IdIngresado;
-        }
     }
 
     private void IniciarSegundaActivity()
