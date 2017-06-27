@@ -5,7 +5,9 @@ import java.util.ArrayList;
 /**
  * Created by 42426410 on 26/6/2017.
  */
-public class DatosJuego {
+public class
+
+DatosJuego {
 
     public static String NombreUsuario;
 

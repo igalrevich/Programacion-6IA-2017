@@ -30,6 +30,7 @@ public class Activity_Nombre extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity__nombre);
+        setTitle("SITIS");
         ObtenerReferencias();
         SetearListeners();
     }
@@ -53,6 +54,11 @@ public class Activity_Nombre extends AppCompatActivity {
             {
                 DatosJuego.SetNombre(Nombre);String url= "https://tp4ort.firebaseio.com/countries.json";
                 new ObtenerPaisesYCiudades().execute(url,"Paises");
+            }
+            else
+            {
+                Toast msg= Toast.makeText(getApplicationContext(),"Ingrese su nombre",Toast.LENGTH_SHORT);
+                msg.show();
             }
         }
     };
