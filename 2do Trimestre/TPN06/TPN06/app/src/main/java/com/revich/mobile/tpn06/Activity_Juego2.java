@@ -2,6 +2,7 @@ package com.revich.mobile.tpn06;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -10,14 +11,24 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Random;
+
 public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    int [] IndicesCiudades= new int[] {0,0,0,0};
+    int Lat=0, Lng=0;
+    boolean IndicesCiudadesIguales=false;
+    Geonames [] Ciudades;
+    Button btnCiudad1, btnCiudad2, btnCiudad3, btnCiudad4;
+    Button [] VecBotones= new Button[] {btnCiudad1,btnCiudad2,btnCiudad3,btnCiudad4};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity__juego2);
+        ObtenerReferencias();
+        Obtener4CiudadesRandom();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -39,8 +50,74 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
+        LatLng sydney = new LatLng(Lat, Lng);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
+
+
+    private void ObtenerReferencias()
+    {
+        btnCiudad1= (Button) findViewById(R.id.btnCiudad1);
+        btnCiudad2= (Button) findViewById(R.id.btnCiudad2);
+        btnCiudad3= (Button) findViewById(R.id.btnCiudad3);
+        btnCiudad4= (Button) findViewById(R.id.btnCiudad4);
+    }
+
+    private void Obtener4CiudadesRandom()
+    {
+        Random rand= new Random();
+        for(int i=0; i<4; i++)
+        {
+          int Indice= rand.nextInt(DatosJuego.GetGeonames().size());
+          IndicesCiudades[i]=Indice;
+          if(i!=0)
+          {
+            for(int j=0;j<i;j++)
+            {
+                if (IndicesCiudades[j]==IndicesCiudades[i])
+                {
+                  IndicesCiudadesIguales=true;
+                  Obtener1CiudadRandom(i);
+                }
+            }
+
+          }
+        }
+        if(IndicesCiudadesIguales==false)
+        {
+          AsignarCiudadesAlMapa();
+        }
+    }
+
+    private void Obtener1CiudadRandom(int Indice)
+    {
+        Random rand= new Random();
+        int NumIndice= rand.nextInt(DatosJuego.GetGeonames().size());
+        IndicesCiudades[Indice]=NumIndice;
+        for(int k=0;k<Indice;k++)
+        {
+            if (IndicesCiudades[k]==IndicesCiudades[Indice])
+            {
+              Obtener1CiudadRandom(Indice);
+            }
+        }
+    }
+
+    private void AsignarCiudadesAlMapa()
+    {
+        for(int i=0;i<IndicesCiudades.length;i++)
+        {
+            int Indice= IndicesCiudades[i];
+            Ciudades[i]=DatosJuego.GetGeonames().get(Indice);
+            VecBotones[i].setText(Ciudades[i].name);
+            if(i==0)
+            {
+                Lat=Ciudades[i].lat;
+                Lng=Ciudades[i].lng;
+            }
+        }
+    }
+
+
 }

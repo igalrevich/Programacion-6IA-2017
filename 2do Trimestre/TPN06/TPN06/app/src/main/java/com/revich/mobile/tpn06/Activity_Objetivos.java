@@ -44,7 +44,7 @@ public class Activity_Objetivos extends AppCompatActivity {
 
     private void IrAActivityJuego()
     {
-        Intent MiIntent= new Intent(Activity_Objetivos.this,Activity_Juego.class);
+        Intent MiIntent= new Intent(Activity_Objetivos.this,Activity_Juego2.class);
         startActivity(MiIntent);
     }
 }

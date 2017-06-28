@@ -52,7 +52,8 @@ public class Activity_Nombre extends AppCompatActivity {
             String Nombre= edtNombre.getText().toString();
             if(Nombre.isEmpty()==false)
             {
-                DatosJuego.SetNombre(Nombre);String url= "https://tp4ort.firebaseio.com/countries.json";
+                DatosJuego.SetNombre(Nombre);
+                String url= "https://tp4ort.firebaseio.com/countries.json";
                 new ObtenerPaisesYCiudades().execute(url,"Paises");
             }
             else
