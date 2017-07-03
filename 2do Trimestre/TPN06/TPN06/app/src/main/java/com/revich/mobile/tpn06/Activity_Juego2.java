@@ -17,9 +17,9 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
 
     private GoogleMap mMap;
     int [] IndicesCiudades= new int[] {0,0,0,0};
-    int Lat=0, Lng=0;
+    double Lat=0, Lng=0;
     boolean IndicesCiudadesIguales=false;
-    Geonames [] Ciudades;
+    Geonames [] Ciudades= new Geonames[4];
     Button btnCiudad1, btnCiudad2, btnCiudad3, btnCiudad4;
     Button [] VecBotones= new Button[] {btnCiudad1,btnCiudad2,btnCiudad3,btnCiudad4};
 
@@ -58,10 +58,13 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
 
     private void ObtenerReferencias()
     {
+
         btnCiudad1= (Button) findViewById(R.id.btnCiudad1);
         btnCiudad2= (Button) findViewById(R.id.btnCiudad2);
         btnCiudad3= (Button) findViewById(R.id.btnCiudad3);
         btnCiudad4= (Button) findViewById(R.id.btnCiudad4);
+       // VecBotones= new Button[] {btnCiudad1,btnCiudad2,btnCiudad3,btnCiudad4};
+
     }
 
     private void Obtener4CiudadesRandom()

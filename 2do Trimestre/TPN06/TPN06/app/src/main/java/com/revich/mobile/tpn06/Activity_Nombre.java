@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -26,6 +27,7 @@ import okhttp3.Response;
 public class Activity_Nombre extends AppCompatActivity {
     Button btnContinuar;
     EditText edtNombre;
+    TextView tvParseoProgreso;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +39,9 @@ public class Activity_Nombre extends AppCompatActivity {
 
     private void ObtenerReferencias()
     {
-      btnContinuar= (Button) findViewById(R.id.btnContinuar) ;
-      edtNombre= (EditText) findViewById(R.id.edtNombre);
+        btnContinuar= (Button) findViewById(R.id.btnContinuar) ;
+        edtNombre= (EditText) findViewById(R.id.edtNombre);
+        tvParseoProgreso= (TextView) findViewById(R.id.tvParseoProgreso);
     }
 
     private void SetearListeners()
@@ -70,7 +73,7 @@ public class Activity_Nombre extends AppCompatActivity {
         startActivity(MiIntent);
     }
 
-    public class ObtenerPaisesYCiudades extends AsyncTask <String,Integer,Integer>
+    public class ObtenerPaisesYCiudades extends AsyncTask <String,String,Integer>
     {
         @Override
 
@@ -87,10 +90,12 @@ public class Activity_Nombre extends AppCompatActivity {
                 String resultado = response.body().string();
                 if(QueParsea.equals("Paises"))
                 {
-                  return parsearResultadoPaises(resultado);
+                    publishProgress("Parseo 25%");
+                    return parsearResultadoPaises(resultado);
                 }
                 else
                 {
+                    publishProgress("Parseo 75%");
                     return parsearResultadoGeonames(resultado);
                 }
 
@@ -112,6 +117,7 @@ public class Activity_Nombre extends AppCompatActivity {
                 Pais MiPais = gson.fromJson(ObjetoPais,Pais.class);
                 DatosJuego.SetPaises(MiPais);
             }
+            publishProgress("Parseo 50%");
             return 1;
         }
 
@@ -125,10 +131,15 @@ public class Activity_Nombre extends AppCompatActivity {
                 Geonames MiGeonames = gson.fromJson(ObjetoGeonames,Geonames.class);
                 DatosJuego.SetGeonames(MiGeonames);
             }
+            publishProgress("Parseo 100%");
             return 2;
         }
 
-
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            tvParseoProgreso.setText(values[0]);
+        }
 
         @Override
         protected void onPostExecute(Integer num) {

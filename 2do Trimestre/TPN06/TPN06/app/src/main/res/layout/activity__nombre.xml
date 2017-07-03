@@ -28,5 +28,13 @@
             android:id="@+id/btnContinuar"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="580px" />
+
+        <TextView
+            android:layout_width="197dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvParseoProgreso"
+            android:layout_gravity="center_horizontal"
+            android:textSize="25dp"
+            android:layout_marginTop="-100dp" />
     </LinearLayout>
 </RelativeLayout>

@@ -7,8 +7,8 @@ public class Geonames {
 
     public String clase;
     public String countrycode;
-    public int lat;
-    public int lng;
+    public double lat;
+    public double lng;
     public String name;
     public int population;
 }

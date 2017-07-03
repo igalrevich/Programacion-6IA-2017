@@ -11,9 +11,15 @@ DatosJuego {
 
     public static String NombreUsuario;
 
-    public static ArrayList<Pais> Paises;
+    public static ArrayList<Pais> Paises= new ArrayList<>();
 
-    public static ArrayList<Geonames> Geonames;
+    public static ArrayList<Geonames> Geonames = new ArrayList<>();
+
+    public  DatosJuego()
+    {
+        //Paises= new ArrayList<>();
+        //Gnonames= new ArrayList<>();
+    }
 
     public static void SetPaises(Pais MiPais)
     {
