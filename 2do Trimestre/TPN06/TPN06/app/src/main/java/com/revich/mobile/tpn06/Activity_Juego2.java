@@ -1,7 +1,11 @@
 package com.revich.mobile.tpn06;
 
+import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -16,17 +20,22 @@ import java.util.Random;
 public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    int [] IndicesCiudades= new int[] {0,0,0,0};
-    double Lat=0, Lng=0;
-    boolean IndicesCiudadesIguales=false;
-    Geonames [] Ciudades= new Geonames[4];
+    int [] IndicesCiudades;
+    double Lat, Lng;
+    boolean IndicesCiudadesIguales;
+    Geonames [] Ciudades;
     Button btnCiudad1, btnCiudad2, btnCiudad3, btnCiudad4;
-    Button [] VecBotones= new Button[] {btnCiudad1,btnCiudad2,btnCiudad3,btnCiudad4};
+    Button [] VecBotones;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity__juego2);
+        IndicesCiudades= new int[] {0,0,0,0};
+        Lat=0;
+        Lng=0;
+        IndicesCiudadesIguales=false;
+        Ciudades= new Geonames[4];
         ObtenerReferencias();
         Obtener4CiudadesRandom();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -34,6 +43,7 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
+
 
 
     /**
@@ -63,7 +73,7 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
         btnCiudad2= (Button) findViewById(R.id.btnCiudad2);
         btnCiudad3= (Button) findViewById(R.id.btnCiudad3);
         btnCiudad4= (Button) findViewById(R.id.btnCiudad4);
-       // VecBotones= new Button[] {btnCiudad1,btnCiudad2,btnCiudad3,btnCiudad4};
+        VecBotones= new Button[] {btnCiudad1,btnCiudad2,btnCiudad3,btnCiudad4};
 
     }
 
