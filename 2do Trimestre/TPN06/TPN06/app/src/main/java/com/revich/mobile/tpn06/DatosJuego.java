@@ -15,6 +15,42 @@ DatosJuego {
 
     public static ArrayList<Geonames> Geonames = new ArrayList<>();
 
+    public static String NombreCiudadCorrecta;
+
+    public static String GetNombreCiudadCorrecta()
+    {
+      return  NombreCiudadCorrecta;
+    }
+
+    public static void SetNombreCiudadCorrecta(String CiudadCorrecta)
+    {
+        NombreCiudadCorrecta=CiudadCorrecta;
+    }
+
+    public static int SegundosJuego;
+
+    public static int GetSegundosJuego()
+    {
+        return  SegundosJuego;
+    }
+
+    public static void SetSegundosJuego(int SegundosJuegoActual)
+    {
+        SegundosJuego=SegundosJuegoActual+1;
+    }
+
+    public static boolean Perdio;
+
+    public static boolean GetPerdio()
+    {
+        return  Perdio;
+    }
+
+    public static void SetPerdio(boolean PerdioToF)
+    {
+        Perdio=PerdioToF;
+    }
+
     public  DatosJuego()
     {
         //Paises= new ArrayList<>();

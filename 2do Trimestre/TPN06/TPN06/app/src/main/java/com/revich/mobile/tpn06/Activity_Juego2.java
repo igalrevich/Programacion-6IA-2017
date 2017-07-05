@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,6 +17,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallback {
 
@@ -31,17 +34,7 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity__juego2);
-        IndicesCiudades= new int[] {0,0,0,0};
-        Lat=0;
-        Lng=0;
-        IndicesCiudadesIguales=false;
-        Ciudades= new Geonames[4];
-        ObtenerReferencias();
-        Obtener4CiudadesRandom();
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        PrepararJuego();
     }
 
 
@@ -63,6 +56,9 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
         LatLng sydney = new LatLng(Lat, Lng);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        SetearTimer();
+        SetearListeners();
+
     }
 
 
@@ -74,7 +70,56 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
         btnCiudad3= (Button) findViewById(R.id.btnCiudad3);
         btnCiudad4= (Button) findViewById(R.id.btnCiudad4);
         VecBotones= new Button[] {btnCiudad1,btnCiudad2,btnCiudad3,btnCiudad4};
+    }
 
+    private void PrepararJuego()
+    {
+        IndicesCiudades= new int[] {0,0,0,0};
+        Lat=0;
+        Lng=0;
+        IndicesCiudadesIguales=false;
+        Ciudades= new Geonames[4];
+        ObtenerReferencias();
+        Obtener4CiudadesRandom();
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
+
+    private void SetearListeners()
+    {
+        for(int i=0;i<VecBotones.length;i++)
+        {
+            VecBotones[i].setOnClickListener(btnCiudad_click);
+        }
+    }
+
+    private View.OnClickListener btnCiudad_click = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+         int IdBoton= view.getId();
+         int IndiceVecBotones= EncontrarIndiceBotonCiudad(IdBoton);
+         String TextoBoton=VecBotones[IndiceVecBotones].getText().toString();
+         if(TextoBoton.equals(DatosJuego.GetNombreCiudadCorrecta()))
+         {
+             mMap.clear();
+             PrepararJuego();
+         }
+         else
+         {
+          DatosJuego.SetPerdio(true);
+         }
+        }
+    };
+
+    private int EncontrarIndiceBotonCiudad(int IdBoton)
+    {
+        int IndiceVecBotones=0;
+        while(VecBotones[IndiceVecBotones].getId()!=IdBoton)
+        {
+            IndiceVecBotones++;
+        }
+        return  IndiceVecBotones;
     }
 
     private void Obtener4CiudadesRandom()
@@ -128,9 +173,39 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
             {
                 Lat=Ciudades[i].lat;
                 Lng=Ciudades[i].lng;
+                DatosJuego.SetNombreCiudadCorrecta(Ciudades[i].name);
             }
         }
     }
+
+    private void SetearTimer()
+    {
+        final Timer timer= new Timer();
+        TimerTask timerTask= new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(DatosJuego.GetPerdio())
+                        {
+                            timer.cancel();
+                            Toast msg= Toast.makeText(getApplicationContext(),"Perdiste,la respuesta correcta era "+DatosJuego.GetNombreCiudadCorrecta(),Toast.LENGTH_SHORT);
+                            msg.show();
+                            Log.d("SegundosQueJugo", String.valueOf(DatosJuego.GetSegundosJuego()));
+                            finish();
+                        }
+                        else
+                        {
+                            DatosJuego.SetSegundosJuego(DatosJuego.GetSegundosJuego());
+                        }
+                    }
+                });
+            }
+        };
+        timer.schedule(timerTask,0,1000);
+    }
+
 
 
 }
