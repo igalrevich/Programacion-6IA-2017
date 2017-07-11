@@ -37,7 +37,7 @@
 
         <activity
             android:name=".Activity_Juego2"
-            android:label="@string/title_activity_activity__juego2"></activity>
+            android:label="@string/title_activity_activity__juego2" />
     </application>
 
 </manifest>

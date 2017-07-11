@@ -39,6 +39,18 @@ DatosJuego {
         SegundosJuego=SegundosJuegoActual+1;
     }
 
+    public static int CiudadesAcertadas;
+
+    public static int GetCiudadesAcertadas()
+    {
+        return  CiudadesAcertadas;
+    }
+
+    public static void SetCiudadesAcertadas(int CiudadesAcertadasActual)
+    {
+        SegundosJuego=CiudadesAcertadasActual+1;
+    }
+
     public static boolean Perdio;
 
     public static boolean GetPerdio()

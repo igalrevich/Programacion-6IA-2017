@@ -1,5 +1,6 @@
 package com.revich.mobile.tpn06;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -34,25 +35,15 @@ public class UsuariosManager {
         return db;
     }
 
-    private boolean ExisteUsuario(String NombreUsuario)
+    public void InsertarBaseDeDatos(Usuario MiUsuario)
     {
-        SQLiteDatabase db= Abrir(false);
-        Cursor c= db.rawQuery("SELECT * FROM Usuarios WHERE nombre="+DatosJuego.GetNombre(), null);
-        int ContRegistrosAfectados=0;
-        if(c.moveToFirst())
-        {
-            do
-            {
-                ContRegistrosAfectados++;
-            }while (c.moveToNext());
-        }
-        if(ContRegistrosAfectados>0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        UsuariosSQLiteHelper usuariosSQLiteHelper= new UsuariosSQLiteHelper(ElContexto,"DBAlumnos",null,2);
+        SQLiteDatabase db =Abrir(true);
+        ContentValues nuevoRegistro= new ContentValues();
+        nuevoRegistro.put("nombre",MiUsuario.Nombre);
+        nuevoRegistro.put("ciudadesacertadas",MiUsuario.CiudadesAcertadas);
+        nuevoRegistro.put("tiempodejuego",MiUsuario.TiempoDeJuego);
+        db.insert("Usuarios",null,nuevoRegistro);
+        db.close();
     }
 }

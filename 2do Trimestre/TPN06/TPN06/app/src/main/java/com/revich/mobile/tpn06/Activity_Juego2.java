@@ -29,11 +29,12 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
     Geonames [] Ciudades;
     Button btnCiudad1, btnCiudad2, btnCiudad3, btnCiudad4;
     Button [] VecBotones;
-
+    UsuariosSQLiteHelper usuariosSQLiteHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity__juego2);
+        DatosJuego.SetCiudadesAcertadas(-1);
         PrepararJuego();
     }
 
@@ -102,6 +103,7 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
          String TextoBoton=VecBotones[IndiceVecBotones].getText().toString();
          if(TextoBoton.equals(DatosJuego.GetNombreCiudadCorrecta()))
          {
+             DatosJuego.SetCiudadesAcertadas(DatosJuego.GetCiudadesAcertadas());
              mMap.clear();
              PrepararJuego();
          }
@@ -193,6 +195,8 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
                             Toast msg= Toast.makeText(getApplicationContext(),"Perdiste,la respuesta correcta era "+DatosJuego.GetNombreCiudadCorrecta(),Toast.LENGTH_SHORT);
                             msg.show();
                             Log.d("SegundosQueJugo", String.valueOf(DatosJuego.GetSegundosJuego()));
+                            usuariosSQLiteHelper= new UsuariosSQLiteHelper(getApplicationContext(),"DBUsuariosTPN06",null,2);
+                            InsertarRankingEnBD();
                             finish();
                         }
                         else
@@ -204,6 +208,63 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
             }
         };
         timer.schedule(timerTask,0,1000);
+    }
+
+    private String GenerarTiempoJuego()
+    {
+        String TiempoDeJuego="";
+        int SegundosTiempoQueJugo= DatosJuego.GetSegundosJuego();
+        String SegundosTiempoQueJugoString="";
+        String MinutosTiempoQueJugoString="";
+        if(SegundosTiempoQueJugo>59)
+        {
+            SegundosTiempoQueJugo= DatosJuego.GetSegundosJuego()%60;
+            SegundosTiempoQueJugoString=VerSiTiempoMenorDe10(SegundosTiempoQueJugo);
+            int MinutosTiempoQueJugo= DatosJuego.GetSegundosJuego()/60;
+            if(MinutosTiempoQueJugo>59)
+            {
+                int HorasTiempoQueJugo=MinutosTiempoQueJugo/60;
+                MinutosTiempoQueJugo=MinutosTiempoQueJugo%60;
+                MinutosTiempoQueJugoString=VerSiTiempoMenorDe10(MinutosTiempoQueJugo);
+                TiempoDeJuego=String.valueOf(HorasTiempoQueJugo)+":"+MinutosTiempoQueJugoString+":"+SegundosTiempoQueJugoString;
+            }
+            else
+            {
+                MinutosTiempoQueJugoString=VerSiTiempoMenorDe10(MinutosTiempoQueJugo);
+                TiempoDeJuego=MinutosTiempoQueJugoString+":"+SegundosTiempoQueJugoString;
+            }
+        }
+        else
+        {
+            SegundosTiempoQueJugoString=VerSiTiempoMenorDe10(SegundosTiempoQueJugo);
+            MinutosTiempoQueJugoString="0";
+            TiempoDeJuego=MinutosTiempoQueJugoString+":"+SegundosTiempoQueJugoString;
+        }
+        return TiempoDeJuego;
+    }
+
+    private String VerSiTiempoMenorDe10(int Tiempo)
+    {
+        if(Tiempo<10)
+        {
+            return  "0"+String.valueOf(Tiempo);
+        }
+        else
+        {
+            return String.valueOf(Tiempo);
+        }
+    }
+
+    private void InsertarRankingEnBD()
+    {
+        Usuario MiUsuario= new Usuario();
+        int CiudadesAcertadasUsuario= DatosJuego.GetCiudadesAcertadas();
+        String TiempoDeJuegoUsuario= GenerarTiempoJuego();
+        MiUsuario.setCiudadesAcertadas(String.valueOf(CiudadesAcertadasUsuario));
+        MiUsuario.setTiempoDeJuego(TiempoDeJuegoUsuario);
+        MiUsuario.setNombre(DatosJuego.GetNombre());
+        UsuariosManager usuariosManager= new UsuariosManager(getApplicationContext());
+        usuariosManager.InsertarBaseDeDatos(MiUsuario);
     }
 
 
