@@ -260,7 +260,7 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
         Usuario MiUsuario= new Usuario();
         int CiudadesAcertadasUsuario= DatosJuego.GetCiudadesAcertadas();
         String TiempoDeJuegoUsuario= GenerarTiempoJuego();
-        MiUsuario.setCiudadesAcertadas(String.valueOf(CiudadesAcertadasUsuario));
+        MiUsuario.setCiudadesAcertadas(CiudadesAcertadasUsuario);
         MiUsuario.setTiempoDeJuego(TiempoDeJuegoUsuario);
         MiUsuario.setNombre(DatosJuego.GetNombre());
         UsuariosManager usuariosManager= new UsuariosManager(getApplicationContext());

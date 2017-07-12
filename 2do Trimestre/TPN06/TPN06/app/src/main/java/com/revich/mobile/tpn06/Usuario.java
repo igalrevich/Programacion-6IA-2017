@@ -7,7 +7,7 @@ public class Usuario {
 
     public int Id;
     public String Nombre;
-    public String CiudadesAcertadas;
+    public int CiudadesAcertadas;
     public String TiempoDeJuego;
 
     @Override
@@ -15,12 +15,12 @@ public class Usuario {
         return this.Id + ". " + this.Nombre + " " + this.CiudadesAcertadas + " " + this.TiempoDeJuego;
     }
 
-    public Usuario(String Nombre, String CiudadesAcertadas, String TiempoDeJuego) {
+    public Usuario(String Nombre,int CiudadesAcertadas, String TiempoDeJuego) {
         this(0, Nombre, CiudadesAcertadas, TiempoDeJuego);
     }
 
     // Constructor
-    public Usuario(int id, String Nombre, String CiudadesAcertadas, String TiempoDeJuego) {
+    public Usuario(int id, String Nombre, int CiudadesAcertadas, String TiempoDeJuego) {
         this.Id 	= id;
         this.Nombre 	= Nombre;
         this.CiudadesAcertadas 	= CiudadesAcertadas;
@@ -29,7 +29,7 @@ public class Usuario {
 
     // Constructor
     public Usuario() {
-        this(0, "", "", "");
+        this(0, "", 0, "");
     }
 
     //
@@ -53,10 +53,10 @@ public class Usuario {
     }
 
     //Propiedad CiudadesAcertadas
-    public String getCiudadesAcertadas() {
+    public int getCiudadesAcertadas() {
         return this.CiudadesAcertadas;
     }
-    public void setCiudadesAcertadas(String CiudadesAcertadas) {
+    public void setCiudadesAcertadas(int CiudadesAcertadas) {
         this.CiudadesAcertadas = CiudadesAcertadas;
     }
 

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+
 /**
  * Created by 42426410 on 5/7/2017.
  */
@@ -46,4 +48,28 @@ public class UsuariosManager {
         db.insert("Usuarios",null,nuevoRegistro);
         db.close();
     }
+
+    public ArrayList<Usuario> SelectRegistros()
+    {
+        SQLiteDatabase db =Abrir(true);
+        Cursor c= db.rawQuery("SELECT * FROM Usuarios", null);
+        ArrayList<Usuario> ListaUsuarios= new ArrayList<>();
+        if(c.moveToFirst())
+        {
+            do
+            {
+                Usuario MiUsuario= new Usuario();
+                MiUsuario.Id= c.getInt(0);
+                MiUsuario.Nombre = c.getString(1);
+                MiUsuario.CiudadesAcertadas = c.getInt(2);
+                MiUsuario.TiempoDeJuego= c.getString(3);
+                ListaUsuarios.add(MiUsuario);
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+        return ListaUsuarios;
+    }
+
+
 }
