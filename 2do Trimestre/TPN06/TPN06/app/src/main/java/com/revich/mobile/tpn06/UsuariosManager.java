@@ -49,10 +49,19 @@ public class UsuariosManager {
         db.close();
     }
 
+    public void EliminarBaseDeDatos()
+    {
+        UsuariosSQLiteHelper usuariosSQLiteHelper= new UsuariosSQLiteHelper(ElContexto,"DBAlumnos",null,2);
+        SQLiteDatabase db =Abrir(true);
+        db.execSQL("DELETE FROM Usuarios");
+        db.close();
+    }
+
+
     public ArrayList<Usuario> SelectRegistros()
     {
         SQLiteDatabase db =Abrir(true);
-        Cursor c= db.rawQuery("SELECT * FROM Usuarios", null);
+        Cursor c= db.rawQuery("SELECT * FROM Usuarios ORDER BY ciudadesacertadas DESC, tiempodejuego DESC", null);
         ArrayList<Usuario> ListaUsuarios= new ArrayList<>();
         if(c.moveToFirst())
         {

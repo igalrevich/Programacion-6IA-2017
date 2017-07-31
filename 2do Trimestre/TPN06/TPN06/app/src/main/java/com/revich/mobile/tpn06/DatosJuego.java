@@ -48,7 +48,7 @@ DatosJuego {
 
     public static void SetCiudadesAcertadas(int CiudadesAcertadasActual)
     {
-        SegundosJuego=CiudadesAcertadasActual+1;
+        CiudadesAcertadas=CiudadesAcertadasActual+1;
     }
 
     public static boolean Perdio;

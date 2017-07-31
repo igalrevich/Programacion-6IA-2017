@@ -109,7 +109,11 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
          }
          else
          {
-          DatosJuego.SetPerdio(true);
+             Toast msg= Toast.makeText(getApplicationContext(),"Perdiste,la respuesta correcta era "+DatosJuego.GetNombreCiudadCorrecta(),Toast.LENGTH_SHORT);
+             msg.show();
+             DatosJuego.SetPerdio(true);
+             InsertarRankingEnBD();
+             finish();
          }
         }
     };
@@ -171,13 +175,18 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
             int Indice= IndicesCiudades[i];
             Ciudades[i]=DatosJuego.GetGeonames().get(Indice);
             VecBotones[i].setText(Ciudades[i].name);
-            if(i==0)
+            /*if(i==0)
             {
                 Lat=Ciudades[i].lat;
                 Lng=Ciudades[i].lng;
                 DatosJuego.SetNombreCiudadCorrecta(Ciudades[i].name);
-            }
+            }*/
         }
+        Random r = new Random();
+        int IndiceCiudadCorrecta = r.nextInt(4 - 0) + 0;
+        Lat=Ciudades[IndiceCiudadCorrecta].lat;
+        Lng=Ciudades[IndiceCiudadCorrecta].lng;
+        DatosJuego.SetNombreCiudadCorrecta(Ciudades[IndiceCiudadCorrecta].name);
     }
 
     private void SetearTimer()
@@ -192,12 +201,7 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
                         if(DatosJuego.GetPerdio())
                         {
                             timer.cancel();
-                            Toast msg= Toast.makeText(getApplicationContext(),"Perdiste,la respuesta correcta era "+DatosJuego.GetNombreCiudadCorrecta(),Toast.LENGTH_SHORT);
-                            msg.show();
-                            Log.d("SegundosQueJugo", String.valueOf(DatosJuego.GetSegundosJuego()));
-                            usuariosSQLiteHelper= new UsuariosSQLiteHelper(getApplicationContext(),"DBUsuariosTPN06",null,2);
-                            InsertarRankingEnBD();
-                            finish();
+
                         }
                         else
                         {

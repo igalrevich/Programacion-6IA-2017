@@ -38,13 +38,21 @@ public class Activity_Objetivos extends AppCompatActivity {
     private View.OnClickListener btnRanking_click= new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-
+         IrAActivityRanking();
         }
     };
 
     private void IrAActivityJuego()
     {
         Intent MiIntent= new Intent(Activity_Objetivos.this,Activity_Juego2.class);
+        startActivity(MiIntent);
+    }
+
+    private void IrAActivityRanking()
+    {
+        //UsuariosManager MiUsuarioManager=new UsuariosManager(getApplicationContext());
+        //MiUsuarioManager.EliminarBaseDeDatos();
+        Intent MiIntent= new Intent(Activity_Objetivos.this,Activity_Ranking.class);
         startActivity(MiIntent);
     }
 }
