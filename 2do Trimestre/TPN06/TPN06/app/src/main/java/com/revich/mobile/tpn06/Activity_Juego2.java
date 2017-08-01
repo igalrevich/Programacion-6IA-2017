@@ -16,6 +16,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -30,11 +32,14 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
     Button btnCiudad1, btnCiudad2, btnCiudad3, btnCiudad4;
     Button [] VecBotones;
     UsuariosSQLiteHelper usuariosSQLiteHelper;
+    Date HoraActual;
+    Calendar CalendarActual;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity__juego2);
         DatosJuego.SetCiudadesAcertadas(-1);
+        DatosJuego.SetSegundosJuego(-1);
         PrepararJuego();
     }
 
@@ -82,6 +87,8 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
         Ciudades= new Geonames[4];
         ObtenerReferencias();
         Obtener4CiudadesRandom();
+        CalendarActual= Calendar.getInstance();
+        HoraActual=CalendarActual.getTime();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -216,7 +223,32 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
 
     private String GenerarTiempoJuego()
     {
-        String TiempoDeJuego="";
+        CalendarActual=Calendar.getInstance();
+        Date HoraDespuesDeJugar= CalendarActual.getTime();
+        long TiempoDeJuegoDiferenciaLong= HoraDespuesDeJugar.getTime() - HoraActual.getTime();
+        String NuevoTiempo="";
+        if(TiempoDeJuegoDiferenciaLong>=0)
+        {
+            int diffSecondsint = Integer.parseInt(String.valueOf((TiempoDeJuegoDiferenciaLong/1000)%60));
+            String diffMinutes="",diffHours="",diffSeconds="";
+            if(diffSecondsint<10)
+            {
+                diffSeconds= "0"+String.valueOf(diffSecondsint);
+            }
+            else
+            {
+                diffSeconds= String.valueOf(diffSecondsint);
+            }
+            diffMinutes="0"+String.valueOf(TiempoDeJuegoDiferenciaLong/ (60 * 1000));
+            diffHours="0"+String.valueOf(TiempoDeJuegoDiferenciaLong/ (60 * 60 * 1000));
+            NuevoTiempo= diffHours+":"+diffMinutes+":"+diffSeconds;
+        }
+        else
+        {
+            NuevoTiempo="00:00:00";
+        }
+        return NuevoTiempo;
+        /*String TiempoDeJuego="";
         int SegundosTiempoQueJugo= DatosJuego.GetSegundosJuego();
         String SegundosTiempoQueJugoString="";
         String MinutosTiempoQueJugoString="";
@@ -244,7 +276,7 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
             MinutosTiempoQueJugoString="0";
             TiempoDeJuego=MinutosTiempoQueJugoString+":"+SegundosTiempoQueJugoString;
         }
-        return TiempoDeJuego;
+        return TiempoDeJuego;*/
     }
 
     private String VerSiTiempoMenorDe10(int Tiempo)
