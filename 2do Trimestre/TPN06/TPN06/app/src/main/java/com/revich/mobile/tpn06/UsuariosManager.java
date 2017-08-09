@@ -61,7 +61,7 @@ public class UsuariosManager {
     public ArrayList<Usuario> SelectRegistros()
     {
         SQLiteDatabase db =Abrir(true);
-        Cursor c= db.rawQuery("SELECT * FROM Usuarios ORDER BY ciudadesacertadas DESC, tiempodejuego DESC", null);
+        Cursor c= db.rawQuery("SELECT * FROM Usuarios ORDER BY ciudadesacertadas DESC, tiempodejuego", null);
         ArrayList<Usuario> ListaUsuarios= new ArrayList<>();
         if(c.moveToFirst())
         {
