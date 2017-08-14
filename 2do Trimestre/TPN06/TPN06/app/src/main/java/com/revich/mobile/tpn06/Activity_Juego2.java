@@ -13,6 +13,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -60,6 +61,13 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(Lat, Lng);
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        UiSettings MiUiSettings=mMap.getUiSettings();
+        MiUiSettings.setZoomControlsEnabled(false);
+        MiUiSettings.setZoomGesturesEnabled(false);
+        MiUiSettings.setRotateGesturesEnabled(false);
+        MiUiSettings.setScrollGesturesEnabled(false);
+        MiUiSettings.setTiltGesturesEnabled(false);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         SetearTimer();
