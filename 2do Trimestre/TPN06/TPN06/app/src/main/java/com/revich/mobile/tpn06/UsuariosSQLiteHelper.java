@@ -33,7 +33,7 @@ public class UsuariosSQLiteHelper extends SQLiteOpenHelper {
         Log.d("Igal", "onUpgrade");
         if(VersionAnterior!=VersionNueva)
         {
-            db.execSQL("DROP TABLE IF EXISTS Alumnos");
+            db.execSQL("DROP TABLE IF EXISTS Usuarios");
             strSQL = UsuariosManager.CreateTableScript();
             db.execSQL(strSQL);
         }
