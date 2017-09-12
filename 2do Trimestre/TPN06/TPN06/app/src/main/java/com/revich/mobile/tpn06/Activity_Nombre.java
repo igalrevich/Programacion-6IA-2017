@@ -1,6 +1,8 @@
 package com.revich.mobile.tpn06;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,12 +30,20 @@ public class Activity_Nombre extends AppCompatActivity {
     Button btnContinuar;
     EditText edtNombre;
     TextView tvParseoProgreso;
+    String NombreUltimoJugador="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity__nombre);
         setTitle("SITIS");
         ObtenerReferencias();
+        SharedPreferences prefs = getSharedPreferences("UltimoJugador", MODE_PRIVATE);
+        NombreUltimoJugador=prefs.getString("NombreUltimoJugador", null);
+        if(NombreUltimoJugador==null)
+        {
+            NombreUltimoJugador="";
+        }
+        edtNombre.setText(NombreUltimoJugador);
         SetearListeners();
     }
 
@@ -55,6 +65,9 @@ public class Activity_Nombre extends AppCompatActivity {
             String Nombre= edtNombre.getText().toString();
             if(Nombre.isEmpty()==false)
             {
+                SharedPreferences.Editor editor = getSharedPreferences("UltimoJugador", MODE_PRIVATE).edit();
+                editor.putString("NombreUltimoJugador", Nombre);
+                editor.apply();
                 DatosJuego.SetNombre(Nombre);
                 String url= "https://tp4ort.firebaseio.com/countries.json";
                 new ObtenerPaisesYCiudades().execute(url,"Paises");

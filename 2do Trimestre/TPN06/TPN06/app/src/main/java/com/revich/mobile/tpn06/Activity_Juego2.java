@@ -1,12 +1,15 @@
 package com.revich.mobile.tpn06;
 
 import android.content.Context;
+import android.location.Location;
+import android.os.CountDownTimer;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,6 +32,9 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
     int [] IndicesCiudades;
     double Lat, Lng;
     boolean IndicesCiudadesIguales;
+    boolean ApretoUnaCiudad=false;
+    Location [] Localidades = new Location[] {null,null,null,null};
+    TextView tvTimer5Segundos;
     Geonames [] Ciudades;
     Button btnCiudad1, btnCiudad2, btnCiudad3, btnCiudad4;
     Button [] VecBotones;
@@ -84,6 +90,7 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
         btnCiudad3= (Button) findViewById(R.id.btnCiudad3);
         btnCiudad4= (Button) findViewById(R.id.btnCiudad4);
         VecBotones= new Button[] {btnCiudad1,btnCiudad2,btnCiudad3,btnCiudad4};
+        tvTimer5Segundos= (TextView) findViewById(R.id.tvTimer5Segundos);
     }
 
     private void PrepararJuego()
@@ -113,23 +120,24 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
     private View.OnClickListener btnCiudad_click = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-         int IdBoton= view.getId();
-         int IndiceVecBotones= EncontrarIndiceBotonCiudad(IdBoton);
-         String TextoBoton=VecBotones[IndiceVecBotones].getText().toString();
-         if(TextoBoton.equals(DatosJuego.GetNombreCiudadCorrecta()))
-         {
+            int IdBoton= view.getId();
+            ApretoUnaCiudad=true;
+            int IndiceVecBotones= EncontrarIndiceBotonCiudad(IdBoton);
+            String TextoBoton=VecBotones[IndiceVecBotones].getText().toString();
+            if(TextoBoton.equals(DatosJuego.GetNombreCiudadCorrecta()))
+            {
              DatosJuego.SetCiudadesAcertadas(DatosJuego.GetCiudadesAcertadas());
              mMap.clear();
              PrepararJuego();
-         }
-         else
-         {
+            }
+            else
+            {
              Toast msg= Toast.makeText(getApplicationContext(),"Perdiste,la respuesta correcta era "+DatosJuego.GetNombreCiudadCorrecta(),Toast.LENGTH_SHORT);
              msg.show();
              DatosJuego.SetPerdio(true);
              InsertarRankingEnBD();
              finish();
-         }
+            }
         }
     };
 
@@ -159,6 +167,7 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
                   IndicesCiudadesIguales=true;
                   Obtener1CiudadRandom(i);
                 }
+
             }
 
           }
@@ -190,6 +199,17 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
             int Indice= IndicesCiudades[i];
             Ciudades[i]=DatosJuego.GetGeonames().get(Indice);
             VecBotones[i].setText(Ciudades[i].name);
+            Localidades[i]=new Location("Ciudad"+String.valueOf(i));
+            for(int j=0;j<i;j++)
+            {
+
+                if (IndicesCiudades[j]==IndicesCiudades[i])
+                {
+                    IndicesCiudadesIguales=true;
+                    Obtener1CiudadRandom(i);
+                }
+
+            }
             /*if(i==0)
             {
                 Lat=Ciudades[i].lat;
@@ -206,7 +226,27 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
 
     private void SetearTimer()
     {
-        final Timer timer= new Timer();
+        tvTimer5Segundos.setText("00:05");
+        CountDownTimer Timer= new CountDownTimer(5000,1000) {
+            @Override
+            public void onTick(long SegundosParaTerminar) {
+                tvTimer5Segundos.setText("00:0"+SegundosParaTerminar/1000);
+            }
+
+            @Override
+            public void onFinish() {
+               if(ApretoUnaCiudad==false)
+               {
+                   Toast msg= Toast.makeText(getApplicationContext(),"No respondiste a tiempo",Toast.LENGTH_SHORT);
+                   msg.show();
+                   DatosJuego.SetPerdio(true);
+                   InsertarRankingEnBD();
+                   tvTimer5Segundos.setText("00:05");
+                   finish();
+               }
+            }
+        };
+        /*final Timer timer= new Timer();
         TimerTask timerTask= new TimerTask() {
             @Override
             public void run() {
@@ -226,7 +266,7 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
                 });
             }
         };
-        timer.schedule(timerTask,0,1000);
+        timer.schedule(timerTask,0,1000);*/
     }
 
     private String GenerarTiempoJuego()
