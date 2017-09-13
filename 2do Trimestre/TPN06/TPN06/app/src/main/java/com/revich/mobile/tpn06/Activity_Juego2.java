@@ -183,12 +183,23 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
         Random rand= new Random();
         int NumIndice= rand.nextInt(DatosJuego.GetGeonames().size());
         IndicesCiudades[Indice]=NumIndice;
+        Localidades[Indice]=new Location("Ciudad"+String.valueOf(Indice));
+        Localidades[Indice].setLatitude(Ciudades[Indice].lat);
+        Localidades[Indice].setLongitude(Ciudades[Indice].lng);
         for(int k=0;k<Indice;k++)
         {
             if (IndicesCiudades[k]==IndicesCiudades[Indice])
             {
               Obtener1CiudadRandom(Indice);
             }
+            else
+            {
+                if(Localidades[k].distanceTo(Localidades[Indice])<=200000)
+                {
+                    Obtener1CiudadRandom(Indice);
+                }
+            }
+
         }
     }
 
@@ -200,6 +211,8 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
             Ciudades[i]=DatosJuego.GetGeonames().get(Indice);
             VecBotones[i].setText(Ciudades[i].name);
             Localidades[i]=new Location("Ciudad"+String.valueOf(i));
+            Localidades[i].setLatitude(Ciudades[i].lat);
+            Localidades[i].setLongitude(Ciudades[i].lng);
             for(int j=0;j<i;j++)
             {
 
@@ -207,6 +220,13 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
                 {
                     IndicesCiudadesIguales=true;
                     Obtener1CiudadRandom(i);
+                }
+                else
+                {
+                    if(Localidades[j].distanceTo(Localidades[i])<=200000)
+                    {
+                        Obtener1CiudadRandom(i);
+                    }
                 }
 
             }
@@ -246,6 +266,7 @@ public class Activity_Juego2 extends FragmentActivity implements OnMapReadyCallb
                }
             }
         };
+        Timer.start();
         /*final Timer timer= new Timer();
         TimerTask timerTask= new TimerTask() {
             @Override
