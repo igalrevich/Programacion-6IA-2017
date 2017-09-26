@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener btnSacarFoto_click = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-
+          IntentSacarFoto();
         }
 
     };
@@ -76,8 +77,7 @@ public class MainActivity extends AppCompatActivity {
         return image;
     }
 
-    private void dispatchTakePictureIntent()
-    {
+    private void IntentSacarFoto() {
         int REQUEST_TAKE_PHOTO = 1;
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -93,12 +93,44 @@ public class MainActivity extends AppCompatActivity {
             // Continue only if the File was successfully created
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.android.fileprovider",
+                        "com.revich.mobile.tpn07",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
         }
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Toast msg;
+        if (resultCode == RESULT_OK)
+        {
+            switch (requestCode) {
+                case 1:
+                    galleryAddPic();
+                    msg = Toast.makeText(getApplicationContext(), "La foto se saco con exito", Toast.LENGTH_SHORT);
+                    msg.show();
+                    break;
+            }
+        }
+        else
+        {
+            msg = Toast.makeText(getApplicationContext(), "Ocurrio un error", Toast.LENGTH_SHORT);
+            msg.show();
+        }
+
+    }
+
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(mCurrentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
+    }
+
 }
 
