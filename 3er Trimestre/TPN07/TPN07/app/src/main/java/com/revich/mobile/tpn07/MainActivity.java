@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -26,6 +27,27 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.io.*;
+import android.app.*;
+import android.content.*;
+import android.net.*;
+import android.os.*;
+import android.view.*;
+import android.graphics.*;
+import android.widget.*;
+import android.provider.*;
+
+import com.google.gson.Gson;
+import com.microsoft.projectoxford.face.*;
+import com.microsoft.projectoxford.face.contract.*;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import static android.os.Environment.getExternalStoragePublicDirectory;
 
@@ -33,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
     Button btnSacarFoto, btnSeleccionarFoto, btnVerEstadisticas;
     String mCurrentPhotoPath;
     ImageView imgFotoGaleria;
+    Uri tempUri;
+    FaceServiceClient.FaceAttributeType [] faceAttributeTypes = new FaceServiceClient.FaceAttributeType[5] ;
+    private FaceServiceClient faceServiceClient =
+            new FaceServiceRestClient("b45ddadf2d904beab9fb0eb2edcf9adf");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
             chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
 
             startActivityForResult(chooserIntent, PICK_IMAGE);
+
+
 
         }
     };
@@ -191,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
             InputStream stream = getContentResolver().openInputStream(data.getData());
             Bitmap bitmap = BitmapFactory.decodeStream(stream);
             stream.close();
+            tempUri = getImageUri(getApplicationContext(), bitmap);
             imgFotoGaleria.setImageBitmap(bitmap);
         }
         catch (FileNotFoundException e)
@@ -201,6 +230,70 @@ public class MainActivity extends AppCompatActivity {
         {
             e.printStackTrace();
         }
+    }
+
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    public String getRealPathFromURI(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+        return cursor.getString(idx);
+    }
+
+    private void DetectarFoto(final Bitmap imageBitmap)
+    {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+        final String RasgosABuscarFoto= "age, gender, smile";
+        ByteArrayInputStream inputStream =
+                new ByteArrayInputStream(outputStream.toByteArray());
+        AsyncTask<InputStream, String, Face[]> detectTask =
+                new AsyncTask<InputStream, String, Face[]>() {
+                    @Override
+                    protected Face[] doInBackground(InputStream... params) {
+                        try {
+                            publishProgress("Detecting...");
+                            Face[] result = faceServiceClient.detect(
+                                    params[0],
+                                    true,         // returnFaceId
+                                    true,        // returnFaceLandmarks
+                                    faceAttributeTypes      // returnFaceAttributes: a string like "age, gender"
+                            );
+                            if (result == null)
+                            {
+                                publishProgress("Detection Finished. Nothing detected");
+                                return null;
+                            }
+                            publishProgress(
+                                    String.format("Detection Finished. %d face(s) detected",
+                                            result.length));
+                            return result;
+                        } catch (Exception e) {
+                            publishProgress("Detection failed");
+                            return null;
+                        }
+                    }
+                    @Override
+                    protected void onPreExecute() {
+                        //TODO: show progress dialog
+                    }
+                    @Override
+                    protected void onProgressUpdate(String... progress) {
+                        //TODO: update progress
+                    }
+                    @Override
+                    protected void onPostExecute(Face[] result) {
+
+                    }
+                };
+        detectTask.execute(inputStream);
     }
 
 }
