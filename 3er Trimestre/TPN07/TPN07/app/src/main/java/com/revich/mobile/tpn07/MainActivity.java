@@ -16,6 +16,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -55,15 +56,20 @@ public class MainActivity extends AppCompatActivity {
     Button btnSacarFoto, btnSeleccionarFoto, btnVerEstadisticas;
     String mCurrentPhotoPath;
     ImageView imgFotoGaleria;
+    int CantHombres=0, CantMujeres=0;
+    private ProgressDialog detectionProgressDialog;
+    double EdadVarones=0, EdadMujeres=0;
+    Bitmap bitmap, bitmapConRectangulos;
     Uri tempUri;
     FaceServiceClient.FaceAttributeType [] faceAttributeTypes = new FaceServiceClient.FaceAttributeType[5] ;
     private FaceServiceClient faceServiceClient =
-            new FaceServiceRestClient("b45ddadf2d904beab9fb0eb2edcf9adf");
+            new FaceServiceRestClient("d008ec49c40448079aa58a838e38793b");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ObtenerReferencias();
+        detectionProgressDialog = new ProgressDialog(this);
         SetearListeners();
     }
 
@@ -217,10 +223,12 @@ public class MainActivity extends AppCompatActivity {
         try
         {
             InputStream stream = getContentResolver().openInputStream(data.getData());
-            Bitmap bitmap = BitmapFactory.decodeStream(stream);
+            bitmap = BitmapFactory.decodeStream(stream);
             stream.close();
             tempUri = getImageUri(getApplicationContext(), bitmap);
             imgFotoGaleria.setImageBitmap(bitmap);
+            DetectarFoto(bitmap);
+
         }
         catch (FileNotFoundException e)
         {
@@ -254,47 +262,87 @@ public class MainActivity extends AppCompatActivity {
         final String RasgosABuscarFoto= "age, gender, smile";
         ByteArrayInputStream inputStream =
                 new ByteArrayInputStream(outputStream.toByteArray());
-        AsyncTask<InputStream, String, Face[]> detectTask =
-                new AsyncTask<InputStream, String, Face[]>() {
-                    @Override
-                    protected Face[] doInBackground(InputStream... params) {
-                        try {
-                            publishProgress("Detecting...");
-                            Face[] result = faceServiceClient.detect(
-                                    params[0],
-                                    true,         // returnFaceId
-                                    true,        // returnFaceLandmarks
-                                    faceAttributeTypes      // returnFaceAttributes: a string like "age, gender"
-                            );
-                            if (result == null)
-                            {
-                                publishProgress("Detection Finished. Nothing detected");
-                                return null;
-                            }
-                            publishProgress(
-                                    String.format("Detection Finished. %d face(s) detected",
-                                            result.length));
-                            return result;
-                        } catch (Exception e) {
-                            publishProgress("Detection failed");
+        new detectTask().execute(inputStream);
+    }
+
+    private static Bitmap DibujarRectangulosEnFoto(Bitmap originalBitmap, Face[] faces) {
+        Bitmap bitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        Canvas canvas = new Canvas(bitmap);
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(Color.RED);
+        int stokeWidth = 2;
+        paint.setStrokeWidth(stokeWidth);
+        if (faces != null) {
+            for (Face face : faces) {
+                FaceRectangle faceRectangle = face.faceRectangle;
+                canvas.drawRect(
+                        faceRectangle.left,
+                        faceRectangle.top,
+                        faceRectangle.left + faceRectangle.width,
+                        faceRectangle.top + faceRectangle.height,
+                        paint);
+            }
+        }
+        return bitmap;
+    }
+
+       private class detectTask extends  AsyncTask<InputStream, String, Face[]>
+       {
+                @Override
+                protected Face[] doInBackground(InputStream... params) {
+                    try {
+                        publishProgress("Detecting...");
+                        Face[] result = faceServiceClient.detect(
+                                params[0],
+                                true,         // returnFaceId
+                                true,        // returnFaceLandmarks
+                                faceAttributeTypes      // returnFaceAttributes: a string like "age, gender"
+                        );
+                        if (result == null)
+                        {
+                            publishProgress("Detection Finished. Nothing detected");
                             return null;
                         }
+                        publishProgress(
+                                String.format("Detection Finished. %d face(s) detected",
+                                        result.length));
+                        return result;
+                    } catch (Exception e) {
+                        publishProgress("Detection failed");
+                        return null;
                     }
-                    @Override
-                    protected void onPreExecute() {
-                        //TODO: show progress dialog
+                }
+                @Override
+                protected void onPreExecute() {
+                    //TODO: show progress dialog
+                }
+                @Override
+                protected void onProgressUpdate(String... progress) {
+                    detectionProgressDialog.setMessage(progress[0]);
+                }
+                @Override
+                protected void onPostExecute(Face[] result) {
+                    bitmapConRectangulos=DibujarRectangulosEnFoto(bitmap,result);
+                    imgFotoGaleria.setImageBitmap(bitmapConRectangulos);
+                    for(int i=0;i<result.length;i++)
+                    {
+                        Toast msg= Toast.makeText(getApplicationContext(),"Edad :"+String.valueOf(result[i].faceAttributes.age)+ Html.fromHtml("<br />") + "Genero :"+result[i].faceAttributes.gender + Html.fromHtml("<br />") + "Sonrisa :"+String.valueOf(result[i].faceAttributes.smile),Toast.LENGTH_SHORT);
+                        if (result[i].faceAttributes.gender.equals("male"))
+                        {
+                            CantHombres++;
+                            EdadVarones=EdadVarones+result[i].faceAttributes.age;
+                        }
+                        else
+                        {
+                            CantMujeres++;
+                            EdadMujeres=EdadMujeres+result[i].faceAttributes.age;
+                        }
+                        msg.show();
                     }
-                    @Override
-                    protected void onProgressUpdate(String... progress) {
-                        //TODO: update progress
-                    }
-                    @Override
-                    protected void onPostExecute(Face[] result) {
-
-                    }
-                };
-        detectTask.execute(inputStream);
-    }
+                }
+            };
 
 }
 
