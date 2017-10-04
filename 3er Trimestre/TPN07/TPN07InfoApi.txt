@@ -9,3 +9,7 @@ Clave 2: d008ec49c40448079aa58a838e38793b
 https://www.youtube.com/watch?v=pjap9YzwXck
 
     <string name="face_api">74db7cdb285f4b4cb317661ef9b4f04f</string>
+
+https://github.com/Microsoft/ProjectOxford-ClientSDK/blob/master/Face/Android/ClientLibrary/lib/src/main/java/com/microsoft/projectoxford/face/FaceServiceRestClient.java
+
+https://github.com/Microsoft/ProjectOxford-ClientSDK/blob/master/Face/Android/ClientLibrary/lib/src/main/java/com/microsoft/projectoxford/face/FaceServiceClient.java

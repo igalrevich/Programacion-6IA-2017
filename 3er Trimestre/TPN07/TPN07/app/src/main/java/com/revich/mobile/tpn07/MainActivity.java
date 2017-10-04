@@ -57,10 +57,12 @@ public class MainActivity extends AppCompatActivity {
     Button btnSacarFoto, btnSeleccionarFoto, btnVerEstadisticas;
     String mCurrentPhotoPath;
     ImageView imgFotoGaleria;
-    int CantHombres=0, CantMujeres=0;
+    SharedPreferences prefs;
+    int CantHombres=0, CantMujeres=0, InvocacionesApi=0 ,CantVaronesSharedPreferences, CantMujeresSharedPreferences, InvocacionesApiSharedPreferences;
     ProgressDialog detectionProgressDialog;
-    double EdadVarones=0, EdadMujeres=0;
+    double EdadVarones=0, EdadMujeres=0,PromedioEdadVarones=0,PromedioEdadMujeres=0, EdadVaronesSharedPreferences,EdadMujeresSharedPreferences;
     Bitmap bitmap, bitmapConRectangulos;
+    Boolean Sonrie=false;
     Uri tempUri;
     FaceServiceClient.FaceAttributeType [] faceAttributeTypes = new FaceServiceClient.FaceAttributeType [] {FaceServiceClient.FaceAttributeType.Age, FaceServiceClient.FaceAttributeType.Gender, FaceServiceClient.FaceAttributeType.Smile} ;
     private FaceServiceClient faceServiceClient =
@@ -70,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ObtenerReferencias();
-        detectionProgressDialog = new ProgressDialog(getApplicationContext());
+        detectionProgressDialog = new ProgressDialog(this);
         SetearListeners();
     }
 
@@ -331,6 +333,7 @@ public class MainActivity extends AppCompatActivity {
             imgFotoGaleria.setImageBitmap(bitmapConRectangulos);
             for(int i=0;i<result.length;i++)
             {
+                InvocacionesApi++;
                 Toast msg= Toast.makeText(getApplicationContext(),"Edad :"+String.valueOf(result[i].faceAttributes.age)+ Html.fromHtml("<br />") + "Genero :"+result[i].faceAttributes.gender + Html.fromHtml("<br />") + "Sonrisa :"+String.valueOf(result[i].faceAttributes.smile),Toast.LENGTH_SHORT);
                 if (result[i].faceAttributes.gender.equals("male"))
                 {
@@ -342,10 +345,51 @@ public class MainActivity extends AppCompatActivity {
                     CantMujeres++;
                     EdadMujeres=EdadMujeres+result[i].faceAttributes.age;
                 }
+                if(result[i].faceAttributes.smile>=1)
+                {
+                    Sonrie=true;
+                }
                 msg.show();
             }
+            prefs = getSharedPreferences("EstadisticasFotos", MODE_PRIVATE);
+            EdadVaronesSharedPreferences=prefs.getFloat("EdadVarones", -1);
+            if(EdadVaronesSharedPreferences==-1)
+            {
+                InsertarSharedPreferences(EdadVarones,EdadMujeres,CantHombres,CantMujeres,Sonrie,InvocacionesApi);
+            }
+            else
+            {
+                LeerSharedPreferences();
+                InsertarSharedPreferences(EdadVarones,EdadMujeres,CantHombres,CantMujeres,Sonrie,InvocacionesApi);
+            }
+
         }
     };
+
+    private void InsertarSharedPreferences(double edadVarones,double edadMujeres, int cantHombres, int cantMujeres, boolean sonrie, int invocacionesApi)
+    {
+        SharedPreferences.Editor editor = getSharedPreferences("EstadisticasFotos", MODE_PRIVATE).edit();
+        editor.putFloat("EdadVarones", Float.parseFloat(String.valueOf(edadVarones)));
+        editor.putFloat("EdadMujeres", Float.parseFloat(String.valueOf(edadMujeres)));
+        editor.putInt("CantHombres",cantHombres);
+        editor.putInt("CantMujeres",cantMujeres);
+        editor.putBoolean("Sonrie",sonrie);
+        editor.putInt("InvocacionesApi",invocacionesApi);
+        editor.apply();
+    }
+
+    private  void LeerSharedPreferences ()
+    {
+        EdadMujeresSharedPreferences=prefs.getFloat("EdadMujeres",0);
+        CantVaronesSharedPreferences=prefs.getInt("CantHombres",0);
+        CantMujeresSharedPreferences=prefs.getInt("CantMujeres",0);
+        InvocacionesApiSharedPreferences= prefs.getInt("InvocacionesApi",0);
+        EdadVarones=EdadVarones+EdadVaronesSharedPreferences;
+        EdadMujeres=EdadMujeres+EdadMujeresSharedPreferences;
+        CantHombres=CantHombres+CantVaronesSharedPreferences;
+        CantMujeres=CantMujeres+CantMujeresSharedPreferences;
+        InvocacionesApi=InvocacionesApi+InvocacionesApiSharedPreferences;
+    }
 
 }
 
