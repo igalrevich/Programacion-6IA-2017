@@ -2,6 +2,10 @@ TPN07 Informacion Api
 
 Punto de conexión: https://westcentralus.api.cognitive.microsoft.com/face/v1.0
 
-Key 1: b45ddadf2d904beab9fb0eb2edcf9adf
+Clave 1: b45ddadf2d904beab9fb0eb2edcf9adf
 
-Key 2: d008ec49c40448079aa58a838e38793b
+Clave 2: d008ec49c40448079aa58a838e38793b
+
+https://www.youtube.com/watch?v=pjap9YzwXck
+
+    <string name="face_api">74db7cdb285f4b4cb317661ef9b4f04f</string>

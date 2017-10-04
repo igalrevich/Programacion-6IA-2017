@@ -17,6 +17,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -57,19 +58,19 @@ public class MainActivity extends AppCompatActivity {
     String mCurrentPhotoPath;
     ImageView imgFotoGaleria;
     int CantHombres=0, CantMujeres=0;
-    private ProgressDialog detectionProgressDialog;
+    ProgressDialog detectionProgressDialog;
     double EdadVarones=0, EdadMujeres=0;
     Bitmap bitmap, bitmapConRectangulos;
     Uri tempUri;
-    FaceServiceClient.FaceAttributeType [] faceAttributeTypes = new FaceServiceClient.FaceAttributeType[5] ;
+    FaceServiceClient.FaceAttributeType [] faceAttributeTypes = new FaceServiceClient.FaceAttributeType [] {FaceServiceClient.FaceAttributeType.Age, FaceServiceClient.FaceAttributeType.Gender, FaceServiceClient.FaceAttributeType.Smile} ;
     private FaceServiceClient faceServiceClient =
-            new FaceServiceRestClient("d008ec49c40448079aa58a838e38793b");
+            new FaceServiceRestClient("https://westcentralus.api.cognitive.microsoft.com/face/v1.0","b45ddadf2d904beab9fb0eb2edcf9adf");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ObtenerReferencias();
-        detectionProgressDialog = new ProgressDialog(this);
+        detectionProgressDialog = new ProgressDialog(getApplicationContext());
         SetearListeners();
     }
 
@@ -158,10 +159,8 @@ public class MainActivity extends AppCompatActivity {
             }
             catch (IOException ex)
             {
-
                 ex.printStackTrace();
                 // Error occurred while creating the File
-
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
@@ -288,61 +287,65 @@ public class MainActivity extends AppCompatActivity {
         return bitmap;
     }
 
-       private class detectTask extends  AsyncTask<InputStream, String, Face[]>
-       {
-                @Override
-                protected Face[] doInBackground(InputStream... params) {
-                    try {
-                        publishProgress("Detecting...");
-                        Face[] result = faceServiceClient.detect(
-                                params[0],
-                                true,         // returnFaceId
-                                true,        // returnFaceLandmarks
-                                faceAttributeTypes      // returnFaceAttributes: a string like "age, gender"
-                        );
-                        if (result == null)
-                        {
-                            publishProgress("Detection Finished. Nothing detected");
-                            return null;
-                        }
-                        publishProgress(
-                                String.format("Detection Finished. %d face(s) detected",
-                                        result.length));
-                        return result;
-                    } catch (Exception e) {
-                        publishProgress("Detection failed");
-                        return null;
-                    }
+    private class detectTask extends  AsyncTask<InputStream, String, Face[]>
+    {
+        @Override
+        protected Face[] doInBackground(InputStream... params) {
+            try {
+                Log.d("ProgressDialog", "AntesDeMostrar");
+                publishProgress("Detecting...");
+                Log.d("ProgressDialog", "DespuesDeMostrar");
+                Face[] result = faceServiceClient.detect(
+                        params[0],
+                        true,         // returnFaceId
+                        true,        // returnFaceLandmarks
+                        faceAttributeTypes      // returnFaceAttributes: a string like "age, gender"
+                );
+                if (result == null)
+                {
+                    publishProgress("Detection Finished. Nothing detected");
+                    return null;
                 }
-                @Override
-                protected void onPreExecute() {
-                    //TODO: show progress dialog
+                publishProgress(
+                        String.format("Detection Finished. %d face(s) detected",
+                                result.length));
+                return result;
+            } catch (Exception e) {
+                publishProgress("Detection failed");
+                return null;
+            }
+        }
+        @Override
+        protected void onPreExecute() {
+            //TODO: show progress dialog
+        }
+        @Override
+        protected void onProgressUpdate(String... progress) {
+            Log.d("ProgressDialog", "Mostrando");
+            detectionProgressDialog.setMessage(progress[0]);
+            detectionProgressDialog.show();
+        }
+        @Override
+        protected void onPostExecute(Face[] result) {
+            bitmapConRectangulos=DibujarRectangulosEnFoto(bitmap,result);
+            imgFotoGaleria.setImageBitmap(bitmapConRectangulos);
+            for(int i=0;i<result.length;i++)
+            {
+                Toast msg= Toast.makeText(getApplicationContext(),"Edad :"+String.valueOf(result[i].faceAttributes.age)+ Html.fromHtml("<br />") + "Genero :"+result[i].faceAttributes.gender + Html.fromHtml("<br />") + "Sonrisa :"+String.valueOf(result[i].faceAttributes.smile),Toast.LENGTH_SHORT);
+                if (result[i].faceAttributes.gender.equals("male"))
+                {
+                    CantHombres++;
+                    EdadVarones=EdadVarones+result[i].faceAttributes.age;
                 }
-                @Override
-                protected void onProgressUpdate(String... progress) {
-                    detectionProgressDialog.setMessage(progress[0]);
+                else
+                {
+                    CantMujeres++;
+                    EdadMujeres=EdadMujeres+result[i].faceAttributes.age;
                 }
-                @Override
-                protected void onPostExecute(Face[] result) {
-                    bitmapConRectangulos=DibujarRectangulosEnFoto(bitmap,result);
-                    imgFotoGaleria.setImageBitmap(bitmapConRectangulos);
-                    for(int i=0;i<result.length;i++)
-                    {
-                        Toast msg= Toast.makeText(getApplicationContext(),"Edad :"+String.valueOf(result[i].faceAttributes.age)+ Html.fromHtml("<br />") + "Genero :"+result[i].faceAttributes.gender + Html.fromHtml("<br />") + "Sonrisa :"+String.valueOf(result[i].faceAttributes.smile),Toast.LENGTH_SHORT);
-                        if (result[i].faceAttributes.gender.equals("male"))
-                        {
-                            CantHombres++;
-                            EdadVarones=EdadVarones+result[i].faceAttributes.age;
-                        }
-                        else
-                        {
-                            CantMujeres++;
-                            EdadMujeres=EdadMujeres+result[i].faceAttributes.age;
-                        }
-                        msg.show();
-                    }
-                }
-            };
+                msg.show();
+            }
+        }
+    };
 
 }
 
