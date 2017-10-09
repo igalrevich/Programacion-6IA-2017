@@ -9,4 +9,101 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.revich.mobile.tpn07.Activity_Estadisticas">
 
+    <LinearLayout
+        android:id="@+id/MiLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:text="Estadisticas Face Api"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="Invocaciones a la Api:"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tvInvocacionesApi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="250dp"
+            android:layout_marginTop="-18dp"
+            android:gravity="right" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="Cant Hombres:"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tvCantHombres"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="250dp"
+            android:layout_marginTop="-18dp"
+            android:gravity="right" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="Cant Mujeres:"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tvCantMujeres"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="250dp"
+            android:layout_marginTop="-18dp"
+            android:gravity="right" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="Prom edad hombres:"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tvPromEdadHombres"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="250dp"
+            android:layout_marginTop="-18dp"
+            android:gravity="right" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="Prom edad mujeres:"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tvPromEdadMujeres"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="250dp"
+            android:layout_marginTop="-18dp"
+            android:gravity="right" />
+    </LinearLayout>
 </RelativeLayout>

@@ -124,6 +124,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
 
+            IrAActivityEstadisticas();
+
         }
     };
 
@@ -224,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
         try
         {
             InputStream stream = getContentResolver().openInputStream(data.getData());
-            bitmap = BitmapFactory.decodeStream(stream);
+            bitmap = decodeSampledBitmapFromUri(data.getData(), imgFotoGaleria.getWidth(), imgFotoGaleria.getHeight());
             stream.close();
             tempUri = getImageUri(getApplicationContext(), bitmap);
             imgFotoGaleria.setImageBitmap(bitmap);
@@ -329,6 +331,7 @@ public class MainActivity extends AppCompatActivity {
         }
         @Override
         protected void onPostExecute(Face[] result) {
+            detectionProgressDialog.cancel();
             bitmapConRectangulos=DibujarRectangulosEnFoto(bitmap,result);
             imgFotoGaleria.setImageBitmap(bitmapConRectangulos);
             for(int i=0;i<result.length;i++)
@@ -389,6 +392,56 @@ public class MainActivity extends AppCompatActivity {
         CantHombres=CantHombres+CantVaronesSharedPreferences;
         CantMujeres=CantMujeres+CantMujeresSharedPreferences;
         InvocacionesApi=InvocacionesApi+InvocacionesApiSharedPreferences;
+
+    }
+
+    private  void IrAActivityEstadisticas()
+    {
+        Intent intent = new Intent(MainActivity.this,Activity_Estadisticas.class);
+        startActivity(intent);
+        finish();
+    }
+
+
+
+    public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+            if (width > height) {
+                inSampleSize = Math.round((float)height / (float)reqHeight);
+            } else {
+                inSampleSize = Math.round((float)width / (float)reqWidth);
+            }
+        }
+        return inSampleSize;
+    }
+
+    public Bitmap decodeSampledBitmapFromUri(Uri uri, int reqWidth, int reqHeight) {
+
+        Bitmap bm = null;
+
+        try{
+            // First decode with inJustDecodeBounds=true to check dimensions
+            final BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(getContentResolver().openInputStream(uri), null, options);
+
+            // Calculate inSampleSize
+            options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+            // Decode bitmap with inSampleSize set
+            options.inJustDecodeBounds = false;
+            bm = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri), null, options);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+        return bm;
     }
 
 }
