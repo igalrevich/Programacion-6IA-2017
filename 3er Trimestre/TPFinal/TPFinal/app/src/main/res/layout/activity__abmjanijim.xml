@@ -9,4 +9,65 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.revich.mobile.tpfinal.Activity_ABMJanijim">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre del janij"
+            android:id="@+id/textView"
+            android:layout_gravity="center_horizontal"
+            android:textSize="30dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edtNombreJanij" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Apellido del janij"
+            android:id="@+id/textView2"
+            android:textSize="30dp"
+            android:layout_marginTop="45dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edtApellidoJanij" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Documento del janij"
+            android:id="@+id/textView3"
+            android:textSize="30dp"
+            android:layout_marginTop="45dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edtDNIJanij" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OK"
+            android:id="@+id/btnOK"
+            android:layout_gravity="right"
+            android:layout_marginTop="70dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Eliminar Janij"
+            android:id="@+id/btnEliminarJanij"
+            android:layout_marginTop="-48dp" />
+    </LinearLayout>
 </RelativeLayout>
