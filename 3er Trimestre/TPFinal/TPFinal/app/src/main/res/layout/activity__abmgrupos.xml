@@ -64,15 +64,7 @@
         android:layout_height="149dp"
         android:id="@+id/listView"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/btnAgregarJanijAlGrupo" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Agregar grupo"
-        android:id="@+id/btnAgregarGrupo"
-        android:layout_below="@+id/listView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_below="@+id/btnAgregarJanijAlGrupo"
         android:layout_alignParentBottom="true" />
+
 </RelativeLayout>

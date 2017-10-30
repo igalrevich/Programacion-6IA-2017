@@ -33,7 +33,15 @@ public class TPFinalSQLiteHelper extends SQLiteOpenHelper {
         Log.d("Igal", "onUpgrade");
         if(VersionAnterior!=VersionNueva)
         {
-            db.execSQL("delete from DBTPFinal where type = 'table'");
+            db.execSQL("DROP TABLE IF EXISTS Ambitos");
+            db.execSQL("DROP TABLE IF EXISTS AmbitosxGrupo");
+            db.execSQL("DROP TABLE IF EXISTS Fechas");
+            db.execSQL("DROP TABLE IF EXISTS Grupos");
+            db.execSQL("DROP TABLE IF EXISTS Habilidades");
+            db.execSQL("DROP TABLE IF EXISTS HabilidadesxJanij");
+            db.execSQL("DROP TABLE IF EXISTS Janijim");
+            db.execSQL("DROP TABLE IF EXISTS JanijimxGrupo");
+            db.execSQL("DROP TABLE IF EXISTS Presentismo");
             strSQL = JanijimYGruposManager.CreateTableScript();
             db.execSQL(strSQL);
         }
@@ -58,13 +66,5 @@ public class TPFinalSQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
-    }
 }

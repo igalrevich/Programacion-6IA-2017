@@ -21,7 +21,8 @@
         <activity android:name=".Activity_ListadoGrupos" />
         <activity android:name=".Activity_ABMGrupos" />
         <activity android:name=".Activity_Presentismo" />
-        <activity android:name=".Activity_Habilidades"></activity>
+        <activity android:name=".Activity_Habilidades" />
+        <activity android:name=".Activity_AgregarGrupo"></activity>
     </application>
 
 </manifest>
