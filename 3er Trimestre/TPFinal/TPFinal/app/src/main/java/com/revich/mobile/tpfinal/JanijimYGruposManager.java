@@ -35,6 +35,15 @@ public class JanijimYGruposManager {
             strSQL += " INSERT INTO \"Habilidades\" ( \"_id\",\"nombre\",\"esPositiva\" ) VALUES ( '2','Molesto a los companeros','false' );";
             strSQL += " INSERT INTO \"Habilidades\" ( \"_id\",\"nombre\",\"esPositiva\" ) VALUES ( '3','Respeto a los madrijim','true' );";
             strSQL += " INSERT INTO \"Habilidades\" ( \"_id\",\"nombre\",\"esPositiva\" ) VALUES ( '4','Rompio los materiales','false' );";
+            strSQL += " INSERT INTO \"Grupos\" ( \"_id\",\"nombre\",\"ano\" ) VALUES ( '1','Hamordim','2017' );";
+            strSQL += " INSERT INTO \"Grupos\" ( \"_id\",\"nombre\",\"ano\" ) VALUES ( '2','Shovavim','2017' );";
+            strSQL += " INSERT INTO \"Grupos\" ( \"_id\",\"nombre\",\"ano\" ) VALUES ( '3','Shelanu','2017' );";
+            strSQL += " INSERT INTO \"AmbitosxGrupo\" ( \"_id\",\"idAmbito\",\"idGrupo\" ) VALUES ( '1','1','1' );";
+            strSQL += " INSERT INTO \"AmbitosxGrupo\" ( \"_id\",\"idAmbito\",\"idGrupo\" ) VALUES ( '2','1','2' );";
+            strSQL += " INSERT INTO \"AmbitosxGrupo\" ( \"_id\",\"idAmbito\",\"idGrupo\" ) VALUES ( '3','1','3' );";
+            strSQL += " INSERT INTO \"AmbitosxGrupo\" ( \"_id\",\"idAmbito\",\"idGrupo\" ) VALUES ( '4','2','1' );";
+            strSQL += " INSERT INTO \"AmbitosxGrupo\" ( \"_id\",\"idAmbito\",\"idGrupo\" ) VALUES ( '5','2','2' );";
+            strSQL += " INSERT INTO \"AmbitosxGrupo\" ( \"_id\",\"idAmbito\",\"idGrupo\" ) VALUES ( '6','3','1' );";
             return strSQL;
         }
 
@@ -43,7 +52,7 @@ public class JanijimYGruposManager {
             this.ElContexto = ctx;
         }
 
-        public int InsertarJanijOGrupo(Janij MiJanij, Grupo MiGrupo, boolean InsertaJanij)
+        public void InsertarJanijOGrupo(Janij MiJanij, Grupo MiGrupo, boolean InsertaJanij)
         {
             TPFinalSQLiteHelper tpFinalSQLiteHelper= new TPFinalSQLiteHelper(ElContexto,"DBTPFinal",null,2);
             SQLiteDatabase db =tpFinalSQLiteHelper.open(true);
@@ -63,37 +72,40 @@ public class JanijimYGruposManager {
             }
 
             db.close();
-            int IdIngresado= SelectConId(0,true);
-            return  IdIngresado;
-
         }
         private SQLiteDatabase Abrir(boolean forWriting){
             TPFinalSQLiteHelper tpFinalSQLiteHelper= new TPFinalSQLiteHelper(ElContexto);
             SQLiteDatabase db =tpFinalSQLiteHelper.open(forWriting);
             return db;
         }
-        public int ActualizarJanijOGrupo(Janij MiJanij, Grupo MiGrupo, boolean ActualizaJanij)
+        public void ActualizarJanijOGrupo(Janij MiJanij, Grupo MiGrupo, boolean ActualizaJanij)
         {
             //AlumnosSQLiteHelper alumnosSQLiteHelper= new AlumnosSQLiteHelper(ElContexto);
             //SQLiteDatabase db =alumnosSQLiteHelper.open(true);
             SQLiteDatabase db = Abrir(true);
             if(ActualizaJanij)
             {
-                db.execSQL("UPDATE Janijim SET nombre=\""+MiJanij.Nombre+"\" WHERE id="+MiAlumno.Id);
+                db.execSQL("UPDATE Janijim SET nombre=\""+MiJanij.Nombre+"\" , apellido=\""+MiJanij.Apellido +"\" , dni="+String.valueOf(MiJanij.DNI)+"  WHERE _id="+String.valueOf(SelectId(MiJanij,MiGrupo,true)));
             }
-            db.execSQL("UPDATE Alumnos SET Nombre=\""+MiAlumno.Nombre+"\" WHERE id="+MiAlumno.Id);
+            else
+            {
+                db.execSQL("UPDATE Grupos SET nombre=\""+MiGrupo.Nombre+"\" , ano=" + String.valueOf(MiGrupo.Año)+ " WHERE _id="+SelectId(MiJanij,MiGrupo,false));
+            }
             db.close();
-            int RegistrosAfectados=SelectConId(MiAlumno.Id,false);
-            return  RegistrosAfectados;
         }
 
-        public int EliminarBaseDeDatos( int Id)
+        public void EliminarJanijOGrupo( Janij MiJanij, Grupo MiGrupo, boolean EliminaJanij)
         {
-            int RegistrosAfectados=SelectConId(Id,false);
             SQLiteDatabase db =Abrir(true);
-            db.execSQL("DELETE FROM Alumnos WHERE id="+Id);
+            if(EliminaJanij)
+            {
+                db.execSQL("DELETE FROM Janijim WHERE _id="+String.valueOf(SelectId(MiJanij,MiGrupo,true)));
+            }
+            else
+            {
+                db.execSQL("DELETE FROM Grupos WHERE _id="+String.valueOf(SelectId(MiJanij,MiGrupo,false)));
+            }
             db.close();
-            return RegistrosAfectados;
         }
 
         private int SelectConId(int Id , boolean Insert)
@@ -164,25 +176,25 @@ public class JanijimYGruposManager {
         return IdIngresado;
     }
 
-        public ArrayList<Alumnos> SelectRegistros()
+        public ArrayList<Janij> SelectRegistros()
         {
             SQLiteDatabase db =Abrir(true);
-            Cursor c= db.rawQuery("SELECT * FROM Alumnos", null);
-            ArrayList<Alumnos> ListaAlumnos= new ArrayList<>();
+            Cursor c= db.rawQuery("SELECT * FROM Janijim", null);
+            ArrayList<Janij> ListaJanijim= new ArrayList<>();
             if(c.moveToFirst())
             {
                 do
                 {
-                    Alumnos MiAlumno= new Alumnos();
-                    MiAlumno.Id= c.getInt(0);
-                    MiAlumno.Nombre = c.getString(1);
-                    MiAlumno.Casado = c.getString(2);
-                    MiAlumno.FechaNacimiento= c.getString(3);
-                    ListaAlumnos.add(MiAlumno);
+                    Janij MiJanij= new Janij();
+                    MiJanij.Id= c.getInt(0);
+                    MiJanij.Nombre = c.getString(1);
+                    MiJanij.Apellido = c.getString(2);
+                    MiJanij.DNI= c.getInt(3);
+                    ListaJanijim.add(MiJanij);
                 } while (c.moveToNext());
             }
             c.close();
             db.close();
-            return ListaAlumnos;
+            return ListaJanijim;
         }
 }
