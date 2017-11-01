@@ -99,11 +99,11 @@ public class JanijimYGruposManager {
             SQLiteDatabase db =Abrir(true);
             if(EliminaJanij)
             {
-                db.execSQL("DELETE FROM Janijim WHERE _id="+String.valueOf(SelectId(MiJanij,MiGrupo,true)));
+                db.execSQL("DELETE FROM Janijim WHERE _id="+String.valueOf(MiJanij.Id));
             }
             else
             {
-                db.execSQL("DELETE FROM Grupos WHERE _id="+String.valueOf(SelectId(MiJanij,MiGrupo,false)));
+                db.execSQL("DELETE FROM Grupos WHERE _id="+String.valueOf(MiGrupo.Id));
             }
             db.close();
         }
@@ -143,7 +143,7 @@ public class JanijimYGruposManager {
             }
         }
 
-    private int SelectId(Janij MiJanij , Grupo MiGrupo ,boolean BuscaIdJanij)
+    public int SelectId(Janij MiJanij , Grupo MiGrupo ,boolean BuscaIdJanij)
     {
         SQLiteDatabase db =Abrir(false);
         int IdIngresado=0;
@@ -162,7 +162,7 @@ public class JanijimYGruposManager {
         }
         else
         {
-            Cursor c= db.rawQuery("SELECT _id FROM Grupos WHERE nombre="+MiGrupo.Nombre+" AND ano="+String.valueOf(MiGrupo.Año),null);
+            Cursor c= db.rawQuery("SELECT _id FROM Grupos WHERE nombre=\""+MiGrupo.Nombre+"\" AND ano="+String.valueOf(MiGrupo.Año),null);
             if(c.moveToFirst())
             {
                 do
@@ -197,4 +197,43 @@ public class JanijimYGruposManager {
             db.close();
             return ListaJanijim;
         }
+
+       public boolean ValidarJanijimYGrupos(Janij MiJanij, Grupo MiGrupo, boolean ValidarJanij)
+       {
+           SQLiteDatabase db =Abrir(false);
+           int RegistrosObtenidos=0;
+           if(ValidarJanij)
+           {
+               Cursor c= db.rawQuery("SELECT * FROM Janijim WHERE dni="+ String.valueOf(MiJanij.DNI) ,null);
+               if(c.moveToFirst())
+               {
+                   do
+                   {
+                       RegistrosObtenidos++;
+                   }while (c.moveToNext());
+               }
+               c.close();
+           }
+           else
+           {
+               Cursor c= db.rawQuery("SELECT * FROM Grupos WHERE nombre=\""+ MiGrupo.Nombre+  "\" AND ano="+ String.valueOf(MiGrupo.Año) ,null);
+               if(c.moveToFirst())
+               {
+                   do
+                   {
+                       RegistrosObtenidos++;
+                   }while (c.moveToNext());
+               }
+               c.close();
+           }
+           db.close();
+           if(RegistrosObtenidos==0)
+           {
+               return true;
+           }
+           else
+           {
+               return false;
+           }
+       }
 }
