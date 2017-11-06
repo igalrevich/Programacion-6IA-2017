@@ -198,6 +198,27 @@ public class JanijimYGruposManager {
             return ListaJanijim;
         }
 
+        public ArrayList<Grupo> SelectGrupos()
+       {
+        SQLiteDatabase db =Abrir(true);
+        Cursor c= db.rawQuery("SELECT * FROM Grupos", null);
+        ArrayList<Grupo> ListaGrupos= new ArrayList<>();
+        if(c.moveToFirst())
+        {
+            do
+            {
+                Grupo MiGrupo= new Grupo();
+                MiGrupo.Id= c.getInt(0);
+                MiGrupo.Nombre= c.getString(1);
+                MiGrupo.Año= c.getInt(2);
+                ListaGrupos.add(MiGrupo);
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+        return ListaGrupos;
+       }
+
        public boolean ValidarJanijimYGrupos(Janij MiJanij, Grupo MiGrupo, boolean ValidarJanij)
        {
            SQLiteDatabase db =Abrir(false);

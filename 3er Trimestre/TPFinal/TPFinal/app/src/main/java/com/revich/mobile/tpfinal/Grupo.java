@@ -17,6 +17,10 @@ public class Grupo {
         Año = año;
     }
 
+    public int getAño() {
+        return Año;
+    }
+
     public String getNombre() {
         return Nombre;
     }
