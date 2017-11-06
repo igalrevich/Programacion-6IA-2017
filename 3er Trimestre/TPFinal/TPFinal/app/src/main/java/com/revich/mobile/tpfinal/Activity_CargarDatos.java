@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class Activity_CargarDatos extends AppCompatActivity {
-    Button btnJanijim, btnGrupos;
+    Button btnJanijim, btnGrupos , btnAsignarJanijimAGrupos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,8 +19,10 @@ public class Activity_CargarDatos extends AppCompatActivity {
     {
         btnJanijim = (Button) findViewById(R.id.btnJanijim);
         btnGrupos= (Button) findViewById(R.id.btnGrupos);
+        btnAsignarJanijimAGrupos = (Button) findViewById(R.id.btnAsignarJaniimAGrupos);
         btnJanijim.setOnClickListener(btnJanijim_click);
         btnGrupos.setOnClickListener(btnGrupos_click);
+        btnAsignarJanijimAGrupos.setOnClickListener(btnAsignarJanijimAGrupos_click);
     }
 
     private View.OnClickListener btnJanijim_click= new View.OnClickListener() {
@@ -31,6 +33,13 @@ public class Activity_CargarDatos extends AppCompatActivity {
     };
 
     private View.OnClickListener btnGrupos_click= new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            IrAListadoJanijimOGrupos(false);
+        }
+    };
+
+    private View.OnClickListener btnAsignarJanijimAGrupos_click= new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             IrAListadoJanijimOGrupos(false);
