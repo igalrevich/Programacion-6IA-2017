@@ -26,12 +26,13 @@
         android:id="@+id/edtNombreGrupoABM"
         android:layout_below="@+id/textView4"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:enabled="false" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nombre del janij"
+        android:text="DNI del janij"
         android:id="@+id/textView5"
         android:textSize="30dp"
         android:layout_below="@+id/edtNombreGrupoABM"

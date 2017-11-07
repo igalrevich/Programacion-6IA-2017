@@ -54,7 +54,7 @@ public class adapterLstJanijimEnGrupos extends BaseAdapter {
         TextView tvApellidoJanijLst = (TextView) vi.findViewById(R.id.tvApellidoJanij);
         TextView tvDNIJanijLst = (TextView) vi.findViewById(R.id.tvDNIJanij);
         Button btnEliminarJanijLista = (Button) vi.findViewById(R.id.btnEliminarJanijLista);
-        Janij MiJanij = getItem(position);
+        final Janij MiJanij = getItem(position);
         tvNombreJanijLst.setText(MiJanij.Nombre);
         tvApellidoJanijLst.setText(MiJanij.Apellido);
         tvDNIJanijLst.setText(String.valueOf(MiJanij.DNI));
@@ -62,6 +62,8 @@ public class adapterLstJanijimEnGrupos extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 Grupo MiGrupo= new Grupo();
+                JanijimYGruposManager janijimYGruposManager= new JanijimYGruposManager(context);
+                janijimYGruposManager.EliminarJanijOGrupo(MiJanij,MiGrupo,true);
             }
         });
         //text.setText(data[position]);

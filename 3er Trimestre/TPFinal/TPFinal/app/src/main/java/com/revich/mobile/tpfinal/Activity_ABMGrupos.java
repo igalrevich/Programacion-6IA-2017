@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -15,6 +16,7 @@ public class Activity_ABMGrupos extends AppCompatActivity {
     Button btnAgregarJanijAlGrupo;
     ListView lstJanijimEnGrupo;
     ArrayList<Janij> Janijim;
+    Toast msg;
     JanijimYGruposManager janijimYGruposManager= new JanijimYGruposManager(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,42 @@ public class Activity_ABMGrupos extends AppCompatActivity {
     private View.OnClickListener btnAgregarJanijAlGrupo_click= new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            //IrAListadoJanijimOGrupos(true,false);
+          if(ValidarCamposDeTextoLlenos())
+          {
+              try
+              {
+                  int DniJanij= Integer.parseInt(edtJanijParaGrupo.getText().toString());
+                  JanijimYGruposManager janijimYGruposManager= new JanijimYGruposManager(getApplicationContext());
+                  Janij MiJanij= janijimYGruposManager.SelectJanijConDni(DniJanij);
+                  if(MiJanij.Id!=-1)
+                  {
+                      Janijim= janijimYGruposManager.SelectRegistros();
+                      lstJanijimEnGrupo.setAdapter(new adapterLstJanijimEnGrupos(getApplicationContext(),Janijim));
+                  }
+                  else
+                  {
+                      msg= Toast.makeText(getApplicationContext(),"Ingrese un DNI numerico",Toast.LENGTH_SHORT);
+                      msg.show();
+                  }
+              }
+              catch (Exception ex)
+              {
+                  msg= Toast.makeText(getApplicationContext(),"No existe un janij con ese DNI",Toast.LENGTH_SHORT);
+                  msg.show();
+              }
+          }
         }
     };
+
+    private boolean ValidarCamposDeTextoLlenos()
+    {
+        if (!(edtNombreGrupoABM.getText().toString().isEmpty() || edtJanijParaGrupo.getText().toString().isEmpty()))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

@@ -257,4 +257,27 @@ public class JanijimYGruposManager {
                return false;
            }
        }
+
+    public Janij SelectJanijConDni(int dni)
+    {
+        SQLiteDatabase db =Abrir(true);
+        Cursor c= db.rawQuery("SELECT * FROM Janijim WHERE dni="+String.valueOf(dni), null);
+        Janij MiJanij= new Janij();
+        MiJanij.Id=-1;
+        if(c.moveToFirst())
+        {
+            do
+            {
+                MiJanij.Id= c.getInt(0);
+                MiJanij.Nombre= c.getString(1);
+                MiJanij.Apellido= c.getString(2);
+                MiJanij.DNI= c.getInt(3);
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+        return MiJanij;
+    }
+
+
 }

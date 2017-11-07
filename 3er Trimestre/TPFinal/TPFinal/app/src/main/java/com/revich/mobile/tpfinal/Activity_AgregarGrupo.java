@@ -42,49 +42,16 @@ public class Activity_AgregarGrupo extends AppCompatActivity {
         edtNombreGrupo= (EditText) findViewById(R.id.edtNombreGrupoABM);
         edtAñoGrupo= (EditText) findViewById(R.id.edtAñoGrupo);
         btnAgregarGrupo.setOnClickListener(btnAgregarGrupo_click);
+        edtNombreGrupo.setClickable(false);
     }
 
     private View.OnClickListener btnAgregarGrupo_click= new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             //IrAABMJanijim(true);
-            MiGrupo= new Grupo();
-            boolean DatosValidos= janijimYGruposManager.ValidarJanijimYGrupos(MiJanij,MiGrupo,false);
-            if(DatosValidos)
+            if(ValidarCamposDeTextoLlenos())
             {
-                if (ValidarCamposDeTextoLlenos())
-                {
-                    if(AgregarGrupo)
-                    {
-                        MiGrupo.setNombre(edtNombreGrupo.getText().toString());
-                        MiGrupo.setAño(Integer.parseInt(edtAñoGrupo.getText().toString()));
-                        janijimYGruposManager.InsertarJanijOGrupo(MiJanij,MiGrupo,false);
-                    }
-                    else
-                    {
-                        int IdObtenido=janijimYGruposManager.SelectId(MiJanij,MiGrupo,false);
-                        if(IdObtenido!=0)
-                        {
-                            MiGrupo.Id=IdObtenido;
-                            janijimYGruposManager.ActualizarJanijOGrupo(MiJanij,MiGrupo,false);
-                        }
-                        else
-                        {
-                            msg=Toast.makeText(getApplicationContext(),"No existe dicho grupo",Toast.LENGTH_SHORT);
-                            msg.show();
-                        }
-                    }
-                }
-                else
-                {
-                    msg=Toast.makeText(getApplicationContext(),"Hay datos vacios, por favor completelos",Toast.LENGTH_SHORT);
-                    msg.show();
-                }
-            }
-            else
-            {
-                msg=Toast.makeText(getApplicationContext(),"Ya existe un grupo con dichos datos",Toast.LENGTH_SHORT);
-                msg.show();
+
             }
         }
     };
