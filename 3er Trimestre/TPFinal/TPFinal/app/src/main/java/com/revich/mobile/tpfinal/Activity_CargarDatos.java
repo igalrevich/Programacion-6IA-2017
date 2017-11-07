@@ -28,27 +28,28 @@ public class Activity_CargarDatos extends AppCompatActivity {
     private View.OnClickListener btnJanijim_click= new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            IrAListadoJanijimOGrupos(true);
+            IrAListadoJanijimOGrupos(true,false);
         }
     };
 
     private View.OnClickListener btnGrupos_click= new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            IrAListadoJanijimOGrupos(false);
+            IrAListadoJanijimOGrupos(false,false);
         }
     };
 
     private View.OnClickListener btnAsignarJanijimAGrupos_click= new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            IrAListadoJanijimOGrupos(false);
+            IrAListadoJanijimOGrupos(false,true);
         }
     };
 
-    private void IrAListadoJanijimOGrupos(boolean ListadoJanijim)
+    private void IrAListadoJanijimOGrupos(boolean ListadoJanijim , boolean AsignarJanijim)
     {
         Intent intent;
+        Bundle ElBundle= new Bundle();
         if(ListadoJanijim)
         {
             intent = new Intent(Activity_CargarDatos.this,Activity_ListadoJanijim.class);
@@ -56,7 +57,17 @@ public class Activity_CargarDatos extends AppCompatActivity {
         else
         {
             intent = new Intent(Activity_CargarDatos.this,Activity_ListadoGrupos.class);
+            if(AsignarJanijim)
+            {
+                ElBundle.putBoolean("AsignarJanijim",true);
+            }
+            else
+            {
+                ElBundle.putBoolean("AsignarJanijim",false);
+            }
+
         }
+        intent.putExtras(ElBundle);
         startActivity(intent);
         finish();
     }

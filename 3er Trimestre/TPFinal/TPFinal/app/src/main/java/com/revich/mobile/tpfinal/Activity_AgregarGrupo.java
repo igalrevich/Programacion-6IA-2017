@@ -39,7 +39,7 @@ public class Activity_AgregarGrupo extends AppCompatActivity {
     private void ObtenerReferenciasYSetearListeners()
     {
         btnAgregarGrupo = (Button) findViewById(R.id.btnAgregarGrupo);
-        edtNombreGrupo= (EditText) findViewById(R.id.edtNombreGrupo);
+        edtNombreGrupo= (EditText) findViewById(R.id.edtNombreGrupoABM);
         edtAñoGrupo= (EditText) findViewById(R.id.edtAñoGrupo);
         btnAgregarGrupo.setOnClickListener(btnAgregarGrupo_click);
     }

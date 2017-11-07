@@ -23,7 +23,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/edtNombreGrupo"
+        android:id="@+id/edtNombreGrupoABM"
         android:layout_below="@+id/textView4"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp" />
@@ -34,7 +34,7 @@
         android:text="Nombre del janij"
         android:id="@+id/textView5"
         android:textSize="30dp"
-        android:layout_below="@+id/edtNombreGrupo"
+        android:layout_below="@+id/edtNombreGrupoABM"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp" />
 
@@ -62,7 +62,7 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="149dp"
-        android:id="@+id/listView"
+        android:id="@+id/lstJanijimEnGrupo"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/btnAgregarJanijAlGrupo"
         android:layout_alignParentBottom="true" />

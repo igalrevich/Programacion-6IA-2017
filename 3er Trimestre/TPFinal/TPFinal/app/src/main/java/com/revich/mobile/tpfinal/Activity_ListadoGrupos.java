@@ -45,8 +45,19 @@ public class Activity_ListadoGrupos extends AppCompatActivity {
     private ListView.OnItemClickListener lstGrupos_itemclick= new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            Intent intent= getIntent();
+            Bundle ElBundle= intent.getExtras();
+            boolean AsignarJanijim= ElBundle.getBoolean("AsignarJanijim");
             MiGrupo= ListaGrupos.get(i);
-            IrAABMGrupos(false);
+            if(AsignarJanijim==false)
+            {
+                IrAABMGrupos(false);
+            }
+            else
+            {
+                IrAAsignarJanijimAGrupos();
+            }
+
         }
     };
 
@@ -66,5 +77,17 @@ public class Activity_ListadoGrupos extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    private void  IrAAsignarJanijimAGrupos()
+    {
+        Intent intent= new Intent(Activity_ListadoGrupos.this,Activity_ABMGrupos.class);
+        Bundle ElBundle= new Bundle();
+        String NombreYAñoGrupo= MiGrupo.Nombre+"-"+ String.valueOf(MiGrupo.Año);
+        ElBundle.putString("NombreAñoGrupo",NombreYAñoGrupo);
+        intent.putExtras(ElBundle);
+        startActivity(intent);
+        finish();
+    }
+
 
 }
