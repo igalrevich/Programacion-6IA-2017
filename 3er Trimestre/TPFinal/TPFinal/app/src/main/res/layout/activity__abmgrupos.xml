@@ -65,7 +65,16 @@
         android:layout_height="149dp"
         android:id="@+id/lstJanijimEnGrupo"
         android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/btnEliminarJanijEnGrupo" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Eliminar janij del grupo"
+        android:id="@+id/btnEliminarJanijEnGrupo"
         android:layout_below="@+id/btnAgregarJanijAlGrupo"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

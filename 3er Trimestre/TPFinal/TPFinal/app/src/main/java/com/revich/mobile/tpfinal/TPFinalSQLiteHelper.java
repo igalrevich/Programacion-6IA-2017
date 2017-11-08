@@ -24,8 +24,7 @@ public class TPFinalSQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d("Igal", "onCreate");
-        strSQL = JanijimYGruposManager.CreateTableScript();
-        db.execSQL(strSQL);
+        JanijimYGruposManager.CreateTableScript(db);
     }
 
     @Override
@@ -42,8 +41,7 @@ public class TPFinalSQLiteHelper extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS Janijim");
             db.execSQL("DROP TABLE IF EXISTS JanijimxGrupo");
             db.execSQL("DROP TABLE IF EXISTS Presentismo");
-            strSQL = JanijimYGruposManager.CreateTableScript();
-            db.execSQL(strSQL);
+            JanijimYGruposManager.CreateTableScript(db);
         }
     }
 

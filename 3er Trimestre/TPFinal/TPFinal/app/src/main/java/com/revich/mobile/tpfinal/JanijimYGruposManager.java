@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -13,38 +14,38 @@ import java.util.ArrayList;
 public class JanijimYGruposManager {
         Context ElContexto;
 
-        public static String CreateTableScript(){
+        public static void CreateTableScript(SQLiteDatabase db){
             // Instrucciones DDL para la creación de la estructura de la Tabla.
             String strSQL = "";
-            strSQL = "CREATE TABLE \"Ambitos\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"nombre\" TEXT);";
-            strSQL += "	CREATE TABLE \"AmbitosxGrupo\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"idAmbito\" INTEGER REFERENCES \"Ambitos\" (\"_id\"), \"idGrupo\" INTEGER REFERENCES \"Cursos\" (\"idCurso\"));";
-            strSQL += "	CREATE TABLE \"Fechas\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"Fecha\" TEXT, \"nombre\" TEXT); ";
-            strSQL += "	CREATE TABLE \"Grupos\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"nombre\" TEXT, \"ano\" INTEGER); ";
-            strSQL += "	CREATE TABLE \"Habilidades\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"nombre\" TEXT, \"esPositiva\" BOOLEAN); ";
-            strSQL += " CREATE TABLE \"HabilidadesxJanij\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"idFecha\" TEXT REFERENCES \"Fechas\" (\"_id\"), \"idAmbito\" TEXT REFERENCES \"Ambitos\" (\"_id\"), \"idGrupo\" TEXT REFERENCES \"Grupos\" (\"_id\"), \"idJanij\" TEXT REFERENCES \"Janijim\" (\"_id\"), \"idHabilidad\" TEXT REFERENCES \"Habilidades\" (\"_id\"), \"Observaciones\" TEXT);";
-            strSQL += " CREATE TABLE \"Janijim\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"nombre\" TEXT, \"apellido\" TEXT, \"dni\" INTEGER);";
-            strSQL += " CREATE TABLE \"JanijimxGrupo\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"idJanij\" INTEGER REFERENCES \"Janijim\" (\"_id\"), \"idGrupo\" INTEGER REFERENCES \"Grupos\" (\"_id\"));";
-            strSQL += " CREATE TABLE \"Presentismo\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"Alumno\" INTEGER REFERENCES \"Alumnos\" (\"idAlumno\"), \"Fecha\" INTEGER REFERENCES \"Fechas\" (\"idFecha\"), \"idGrupo\" INTEGER REFERENCES \"Grupos\" (\"_id\"), \"idAmbito\" INTEGER REFERENCES \"Ambitos\" (\"_id\"), \"asistio\" BOOLEAN, \"tarde\" BOOLEAN);";
-            strSQL += " INSERT INTO \"Ambitos\" ( \"_id\",\"nombre\" ) VALUES ( '1','Sabado' );";
-            strSQL += " INSERT INTO \"Ambitos\" ( \"_id\",\"nombre\" ) VALUES ( '2','Viernes' );";
-            strSQL += " INSERT INTO \"Ambitos\" ( \"_id\",\"nombre\" ) VALUES ( '3','Curso de madrijim' );";
-            strSQL += " INSERT INTO \"Fechas\" ( \"_id\",\"Fecha\",\"nombre\" ) VALUES ( '1','2017/10/25','' );";
-            strSQL += " INSERT INTO \"Fechas\" ( \"_id\",\"Fecha\",\"nombre\" ) VALUES ( '2','2017/10/26','' );";
-            strSQL += " INSERT INTO \"Fechas\" ( \"_id\",\"Fecha\",\"nombre\" ) VALUES ( '3','2017/10/27','' );";
-            strSQL += " INSERT INTO \"Habilidades\" ( \"_id\",\"nombre\",\"esPositiva\" ) VALUES ( '1','Hizo la actividad','true' );";
-            strSQL += " INSERT INTO \"Habilidades\" ( \"_id\",\"nombre\",\"esPositiva\" ) VALUES ( '2','Molesto a los companeros','false' );";
-            strSQL += " INSERT INTO \"Habilidades\" ( \"_id\",\"nombre\",\"esPositiva\" ) VALUES ( '3','Respeto a los madrijim','true' );";
-            strSQL += " INSERT INTO \"Habilidades\" ( \"_id\",\"nombre\",\"esPositiva\" ) VALUES ( '4','Rompio los materiales','false' );";
-            strSQL += " INSERT INTO \"Grupos\" ( \"_id\",\"nombre\",\"ano\" ) VALUES ( '1','Hamordim','2017' );";
-            strSQL += " INSERT INTO \"Grupos\" ( \"_id\",\"nombre\",\"ano\" ) VALUES ( '2','Shovavim','2017' );";
-            strSQL += " INSERT INTO \"Grupos\" ( \"_id\",\"nombre\",\"ano\" ) VALUES ( '3','Shelanu','2017' );";
-            strSQL += " INSERT INTO \"AmbitosxGrupo\" ( \"_id\",\"idAmbito\",\"idGrupo\" ) VALUES ( '1','1','1' );";
-            strSQL += " INSERT INTO \"AmbitosxGrupo\" ( \"_id\",\"idAmbito\",\"idGrupo\" ) VALUES ( '2','1','2' );";
-            strSQL += " INSERT INTO \"AmbitosxGrupo\" ( \"_id\",\"idAmbito\",\"idGrupo\" ) VALUES ( '3','1','3' );";
-            strSQL += " INSERT INTO \"AmbitosxGrupo\" ( \"_id\",\"idAmbito\",\"idGrupo\" ) VALUES ( '4','2','1' );";
-            strSQL += " INSERT INTO \"AmbitosxGrupo\" ( \"_id\",\"idAmbito\",\"idGrupo\" ) VALUES ( '5','2','2' );";
-            strSQL += " INSERT INTO \"AmbitosxGrupo\" ( \"_id\",\"idAmbito\",\"idGrupo\" ) VALUES ( '6','3','1' );";
-            return strSQL;
+            db.execSQL( "CREATE TABLE \"Janijim\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"nombre\" TEXT, \"apellido\" TEXT, \"dni\" INTEGER);");
+            db.execSQL("CREATE TABLE \"Ambitos\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"nombre\" TEXT);");
+            db.execSQL("	CREATE TABLE \"AmbitosxGrupo\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"idAmbito\" INTEGER REFERENCES \"Ambitos\" (\"_id\"), \"idGrupo\" INTEGER REFERENCES \"Cursos\" (\"idCurso\"));");
+            db.execSQL("	CREATE TABLE \"Fechas\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"Fecha\" TEXT, \"nombre\" TEXT); ");
+            db.execSQL("	CREATE TABLE \"Grupos\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"nombre\" TEXT, \"ano\" INTEGER); ");
+            db.execSQL("	CREATE TABLE \"Habilidades\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"nombre\" TEXT, \"esPositiva\" BOOLEAN); ");
+            db.execSQL(" CREATE TABLE \"HabilidadesxJanij\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"idFecha\" TEXT REFERENCES \"Fechas\" (\"_id\"), \"idAmbito\" TEXT REFERENCES \"Ambitos\" (\"_id\"), \"idGrupo\" TEXT REFERENCES \"Grupos\" (\"_id\"), \"idJanij\" TEXT REFERENCES \"Janijim\" (\"_id\"), \"idHabilidad\" TEXT REFERENCES \"Habilidades\" (\"_id\"), \"Observaciones\" TEXT);");
+            db.execSQL(" CREATE TABLE \"Janijim\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"nombre\" TEXT, \"apellido\" TEXT, \"dni\" INTEGER);");
+            db.execSQL(" CREATE TABLE \"JanijimxGrupo\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"idJanij\" INTEGER REFERENCES \"Janijim\" (\"_id\"), \"idGrupo\" INTEGER REFERENCES \"Grupos\" (\"_id\"));");
+            db.execSQL(" CREATE TABLE \"Presentismo\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"Alumno\" INTEGER REFERENCES \"Alumnos\" (\"idAlumno\"), \"Fecha\" INTEGER REFERENCES \"Fechas\" (\"idFecha\"), \"idGrupo\" INTEGER REFERENCES \"Grupos\" (\"_id\"), \"idAmbito\" INTEGER REFERENCES \"Ambitos\" (\"_id\"), \"asistio\" BOOLEAN, \"tarde\" BOOLEAN);");
+            db.execSQL(" INSERT INTO \"Ambitos\" ( \"_id\",\"nombre\" ) VALUES ( '1','Sabado' );");
+            db.execSQL(" INSERT INTO \"Ambitos\" ( \"_id\",\"nombre\" ) VALUES ( '2','Viernes' );");
+            db.execSQL(" INSERT INTO \"Ambitos\" ( \"_id\",\"nombre\" ) VALUES ( '3','Curso de madrijim' );");
+            db.execSQL(" INSERT INTO \"Fechas\" ( \"_id\",\"Fecha\",\"nombre\" ) VALUES ( '1','2017/10/25','' );");
+            db.execSQL(" INSERT INTO \"Fechas\" ( \"_id\",\"Fecha\",\"nombre\" ) VALUES ( '2','2017/10/26','' );");
+            db.execSQL(" INSERT INTO \"Fechas\" ( \"_id\",\"Fecha\",\"nombre\" ) VALUES ( '3','2017/10/27','' );");
+            db.execSQL(" INSERT INTO \"Habilidades\" ( \"_id\",\"nombre\",\"esPositiva\" ) VALUES ( '1','Hizo la actividad','true' );");
+            db.execSQL(" INSERT INTO \"Habilidades\" ( \"_id\",\"nombre\",\"esPositiva\" ) VALUES ( '2','Molesto a los companeros','false' );");
+            db.execSQL(" INSERT INTO \"Habilidades\" ( \"_id\",\"nombre\",\"esPositiva\" ) VALUES ( '3','Respeto a los madrijim','true' );");
+            db.execSQL(" INSERT INTO \"Habilidades\" ( \"_id\",\"nombre\",\"esPositiva\" ) VALUES ( '4','Rompio los materiales','false' );");
+            db.execSQL(" INSERT INTO \"Grupos\" ( \"_id\",\"nombre\",\"ano\" ) VALUES ( '1','Hamordim','2017' );");
+            db.execSQL(" INSERT INTO \"Grupos\" ( \"_id\",\"nombre\",\"ano\" ) VALUES ( '2','Shovavim','2017' );");
+            db.execSQL(" INSERT INTO \"Grupos\" ( \"_id\",\"nombre\",\"ano\" ) VALUES ( '3','Shelanu','2017' );");
+            db.execSQL(" INSERT INTO \"AmbitosxGrupo\" ( \"_id\",\"idAmbito\",\"idGrupo\" ) VALUES ( '1','1','1' );");
+            db.execSQL(" INSERT INTO \"AmbitosxGrupo\" ( \"_id\",\"idAmbito\",\"idGrupo\" ) VALUES ( '2','1','2' );");
+            db.execSQL(" INSERT INTO \"AmbitosxGrupo\" ( \"_id\",\"idAmbito\",\"idGrupo\" ) VALUES ( '3','1','3' );");
+            db.execSQL(" INSERT INTO \"AmbitosxGrupo\" ( \"_id\",\"idAmbito\",\"idGrupo\" ) VALUES ( '4','2','1' );");
+            db.execSQL(" INSERT INTO \"AmbitosxGrupo\" ( \"_id\",\"idAmbito\",\"idGrupo\" ) VALUES ( '5','2','2' );");
+            db.execSQL(" INSERT INTO \"AmbitosxGrupo\" ( \"_id\",\"idAmbito\",\"idGrupo\" ) VALUES ( '6','3','1' );");
         }
 
         public JanijimYGruposManager(Context ctx){
@@ -278,6 +279,61 @@ public class JanijimYGruposManager {
         db.close();
         return MiJanij;
     }
+
+    public boolean InsertarJanijEnGrupo(int IdJanij, int IdGrupo)
+    {
+        TPFinalSQLiteHelper tpFinalSQLiteHelper= new TPFinalSQLiteHelper(ElContexto,"DBTPFinal",null,2);
+        SQLiteDatabase db =Abrir(false);
+        Cursor c= db.rawQuery("SELECT * FROM JanijimxGrupo WHERE idJanij="+String.valueOf(IdJanij)+" AND idGrupo="+String.valueOf(IdGrupo), null);
+        boolean EstaElJanijEnEseGrupo=false;
+        Janij MiJanij= new Janij();
+        MiJanij.Id=-1;
+        if(c.moveToFirst())
+        {
+            do
+            {
+                EstaElJanijEnEseGrupo=true;
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+        if(EstaElJanijEnEseGrupo==false)
+        {
+            db=Abrir(true);
+            ContentValues nuevoRegistro= new ContentValues();
+            nuevoRegistro.put("idJanij",IdJanij);
+            nuevoRegistro.put("idGrupo",IdGrupo);
+            db.insert("JanijimxGrupo",null,nuevoRegistro);
+            db.close();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void EliminarJanijEnGrupo(int IdJanij, int IdGrupo)
+    {
+        SQLiteDatabase db =Abrir(false);
+        int IdJanijimxGrupo=0;
+        Cursor c= db.rawQuery("SELECT _id FROM JanijimxGrupo WHERE idJanij="+String.valueOf(IdJanij)+" AND idGrupo="+String.valueOf(IdGrupo),null);
+        if(c.moveToFirst())
+        {
+            do
+            {
+                IdJanijimxGrupo=c.getInt(0);
+            }while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+        db=Abrir(true);
+        db.execSQL("DELETE FROM JanijimxGrupo WHERE _id="+String.valueOf(IdJanijimxGrupo));
+        db.close();
+    }
+
+
+
 
 
 }

@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class Activity_AgregarGrupo extends AppCompatActivity {
-    Button btnAgregarGrupo;
+    Button btnAgregarGrupo, btnEliminarGrupo;
     EditText edtNombreGrupo, edtAñoGrupo;
     Grupo MiGrupo;
     Janij MiJanij;
@@ -39,9 +39,11 @@ public class Activity_AgregarGrupo extends AppCompatActivity {
     private void ObtenerReferenciasYSetearListeners()
     {
         btnAgregarGrupo = (Button) findViewById(R.id.btnAgregarGrupo);
+        btnEliminarGrupo = (Button) findViewById(R.id.btnEliminarGrupo);
         edtNombreGrupo= (EditText) findViewById(R.id.edtNombreGrupoABM);
         edtAñoGrupo= (EditText) findViewById(R.id.edtAñoGrupo);
         btnAgregarGrupo.setOnClickListener(btnAgregarGrupo_click);
+        btnEliminarGrupo.setOnClickListener(btnEliminarGrupo_click);
         edtNombreGrupo.setClickable(false);
     }
 
@@ -51,10 +53,53 @@ public class Activity_AgregarGrupo extends AppCompatActivity {
             //IrAABMJanijim(true);
             if(ValidarCamposDeTextoLlenos())
             {
+                if (ValidarCamposDeTextoLlenos())
+                {
+                    if(AgregarGrupo)
+                    {
+                        MiGrupo.setNombre(edtNombreGrupo.getText().toString());
+                        try
+                        {
+                            MiGrupo.setAño(Integer.parseInt(edtAñoGrupo.getText().toString()));
+                            janijimYGruposManager.InsertarJanijOGrupo(MiJanij,MiGrupo,false);
+                        }
+                        catch (Exception ex)
+                        {
+                            msg=Toast.makeText(getApplicationContext(),"Ingresar un dato numerico en el año",Toast.LENGTH_SHORT);
+                            msg.show();
+                        }
 
+                    }
+                    else
+                    {
+                        int IdObtenido=janijimYGruposManager.SelectId(MiJanij,MiGrupo,false);
+                        if(IdObtenido!=0)
+                        {
+                            MiJanij.Id=IdObtenido;
+                            janijimYGruposManager.ActualizarJanijOGrupo(MiJanij,MiGrupo,false);
+                        }
+                        else
+                        {
+                            msg=Toast.makeText(getApplicationContext(),"No existe dicho grupo",Toast.LENGTH_SHORT);
+                            msg.show();
+                        }
+                    }
+                }
+                else
+                {
+                    msg=Toast.makeText(getApplicationContext(),"Hay datos vacios, por favor completelos",Toast.LENGTH_SHORT);
+                    msg.show();
+                }
+            }
+            else
+            {
+                msg=Toast.makeText(getApplicationContext(),"Ya existe un janij con ese DNI",Toast.LENGTH_SHORT);
+                msg.show();
             }
         }
+
     };
+
 
     private boolean ValidarCamposDeTextoLlenos()
     {
@@ -67,4 +112,42 @@ public class Activity_AgregarGrupo extends AppCompatActivity {
             return false;
         }
     }
+
+    private View.OnClickListener btnEliminarGrupo_click= new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            MiGrupo= new Grupo();
+            if (ValidarCamposDeTextoLlenos())
+            {
+                int IdObtenido=janijimYGruposManager.SelectId(MiJanij,MiGrupo,false);
+                if(IdObtenido!=0)
+                {
+                    MiGrupo.Id=IdObtenido;
+                    MiGrupo.setNombre(edtNombreGrupo.getText().toString());
+                    try
+                    {
+                        MiGrupo.setAño(Integer.parseInt(edtAñoGrupo.getText().toString()));
+                        janijimYGruposManager.InsertarJanijOGrupo(MiJanij,MiGrupo,false);
+                    }
+                    catch (Exception ex)
+                    {
+                        msg=Toast.makeText(getApplicationContext(),"Ingresar un dato numerico en el año",Toast.LENGTH_SHORT);
+                        msg.show();
+                    }
+                    janijimYGruposManager.EliminarJanijOGrupo(MiJanij,MiGrupo,false);
+                }
+                else
+                {
+                    msg=Toast.makeText(getApplicationContext(),"No existe dicho janij",Toast.LENGTH_SHORT);
+                    msg.show();
+                }
+            }
+            else
+            {
+                msg=Toast.makeText(getApplicationContext(),"Hay datos vacios, por favor completelos",Toast.LENGTH_SHORT);
+                msg.show();
+            }
+        }
+
+    };
 }

@@ -50,6 +50,14 @@
             android:text="Agregar grupo"
             android:id="@+id/btnAgregarGrupo"
             android:layout_marginTop="70dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Eliminar grupo"
+            android:id="@+id/btnEliminarGrupo"
+            android:layout_marginTop="70dp"
+            android:layout_gravity="center_horizontal" />
     </LinearLayout>
 
 </RelativeLayout>
