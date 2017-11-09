@@ -3,6 +3,7 @@ package com.revich.mobile.tpfinal;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -14,6 +15,8 @@ public class Activity_CargarDatos extends AppCompatActivity {
         setContentView(R.layout.activity__cargar_datos);
         ObtenerReferenciasYSetearListeners();
     }
+
+
 
     private void ObtenerReferenciasYSetearListeners()
     {
@@ -69,6 +72,6 @@ public class Activity_CargarDatos extends AppCompatActivity {
         }
         intent.putExtras(ElBundle);
         startActivity(intent);
-        finish();
+        //finish();
     }
 }

@@ -50,6 +50,6 @@ public class Activity_SeleccionarDatos extends AppCompatActivity {
             intent = new Intent(Activity_SeleccionarDatos.this,Activity_Presentismo.class);
         }
         startActivity(intent);
-        finish();
+        //finish();
     }
 }

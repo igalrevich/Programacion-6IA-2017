@@ -18,11 +18,11 @@ public class JanijimYGruposManager {
             // Instrucciones DDL para la creación de la estructura de la Tabla.
             String strSQL = "";
             db.execSQL( "CREATE TABLE \"Janijim\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"nombre\" TEXT, \"apellido\" TEXT, \"dni\" INTEGER);");
-            db.execSQL("CREATE TABLE \"Ambitos\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"nombre\" TEXT);");
-            db.execSQL("	CREATE TABLE \"AmbitosxGrupo\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"idAmbito\" INTEGER REFERENCES \"Ambitos\" (\"_id\"), \"idGrupo\" INTEGER REFERENCES \"Cursos\" (\"idCurso\"));");
-            db.execSQL("	CREATE TABLE \"Fechas\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"Fecha\" TEXT, \"nombre\" TEXT); ");
-            db.execSQL("	CREATE TABLE \"Grupos\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"nombre\" TEXT, \"ano\" INTEGER); ");
-            db.execSQL("	CREATE TABLE \"Habilidades\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"nombre\" TEXT, \"esPositiva\" BOOLEAN); ");
+            db.execSQL(" CREATE TABLE \"Ambitos\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"nombre\" TEXT);");
+            db.execSQL(" CREATE TABLE \"AmbitosxGrupo\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"idAmbito\" INTEGER REFERENCES \"Ambitos\" (\"_id\"), \"idGrupo\" INTEGER REFERENCES \"Cursos\" (\"idCurso\"));");
+            db.execSQL(" CREATE TABLE \"Fechas\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"Fecha\" TEXT, \"nombre\" TEXT); ");
+            db.execSQL(" CREATE TABLE \"Grupos\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"nombre\" TEXT, \"ano\" INTEGER); ");
+            db.execSQL(" CREATE TABLE \"Habilidades\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"nombre\" TEXT, \"esPositiva\" BOOLEAN); ");
             db.execSQL(" CREATE TABLE \"HabilidadesxJanij\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"idFecha\" TEXT REFERENCES \"Fechas\" (\"_id\"), \"idAmbito\" TEXT REFERENCES \"Ambitos\" (\"_id\"), \"idGrupo\" TEXT REFERENCES \"Grupos\" (\"_id\"), \"idJanij\" TEXT REFERENCES \"Janijim\" (\"_id\"), \"idHabilidad\" TEXT REFERENCES \"Habilidades\" (\"_id\"), \"Observaciones\" TEXT);");
             db.execSQL(" CREATE TABLE \"JanijimxGrupo\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"idJanij\" INTEGER REFERENCES \"Janijim\" (\"_id\"), \"idGrupo\" INTEGER REFERENCES \"Grupos\" (\"_id\"));");
             db.execSQL(" CREATE TABLE \"Presentismo\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"Alumno\" INTEGER REFERENCES \"Alumnos\" (\"idAlumno\"), \"Fecha\" INTEGER REFERENCES \"Fechas\" (\"idFecha\"), \"idGrupo\" INTEGER REFERENCES \"Grupos\" (\"_id\"), \"idAmbito\" INTEGER REFERENCES \"Ambitos\" (\"_id\"), \"asistio\" BOOLEAN, \"tarde\" BOOLEAN);");
@@ -39,6 +39,9 @@ public class JanijimYGruposManager {
             db.execSQL(" INSERT INTO \"Grupos\" ( \"_id\",\"nombre\",\"ano\" ) VALUES ( '1','Hamordim','2017' );");
             db.execSQL(" INSERT INTO \"Grupos\" ( \"_id\",\"nombre\",\"ano\" ) VALUES ( '2','Shovavim','2017' );");
             db.execSQL(" INSERT INTO \"Grupos\" ( \"_id\",\"nombre\",\"ano\" ) VALUES ( '3','Shelanu','2017' );");
+            db.execSQL(" INSERT INTO \"Janijim\" ( \"_id\",\"nombre\",\"apellido\",\"dni\" ) VALUES ( '1','Igal','Revich','42426410' );");
+            db.execSQL(" INSERT INTO \"Janijim\" ( \"_id\",\"nombre\",\"apellido\",\"dni\" ) VALUES ( '2','Flor','Aizen','42420000' );");
+            db.execSQL(" INSERT INTO \"Janijim\" ( \"_id\",\"nombre\",\"apellido\",\"dni\" ) VALUES ( '3','Samy','Aizen','44426410' );");
             db.execSQL(" INSERT INTO \"AmbitosxGrupo\" ( \"_id\",\"idAmbito\",\"idGrupo\" ) VALUES ( '1','1','1' );");
             db.execSQL(" INSERT INTO \"AmbitosxGrupo\" ( \"_id\",\"idAmbito\",\"idGrupo\" ) VALUES ( '2','1','2' );");
             db.execSQL(" INSERT INTO \"AmbitosxGrupo\" ( \"_id\",\"idAmbito\",\"idGrupo\" ) VALUES ( '3','1','3' );");

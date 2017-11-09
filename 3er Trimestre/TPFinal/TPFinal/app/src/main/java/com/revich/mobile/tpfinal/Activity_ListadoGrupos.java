@@ -75,7 +75,7 @@ public class Activity_ListadoGrupos extends AppCompatActivity {
         }
         intent.putExtras(ElBundle);
         startActivity(intent);
-        finish();
+        //finish();
     }
 
     private void  IrAAsignarJanijimAGrupos()
@@ -86,7 +86,7 @@ public class Activity_ListadoGrupos extends AppCompatActivity {
         ElBundle.putString("NombreAñoGrupo",NombreYAñoGrupo);
         intent.putExtras(ElBundle);
         startActivity(intent);
-        finish();
+        //finish();
     }
 
 

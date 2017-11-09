@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.IntegerRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,10 +16,10 @@ public class Activity_ABMJanijim extends AppCompatActivity {
     EditText edtDNIJanij, edtApellidoJanij, edtNombreJanij;
     boolean Agregarjanij;
     int IdJanij;
-    Janij MiJanij;
+    Janij MiJanij=new Janij();
     Grupo MiGrupo;
     Toast msg;
-    JanijimYGruposManager janijimYGruposManager= new JanijimYGruposManager(getApplicationContext());
+    JanijimYGruposManager janijimYGruposManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,16 +27,16 @@ public class Activity_ABMJanijim extends AppCompatActivity {
         ObtenerReferenciasYSetearListeners();
         Intent intent = getIntent();
         Bundle ElBundleQueVino= intent.getExtras();
+        janijimYGruposManager= new JanijimYGruposManager(this);
         Agregarjanij= ElBundleQueVino.getBoolean("AgregarJanij");
         if(Agregarjanij==false)
         {
-            MiJanij=new Janij();
             MiJanij.setNombre(ElBundleQueVino.getString("NombreJanij"));
             edtNombreJanij.setText(MiJanij.getNombre());
             MiJanij.setApellido(ElBundleQueVino.getString("ApellidoJanij"));
             edtApellidoJanij.setText(MiJanij.getApellido());
             MiJanij.setDNI(ElBundleQueVino.getInt("DNIJanij"));
-            edtNombreJanij.setText(String.valueOf(MiJanij.getDNI()));
+            edtDNIJanij.setText(String.valueOf(MiJanij.getDNI()));
             IdJanij = ElBundleQueVino.getInt("IdJanij");
         }
 
@@ -57,42 +58,57 @@ public class Activity_ABMJanijim extends AppCompatActivity {
         public void onClick(View view) {
             //IrAABMJanijim(true);
              MiGrupo= new Grupo();
-             boolean DatosValidos= janijimYGruposManager.ValidarJanijimYGrupos(MiJanij,MiGrupo,true);
-             if(DatosValidos)
+             if(ValidarCamposDeTextoLlenos())
              {
-                 if (ValidarCamposDeTextoLlenos())
+                 if(Agregarjanij)
                  {
-                     if(Agregarjanij)
+                     MiJanij.setNombre(edtNombreJanij.getText().toString());
+                     MiJanij.setApellido(edtApellidoJanij.getText().toString());
+                     try
                      {
-                         MiJanij.setNombre(edtNombreJanij.getText().toString());
-                         MiJanij.setApellido(edtApellidoJanij.getText().toString());
                          MiJanij.setDNI(Integer.parseInt(edtDNIJanij.getText().toString()));
-                         janijimYGruposManager.InsertarJanijOGrupo(MiJanij,MiGrupo,true);
-                     }
-                     else
-                     {
-                         int IdObtenido=janijimYGruposManager.SelectId(MiJanij,MiGrupo,true);
-                         if(IdObtenido!=0)
+                         boolean DatosValidos= janijimYGruposManager.ValidarJanijimYGrupos(MiJanij,MiGrupo,true);
+                         if (DatosValidos)
                          {
-                             MiJanij.Id=IdObtenido;
-                             janijimYGruposManager.ActualizarJanijOGrupo(MiJanij,MiGrupo,true);
+                             janijimYGruposManager.InsertarJanijOGrupo(MiJanij,MiGrupo,true);
+                             msg=Toast.makeText(getApplicationContext(),"Se inserto el janij con exito",Toast.LENGTH_SHORT);
+                             msg.show();
                          }
                          else
                          {
-                             msg=Toast.makeText(getApplicationContext(),"No existe dicho janij",Toast.LENGTH_SHORT);
+                             msg=Toast.makeText(getApplicationContext(),"Ya existe un janij con ese DNI",Toast.LENGTH_SHORT);
                              msg.show();
                          }
+
                      }
+                     catch (Exception ex)
+                     {
+                         msg=Toast.makeText(getApplicationContext(),"Ingrese un dato numerico en el DNI",Toast.LENGTH_SHORT);
+                         msg.show();
+                     }
+
                  }
                  else
                  {
-                   msg=Toast.makeText(getApplicationContext(),"Hay datos vacios, por favor completelos",Toast.LENGTH_SHORT);
-                   msg.show();
+                     int IdObtenido=janijimYGruposManager.SelectId(MiJanij,MiGrupo,true);
+                     if(IdObtenido!=0)
+                     {
+                         MiJanij.Id=IdObtenido;
+                         janijimYGruposManager.ActualizarJanijOGrupo(MiJanij,MiGrupo,true);
+                         msg=Toast.makeText(getApplicationContext(),"Se actualizo el janij con exito",Toast.LENGTH_SHORT);
+                         msg.show();
+                     }
+                     else
+                     {
+                         msg=Toast.makeText(getApplicationContext(),"No existe dicho janij",Toast.LENGTH_SHORT);
+                         msg.show();
+                     }
                  }
+
              }
              else
              {
-                 msg=Toast.makeText(getApplicationContext(),"Ya existe un janij con ese DNI",Toast.LENGTH_SHORT);
+                 msg=Toast.makeText(getApplicationContext(),"Hay datos vacios, por favor completelos",Toast.LENGTH_SHORT);
                  msg.show();
              }
         }
@@ -112,6 +128,8 @@ public class Activity_ABMJanijim extends AppCompatActivity {
                     MiJanij.setApellido(edtApellidoJanij.getText().toString());
                     MiJanij.setDNI(Integer.parseInt(edtDNIJanij.getText().toString()));
                     janijimYGruposManager.EliminarJanijOGrupo(MiJanij,MiGrupo,true);
+                    msg=Toast.makeText(getApplicationContext(),"Se elimino el janij con exito",Toast.LENGTH_SHORT);
+                    msg.show();
                 }
                 else
                 {

@@ -22,10 +22,10 @@ public class Activity_ListadoJanijim extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity__listado_janijim);
         JanijimYGruposManager janijimYGruposManager= new JanijimYGruposManager(this);
+        ObtenerReferenciasYSetearListeners();
         ListaJanijim= janijimYGruposManager.SelectRegistros();
         ArrayAdapter<Janij> adapterJanijim= new ArrayAdapter<Janij>(this,android.R.layout.simple_list_item_1,ListaJanijim);
         lstJanijim.setAdapter(adapterJanijim);
-        ObtenerReferenciasYSetearListeners();
     }
 
     private void ObtenerReferenciasYSetearListeners()
@@ -65,7 +65,7 @@ public class Activity_ListadoJanijim extends AppCompatActivity {
         }
         intent.putExtras(ElBundle);
         startActivity(intent);
-        finish();
+        //finish();
     }
 
 }
