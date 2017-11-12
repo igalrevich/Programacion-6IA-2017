@@ -21,16 +21,16 @@ public class Activity_ListadoGrupos extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity__listado_grupos);
         JanijimYGruposManager janijimYGruposManager= new JanijimYGruposManager(this);
+        ObtenerReferenciasYSetearListeners();
         ListaGrupos= janijimYGruposManager.SelectGrupos();
         ArrayAdapter<Grupo> adapterGrupos= new ArrayAdapter<Grupo>(this,android.R.layout.simple_list_item_1,ListaGrupos);
         lstGrupos.setAdapter(adapterGrupos);
-        ObtenerReferenciasYSetearListeners();
     }
 
     private void ObtenerReferenciasYSetearListeners()
     {
         lstGrupos= (ListView) findViewById(R.id.lstGrupos);
-        btnAgregarGrupo = (Button) findViewById(R.id.btnAgregarJanij);
+        btnAgregarGrupo = (Button) findViewById(R.id.btnAgregarGrupo);
         btnAgregarGrupo.setOnClickListener(btnAgregarGrupo_click);
         lstGrupos.setOnItemClickListener(lstGrupos_itemclick);
     }

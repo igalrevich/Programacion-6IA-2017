@@ -11,8 +11,8 @@ import android.widget.Toast;
 public class Activity_AgregarGrupo extends AppCompatActivity {
     Button btnAgregarGrupo, btnEliminarGrupo;
     EditText edtNombreGrupo, edtAñoGrupo;
-    Grupo MiGrupo;
-    Janij MiJanij;
+    Grupo MiGrupo= new Grupo();
+    Janij MiJanij = new Janij();
     Toast msg;
     boolean AgregarGrupo;
     int IdGrupo;
@@ -27,11 +27,10 @@ public class Activity_AgregarGrupo extends AppCompatActivity {
         AgregarGrupo= ElBundleQueVino.getBoolean("AgregarGrupo");
         if(AgregarGrupo==false)
         {
-            MiGrupo=new Grupo();
             MiGrupo.setNombre(ElBundleQueVino.getString("NombreGrupo"));
             edtNombreGrupo.setText(MiGrupo.getNombre());
             MiGrupo.setAño(ElBundleQueVino.getInt("AñoGrupo"));
-            edtAñoGrupo.setText(MiGrupo.getAño());
+            edtAñoGrupo.setText(String.valueOf(MiGrupo.getAño()));
             IdGrupo = ElBundleQueVino.getInt("IdGrupo");
         }
     }
@@ -53,15 +52,34 @@ public class Activity_AgregarGrupo extends AppCompatActivity {
             //IrAABMJanijim(true);
             if(ValidarCamposDeTextoLlenos())
             {
-                if (ValidarCamposDeTextoLlenos())
+
+                if(AgregarGrupo)
                 {
-                    if(AgregarGrupo)
-                    {
                         MiGrupo.setNombre(edtNombreGrupo.getText().toString());
                         try
                         {
                             MiGrupo.setAño(Integer.parseInt(edtAñoGrupo.getText().toString()));
-                            janijimYGruposManager.InsertarJanijOGrupo(MiJanij,MiGrupo,false);
+                            if(MiGrupo.Año>0)
+                            {
+                                boolean DatosValidos= janijimYGruposManager.ValidarJanijimYGrupos(MiJanij,MiGrupo,false);
+                                if (DatosValidos)
+                                {
+                                    janijimYGruposManager.InsertarJanijOGrupo(MiJanij,MiGrupo,false);
+                                    msg=Toast.makeText(getApplicationContext(),"Se inserto el grupo con exito",Toast.LENGTH_SHORT);
+                                    msg.show();
+                                }
+                                else
+                                {
+                                    msg=Toast.makeText(getApplicationContext(),"Ya existe un grupo con esos datos",Toast.LENGTH_SHORT);
+                                    msg.show();
+                                }
+                            }
+                            else
+                            {
+                                msg=Toast.makeText(getApplicationContext(),"El año debe ser positivo",Toast.LENGTH_SHORT);
+                                msg.show();
+                            }
+
                         }
                         catch (Exception ex)
                         {
@@ -69,31 +87,28 @@ public class Activity_AgregarGrupo extends AppCompatActivity {
                             msg.show();
                         }
 
-                    }
-                    else
-                    {
-                        int IdObtenido=janijimYGruposManager.SelectId(MiJanij,MiGrupo,false);
-                        if(IdObtenido!=0)
-                        {
-                            MiJanij.Id=IdObtenido;
-                            janijimYGruposManager.ActualizarJanijOGrupo(MiJanij,MiGrupo,false);
-                        }
-                        else
-                        {
-                            msg=Toast.makeText(getApplicationContext(),"No existe dicho grupo",Toast.LENGTH_SHORT);
-                            msg.show();
-                        }
-                    }
                 }
                 else
                 {
-                    msg=Toast.makeText(getApplicationContext(),"Hay datos vacios, por favor completelos",Toast.LENGTH_SHORT);
-                    msg.show();
+                    int IdObtenido=janijimYGruposManager.SelectId(MiJanij,MiGrupo,false);
+                    if(IdObtenido!=0)
+                    {
+                        MiJanij.Id=IdObtenido;
+                        janijimYGruposManager.ActualizarJanijOGrupo(MiJanij,MiGrupo,false);
+                        msg=Toast.makeText(getApplicationContext(),"Se actualizo el grupo con exito",Toast.LENGTH_SHORT);
+                        msg.show();
+                    }
+                    else
+                    {
+                        msg=Toast.makeText(getApplicationContext(),"No existe dicho grupo",Toast.LENGTH_SHORT);
+                        msg.show();
+                    }
                 }
+
             }
             else
             {
-                msg=Toast.makeText(getApplicationContext(),"Ya existe un janij con ese DNI",Toast.LENGTH_SHORT);
+                msg=Toast.makeText(getApplicationContext(),"Hay datos vacios, por favor completelos",Toast.LENGTH_SHORT);
                 msg.show();
             }
         }
