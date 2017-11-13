@@ -92,7 +92,7 @@ public class JanijimYGruposManager {
             }
             else
             {
-                db.execSQL("UPDATE Grupos SET nombre=\""+MiGrupo.Nombre+"\" , ano=" + String.valueOf(MiGrupo.Año)+ " WHERE _id="+SelectId(MiJanij,MiGrupo,false));
+                db.execSQL("UPDATE Grupos SET nombre=\""+MiGrupo.Nombre+"\" , ano=" + String.valueOf(MiGrupo.Año)+ " WHERE _id="+String.valueOf(MiGrupo.Id));
             }
             db.close();
         }
@@ -333,6 +333,8 @@ public class JanijimYGruposManager {
         db.execSQL("DELETE FROM JanijimxGrupo WHERE _id="+String.valueOf(IdJanijimxGrupo));
         db.close();
     }
+
+
 
 
 

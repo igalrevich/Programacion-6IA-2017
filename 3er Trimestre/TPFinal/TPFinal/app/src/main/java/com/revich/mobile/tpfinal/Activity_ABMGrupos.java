@@ -31,6 +31,7 @@ public class Activity_ABMGrupos extends AppCompatActivity {
         Janijim= janijimYGruposManager.SelectRegistros();
         adapterJanijim= new ArrayAdapter<Janij>(this,android.R.layout.simple_list_item_1,Janijim);
         lstJanijimEnGrupo.setAdapter(adapterJanijim);
+
     }
 
     private void ObtenerReferenciasYSetearListeners()

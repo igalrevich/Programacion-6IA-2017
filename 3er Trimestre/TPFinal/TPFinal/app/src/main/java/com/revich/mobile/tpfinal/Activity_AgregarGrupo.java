@@ -93,10 +93,38 @@ public class Activity_AgregarGrupo extends AppCompatActivity {
                     int IdObtenido=janijimYGruposManager.SelectId(MiJanij,MiGrupo,false);
                     if(IdObtenido!=0)
                     {
-                        MiJanij.Id=IdObtenido;
-                        janijimYGruposManager.ActualizarJanijOGrupo(MiJanij,MiGrupo,false);
-                        msg=Toast.makeText(getApplicationContext(),"Se actualizo el grupo con exito",Toast.LENGTH_SHORT);
-                        msg.show();
+                        MiGrupo.Id=IdObtenido;
+                        try
+                        {
+                            MiGrupo.setAño(Integer.parseInt(edtAñoGrupo.getText().toString()));
+                            if(MiGrupo.Año>0)
+                            {
+                                boolean DatosValidos= janijimYGruposManager.ValidarJanijimYGrupos(MiJanij,MiGrupo,false);
+                                if (DatosValidos)
+                                {
+                                    janijimYGruposManager.ActualizarJanijOGrupo(MiJanij,MiGrupo,false);
+                                    msg=Toast.makeText(getApplicationContext(),"Se actualizo el grupo con exito",Toast.LENGTH_SHORT);
+                                    msg.show();
+                                }
+                                else
+                                {
+                                    msg=Toast.makeText(getApplicationContext(),"Ya existe un grupo con esos datos",Toast.LENGTH_SHORT);
+                                    msg.show();
+                                }
+                            }
+                            else
+                            {
+                                msg=Toast.makeText(getApplicationContext(),"El año debe ser positivo",Toast.LENGTH_SHORT);
+                                msg.show();
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                            msg=Toast.makeText(getApplicationContext(),"Ingresar un dato numerico en el año",Toast.LENGTH_SHORT);
+                            msg.show();
+                        }
+
                     }
                     else
                     {
@@ -134,26 +162,25 @@ public class Activity_AgregarGrupo extends AppCompatActivity {
             MiGrupo= new Grupo();
             if (ValidarCamposDeTextoLlenos())
             {
-                int IdObtenido=janijimYGruposManager.SelectId(MiJanij,MiGrupo,false);
-                if(IdObtenido!=0)
+                MiGrupo.setNombre(edtNombreGrupo.getText().toString());
+                try
                 {
-                    MiGrupo.Id=IdObtenido;
-                    MiGrupo.setNombre(edtNombreGrupo.getText().toString());
-                    try
+                    MiGrupo.setAño(Integer.parseInt(edtAñoGrupo.getText().toString()));
+                    int IdObtenido=janijimYGruposManager.SelectId(MiJanij,MiGrupo,false);
+                    if(IdObtenido!=0)
                     {
-                        MiGrupo.setAño(Integer.parseInt(edtAñoGrupo.getText().toString()));
-                        janijimYGruposManager.InsertarJanijOGrupo(MiJanij,MiGrupo,false);
+                        MiGrupo.Id=IdObtenido;
+                        janijimYGruposManager.EliminarJanijOGrupo(MiJanij,MiGrupo,false);
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        msg=Toast.makeText(getApplicationContext(),"Ingresar un dato numerico en el año",Toast.LENGTH_SHORT);
+                        msg=Toast.makeText(getApplicationContext(),"No existe dicho grupo",Toast.LENGTH_SHORT);
                         msg.show();
                     }
-                    janijimYGruposManager.EliminarJanijOGrupo(MiJanij,MiGrupo,false);
                 }
-                else
+                catch (Exception ex)
                 {
-                    msg=Toast.makeText(getApplicationContext(),"No existe dicho janij",Toast.LENGTH_SHORT);
+                    msg=Toast.makeText(getApplicationContext(),"Ingresar un dato numerico en el año",Toast.LENGTH_SHORT);
                     msg.show();
                 }
             }
