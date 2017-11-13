@@ -4,33 +4,41 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/tvNombreJanijPresentismo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/tvNombreJanijPresentismo" />
+        android:layout_marginRight="10dp"
+        android:text="Igal" />
 
     <TextView
+        android:id="@+id/tvApellidoJanijPresentismo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/tvApellidoJanijPresentismo" />
+        android:layout_marginRight="10dp"
+        android:text="Revich" />
 
     <TextView
+        android:id="@+id/tvDNIJanijPresentismo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/tvDNIJanijPresentismo" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/tvCosasBienJanij" />
+        android:layout_marginRight="10dp"
+        android:text="42426410" />
 
     <TextView
+        android:id="@+id/tvCosasBienJanij"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/tvCosasMalJanij" />
+        android:layout_marginRight="10dp"
+        android:text="2"
+        android:textColor="@android:color/holo_green_light" />
+
+    <TextView
+        android:id="@+id/tvCosasMalJanij"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:text="1"
+        android:textColor="@android:color/holo_red_dark" />
 
     <CheckBox
         android:layout_width="wrap_content"

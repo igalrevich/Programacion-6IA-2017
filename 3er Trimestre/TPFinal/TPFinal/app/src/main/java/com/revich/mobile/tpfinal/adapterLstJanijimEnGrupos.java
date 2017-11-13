@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -49,23 +50,16 @@ public class adapterLstJanijimEnGrupos extends BaseAdapter {
         // TODO Auto-generated method stub
         View vi = convertView;
         if (vi == null)
-            vi = inflater.inflate(R.layout.row_lstjanijimengrupo, null);
-        TextView tvNombreJanijLst = (TextView) vi.findViewById(R.id.tvNombreJanij);
-        TextView tvApellidoJanijLst = (TextView) vi.findViewById(R.id.tvApellidoJanij);
-        TextView tvDNIJanijLst = (TextView) vi.findViewById(R.id.tvDNIJanij);
-        Button btnEliminarJanijLista = (Button) vi.findViewById(R.id.btnEliminarJanijLista);
+            vi = inflater.inflate(R.layout.rowpresentismojanijim, null);
+        TextView tvNombreJanijPresentismo = (TextView) vi.findViewById(R.id.tvNombreJanijPresentismo);
+        TextView tvApellidoJanijPresentismo= (TextView) vi.findViewById(R.id.tvApellidoJanijPresentismo);
+        TextView tvDNIJanijPresentismo = (TextView) vi.findViewById(R.id.tvDNIJanijPresentismo);
+        CheckBox chbVinoJanij = (CheckBox) vi.findViewById(R.id.chbVinoJanij);
         final Janij MiJanij = getItem(position);
-        tvNombreJanijLst.setText(MiJanij.Nombre);
-        tvApellidoJanijLst.setText(MiJanij.Apellido);
-        tvDNIJanijLst.setText(String.valueOf(MiJanij.DNI));
-        btnEliminarJanijLista.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Grupo MiGrupo= new Grupo();
-                JanijimYGruposManager janijimYGruposManager= new JanijimYGruposManager(context);
-                janijimYGruposManager.EliminarJanijOGrupo(MiJanij,MiGrupo,true);
-            }
-        });
+        tvNombreJanijPresentismo.setText(MiJanij.Nombre);
+        tvApellidoJanijPresentismo.setText(MiJanij.Apellido);
+        tvDNIJanijPresentismo.setText(String.valueOf(MiJanij.DNI));
+       
         //text.setText(data[position]);
         return vi;
     }
