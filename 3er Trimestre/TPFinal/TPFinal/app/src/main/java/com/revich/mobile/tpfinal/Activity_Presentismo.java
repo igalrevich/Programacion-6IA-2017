@@ -39,15 +39,15 @@ public class Activity_Presentismo extends AppCompatActivity {
     {
         lstJanijimPresentismo=(ListView) findViewById(R.id.lstJanijimPresentismo);
         spnAmbitos = (Spinner) findViewById(R.id.spnAmbitos);
-        spnGrupos.setOnItemClickListener(spnAmbitos_itemclicklistener);
+        spnAmbitos.setOnItemSelectedListener(spnAmbitos_itemclicklistener);
         spnGrupos = (Spinner) findViewById(R.id.spnGrupos);
-        spnGrupos.setOnItemClickListener(spnGrupos_itemclicklistener);
+        spnGrupos.setOnItemSelectedListener(spnGrupos_itemclicklistener);
         spnFechas = (Spinner) findViewById(R.id.spnFechas);
     }
 
-    private Spinner.OnItemClickListener spnGrupos_itemclicklistener= new AdapterView.OnItemClickListener() {
+    private Spinner.OnItemSelectedListener spnGrupos_itemclicklistener = new AdapterView.OnItemSelectedListener() {
         @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
             MiGrupo= ListaGrupos.get(i);
             ListaAmbitos= janijimYGruposManager.SelectAmbitos(MiGrupo.Id);
             ArrayAdapter<Ambito> adapterAmbitos= new ArrayAdapter<Ambito>(getApplicationContext(),android.R.layout.simple_spinner_item,ListaAmbitos);
@@ -58,17 +58,27 @@ public class Activity_Presentismo extends AppCompatActivity {
                 lstJanijimPresentismo.setAdapter(new adapterLstJanijimEnGrupos(getApplicationContext(), ListaJanijimEnGrupo));
             }
         }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+
+        }
     };
 
-    private Spinner.OnItemClickListener spnAmbitos_itemclicklistener= new AdapterView.OnItemClickListener() {
+    private Spinner.OnItemSelectedListener spnAmbitos_itemclicklistener = new AdapterView.OnItemSelectedListener() {
         @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            MiGrupo= ListaGrupos.get(i);
             if(spnFechas.getSelectedItem()!=null)
             {
                 ArrayList<Janij> ListaJanijimEnGrupo= janijimYGruposManager.SelectJanijimDeUnGrupo(MiGrupo.Id);
                 lstJanijimPresentismo.setAdapter(new adapterLstJanijimEnGrupos(getApplicationContext(), ListaJanijimEnGrupo));
             }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+
         }
     };
 
