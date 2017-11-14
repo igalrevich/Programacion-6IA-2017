@@ -21,7 +21,7 @@
         <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/spnFecha"
+            android:id="@+id/spnGrupos"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
@@ -29,7 +29,7 @@
         <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/spnGrupos"
+            android:id="@+id/spnFechas"
             android:layout_above="@+id/spnAmbitos"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"

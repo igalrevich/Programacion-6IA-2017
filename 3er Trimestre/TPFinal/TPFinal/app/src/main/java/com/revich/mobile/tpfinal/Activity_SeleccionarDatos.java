@@ -13,7 +13,7 @@ public class Activity_SeleccionarDatos extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity__seleccionar_datos);
         ObtenerReferenciasYSetearListeners();
-        TPFinalSQLiteHelper tpFinalSQLiteHelper= new TPFinalSQLiteHelper(this,"DBTPFinal",null,3);
+        TPFinalSQLiteHelper tpFinalSQLiteHelper= new TPFinalSQLiteHelper(this,"DBTPFinal",null,4);
     }
 
     private void ObtenerReferenciasYSetearListeners()
