@@ -55,6 +55,7 @@ public class adapterLstJanijimEnGrupos extends BaseAdapter {
         TextView tvApellidoJanijPresentismo= (TextView) vi.findViewById(R.id.tvApellidoJanijPresentismo);
         TextView tvDNIJanijPresentismo = (TextView) vi.findViewById(R.id.tvDNIJanijPresentismo);
         CheckBox chbVinoJanij = (CheckBox) vi.findViewById(R.id.chbVinoJanij);
+        CheckBox chbLlegoTardeJanij = (CheckBox) vi.findViewById(R.id.chbLlegoTardeJanij);
         final Janij MiJanij = getItem(position);
         tvNombreJanijPresentismo.setText(MiJanij.Nombre);
         tvApellidoJanijPresentismo.setText(MiJanij.Apellido);
