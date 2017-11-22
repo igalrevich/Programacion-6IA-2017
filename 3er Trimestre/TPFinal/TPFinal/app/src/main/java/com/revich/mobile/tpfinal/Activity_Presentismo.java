@@ -1,10 +1,15 @@
 package com.revich.mobile.tpfinal;
 
 import android.content.Context;
+<<<<<<< HEAD
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+=======
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+>>>>>>> cbfe8222f5b8da56efb772a4bd593c14b6e588e9
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,7 +18,10 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+<<<<<<< HEAD
 import android.widget.Toast;
+=======
+>>>>>>> cbfe8222f5b8da56efb772a4bd593c14b6e588e9
 
 import java.util.ArrayList;
 
@@ -48,7 +56,10 @@ public class Activity_Presentismo extends AppCompatActivity {
     private void ObtenerReferenciasYSetearListeners()
     {
         lstJanijimPresentismo=(ListView) findViewById(R.id.lstJanijimPresentismo);
+<<<<<<< HEAD
         lstJanijimPresentismo.setOnItemClickListener(lstJanijimPresentismo_click);
+=======
+>>>>>>> cbfe8222f5b8da56efb772a4bd593c14b6e588e9
         btnConfirmarPresentismo = (Button) findViewById(R.id.btnConfirmarPresentismo);
         btnConfirmarPresentismo.setOnClickListener(btnConfirmarPresentismo_click);
         spnAmbitos = (Spinner) findViewById(R.id.spnAmbitos);
@@ -106,6 +117,7 @@ public class Activity_Presentismo extends AppCompatActivity {
          {
              for(int i=0;i<lstJanijimPresentismo.getCount();i++)
              {
+<<<<<<< HEAD
              Presentismo MiPresentismo;
                  try
                  {
@@ -154,10 +166,20 @@ public class Activity_Presentismo extends AppCompatActivity {
              }
              Toast msg= Toast.makeText(getApplicationContext(),"Se insertaron los datos de presentismo con exito",Toast.LENGTH_SHORT);
              msg.show();
+=======
+                 v = lstJanijimPresentismo.getAdapter().getView(i, null, null);
+                 TextView tvNombreJanijPresentismo= (TextView) v.findViewById(R.id.tvNombreJanijPresentismo);
+                 TextView tvApellidoJanijPresentismo= (TextView) v.findViewById(R.id.tvApellidoJanijPresentismo);
+                 TextView tvDNIJanijPresentismo= (TextView) v.findViewById(R.id.tvDNIJanijPresentismo);
+                 CheckBox chbVinoJanij= (CheckBox) v.findViewById(R.id.chbVinoJanij);
+
+             }
+>>>>>>> cbfe8222f5b8da56efb772a4bd593c14b6e588e9
          }
         }
     };
 
+<<<<<<< HEAD
     private ListView.OnItemClickListener lstJanijimPresentismo_click= new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -165,5 +187,7 @@ public class Activity_Presentismo extends AppCompatActivity {
         }
     };
 
+=======
+>>>>>>> cbfe8222f5b8da56efb772a4bd593c14b6e588e9
 
 }

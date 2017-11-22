@@ -417,6 +417,7 @@ public class JanijimYGruposManager {
         return ListaJanijim;
     }
 
+<<<<<<< HEAD
     public void InsertarPresentismo(Presentismo MiPresentismo)
     {
         SQLiteDatabase db=Abrir(false);
@@ -496,6 +497,8 @@ public class JanijimYGruposManager {
     }
 
 
+=======
+>>>>>>> cbfe8222f5b8da56efb772a4bd593c14b6e588e9
 
 
 
