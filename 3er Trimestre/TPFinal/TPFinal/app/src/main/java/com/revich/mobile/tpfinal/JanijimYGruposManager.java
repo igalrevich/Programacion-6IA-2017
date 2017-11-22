@@ -19,13 +19,13 @@ public class JanijimYGruposManager {
             String strSQL = "";
             db.execSQL( "CREATE TABLE \"Janijim\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"nombre\" TEXT, \"apellido\" TEXT, \"dni\" INTEGER);");
             db.execSQL(" CREATE TABLE \"Ambitos\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"nombre\" TEXT);");
-            db.execSQL(" CREATE TABLE \"AmbitosxGrupo\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"idAmbito\" INTEGER REFERENCES \"Ambitos\" (\"_id\"), \"idGrupo\" INTEGER REFERENCES \"Cursos\" (\"idCurso\"));");
+            db.execSQL(" CREATE TABLE \"AmbitosxGrupo\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"idAmbito\" INTEGER REFERENCES \"Ambitos\" (\"_id\"), \"idGrupo\" INTEGER REFERENCES \"Grupos\" (\"_id\"));");
             db.execSQL(" CREATE TABLE \"Fechas\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"Fecha\" TEXT, \"nombre\" TEXT); ");
             db.execSQL(" CREATE TABLE \"Grupos\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"nombre\" TEXT, \"ano\" INTEGER); ");
             db.execSQL(" CREATE TABLE \"Habilidades\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"nombre\" TEXT, \"esPositiva\" BOOLEAN); ");
             db.execSQL(" CREATE TABLE \"HabilidadesxJanij\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"idFecha\" TEXT REFERENCES \"Fechas\" (\"_id\"), \"idAmbito\" TEXT REFERENCES \"Ambitos\" (\"_id\"), \"idGrupo\" TEXT REFERENCES \"Grupos\" (\"_id\"), \"idJanij\" TEXT REFERENCES \"Janijim\" (\"_id\"), \"idHabilidad\" TEXT REFERENCES \"Habilidades\" (\"_id\"), \"Observaciones\" TEXT);");
             db.execSQL(" CREATE TABLE \"JanijimxGrupo\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"idJanij\" INTEGER REFERENCES \"Janijim\" (\"_id\"), \"idGrupo\" INTEGER REFERENCES \"Grupos\" (\"_id\"));");
-            db.execSQL(" CREATE TABLE \"Presentismo\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"Alumno\" INTEGER REFERENCES \"Alumnos\" (\"idAlumno\"), \"Fecha\" INTEGER REFERENCES \"Fechas\" (\"idFecha\"), \"idGrupo\" INTEGER REFERENCES \"Grupos\" (\"_id\"), \"idAmbito\" INTEGER REFERENCES \"Ambitos\" (\"_id\"), \"asistio\" BOOLEAN, \"tarde\" BOOLEAN);");
+            db.execSQL(" CREATE TABLE \"Presentismo\" (\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"Janij\" INTEGER REFERENCES \"Janijim\" (\"_id\"), \"Fecha\" INTEGER REFERENCES \"Fechas\" (\"idFecha\"), \"idGrupo\" INTEGER REFERENCES \"Grupos\" (\"_id\"), \"idAmbito\" INTEGER REFERENCES \"Ambitos\" (\"_id\"), \"asistio\" BOOLEAN, \"tarde\" BOOLEAN);");
             db.execSQL(" INSERT INTO \"Ambitos\" ( \"_id\",\"nombre\" ) VALUES ( '1','Sabado' );");
             db.execSQL(" INSERT INTO \"Ambitos\" ( \"_id\",\"nombre\" ) VALUES ( '2','Viernes' );");
             db.execSQL(" INSERT INTO \"Ambitos\" ( \"_id\",\"nombre\" ) VALUES ( '3','Curso de madrijim' );");
@@ -181,7 +181,7 @@ public class JanijimYGruposManager {
 
         public ArrayList<Janij> SelectRegistros()
         {
-            SQLiteDatabase db =Abrir(true);
+            SQLiteDatabase db =Abrir(false);
             Cursor c= db.rawQuery("SELECT * FROM Janijim", null);
             ArrayList<Janij> ListaJanijim= new ArrayList<>();
             if(c.moveToFirst())
@@ -333,6 +333,169 @@ public class JanijimYGruposManager {
         db.execSQL("DELETE FROM JanijimxGrupo WHERE _id="+String.valueOf(IdJanijimxGrupo));
         db.close();
     }
+
+    public ArrayList<Fecha> SelectFechas()
+    {
+        SQLiteDatabase db =Abrir(false);
+        Cursor c= db.rawQuery("SELECT * FROM Fechas", null);
+        ArrayList<Fecha> ListaFechas= new ArrayList<>();
+        if(c.moveToFirst())
+        {
+            do
+            {
+                Fecha MiFecha= new Fecha();
+                MiFecha.Id= c.getInt(0);
+                MiFecha.Fecha= c.getString(1);
+                MiFecha.Nombre = c.getString(2);
+                ListaFechas.add(MiFecha);
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+        return ListaFechas;
+    }
+
+    public ArrayList<Ambito> SelectAmbitos(int IdGrupo)
+    {
+        SQLiteDatabase db =Abrir(false);
+        Cursor c= db.rawQuery("SELECT idAmbito FROM AmbitosxGrupo WHERE idGrupo="+String.valueOf(IdGrupo), null);
+        ArrayList<Ambito> ListaAmbitos= new ArrayList<>();
+        if(c.moveToFirst())
+        {
+            do
+            {   Ambito MiAmbito= new Ambito();
+                int idAmbito= c.getInt(0);
+                SQLiteDatabase db2 =Abrir(false);
+                Cursor c2= db.rawQuery("SELECT * FROM Ambitos WHERE _id="+String.valueOf(idAmbito), null);
+                if(c2.moveToFirst())
+                {
+                    do
+                    {
+                        MiAmbito.Id= c2.getInt(0);
+                        MiAmbito.Nombre= c2.getString(1);
+                    } while (c2.moveToNext());
+                }
+                c2.close();
+                db2.close();
+                ListaAmbitos.add(MiAmbito);
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+        return ListaAmbitos;
+    }
+
+    public ArrayList<Janij> SelectJanijimDeUnGrupo(int IdGrupo)
+    {
+        SQLiteDatabase db =Abrir(false);
+        Cursor c= db.rawQuery("SELECT idJanij FROM JanijimxGrupo WHERE idGrupo="+String.valueOf(IdGrupo), null);
+        ArrayList<Janij> ListaJanijim= new ArrayList<>();
+        if(c.moveToFirst())
+        {
+            do
+            {   Janij MiJanij= new Janij();
+                int idJanij= c.getInt(0);
+                SQLiteDatabase db2 =Abrir(false);
+                Cursor c2= db.rawQuery("SELECT * FROM Janijim WHERE _id="+String.valueOf(idJanij), null);
+                if(c2.moveToFirst())
+                {
+                    do
+                    {
+                        MiJanij.Id= c2.getInt(0);
+                        MiJanij.Nombre = c2.getString(1);
+                        MiJanij.Apellido = c2.getString(2);
+                        MiJanij.DNI= c2.getInt(3);
+                    } while (c2.moveToNext());
+                }
+                c2.close();
+                db2.close();
+                ListaJanijim.add(MiJanij);
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+        return ListaJanijim;
+    }
+
+    public void InsertarPresentismo(Presentismo MiPresentismo)
+    {
+        SQLiteDatabase db=Abrir(false);
+        Cursor c= db.rawQuery("SELECT _id FROM Presentismo WHERE idGrupo="+String.valueOf(MiPresentismo.idGrupo)+" AND idAmbito="+String.valueOf(MiPresentismo.idAmbito)+" AND Fecha=\""+MiPresentismo.Fecha+"\" AND Janij="+String.valueOf(MiPresentismo.Janij), null);
+        int IdPresentismo=0;
+        if(c.moveToFirst())
+        {
+            do
+            {
+                IdPresentismo=c.getInt(0);
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+        db=Abrir(true);
+        if(IdPresentismo==0)
+        {
+            ContentValues nuevoRegistro= new ContentValues();
+            nuevoRegistro.put("Janij",MiPresentismo.Janij);
+            nuevoRegistro.put("idGrupo",MiPresentismo.idGrupo);
+            nuevoRegistro.put("idAmbito",MiPresentismo.idAmbito);
+            nuevoRegistro.put("Fecha",MiPresentismo.Fecha);
+            nuevoRegistro.put("asistio",MiPresentismo.asistio);
+            nuevoRegistro.put("tarde",MiPresentismo.tarde);
+            db.insert("Presentismo",null,nuevoRegistro);
+        }
+        else
+        {
+            db.execSQL("UPDATE Presentismo SET tarde="+String.valueOf(MiPresentismo.tarde)+", asisito="+String.valueOf(MiPresentismo.asistio)+" WHERE _id="+String.valueOf(IdPresentismo));
+        }
+
+        db.close();
+    }
+
+    public int SelectIdAmbitoOFecha(String NombreAmbito, String Fecha, boolean BuscaIdAmbito)
+    {
+        SQLiteDatabase db =Abrir(false);
+        Cursor c;
+        if(BuscaIdAmbito)
+        {
+            c= db.rawQuery("SELECT _id FROM Ambitos WHERE nombre=\""+NombreAmbito+"\"", null);
+        }
+        else
+        {
+            c= db.rawQuery("SELECT _id FROM Fechas WHERE Fecha=\""+Fecha+"\"", null);
+        }
+        int IdARetornar=0;
+        if(c.moveToFirst())
+        {
+            do
+            {
+               IdARetornar=c.getInt(0) ;
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+        return IdARetornar;
+    }
+
+    public ArrayList<Habilidades> SelectHabilidades()
+    {
+        SQLiteDatabase db =Abrir(false);
+        Cursor c= db.rawQuery("SELECT * FROM Habilidades", null);
+        ArrayList<Habilidades> ListaHabilidades= new ArrayList<>();
+        if(c.moveToFirst())
+        {
+            do
+            {   Habilidades MiHabilidad= new Habilidades();
+                MiHabilidad.Id= c.getInt(0);
+                MiHabilidad.Nombre = c.getString(1);
+                MiHabilidad.esPositiva = Boolean.parseBoolean(c.getString(2));
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+        return ListaHabilidades;
+    }
+
+
 
 
 

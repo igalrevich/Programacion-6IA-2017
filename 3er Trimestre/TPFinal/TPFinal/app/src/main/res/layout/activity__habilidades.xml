@@ -9,4 +9,50 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.revich.mobile.tpfinal.Activity_Habilidades">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Habilidades"
+            android:textAlignment="center"
+            android:textSize="25dp" />
+
+        <TextView
+            android:id="@+id/tvNombreJanijHabilidades"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:textAlignment="center"
+            android:textSize="25dp" />
+
+        <TextView
+            android:id="@+id/tvFechaHabilidades"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:textAlignment="center"
+            android:textSize="25dp" />
+
+        <ListView
+            android:id="@+id/lstHabilidades"
+            android:layout_width="match_parent"
+            android:layout_height="224dp"
+            android:layout_marginBottom="40dp"
+            android:layout_weight="0.24" />
+
+        <Button
+            android:id="@+id/btnConfirmarHabilidades"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Confirmar" />
+    </LinearLayout>
 </RelativeLayout>
