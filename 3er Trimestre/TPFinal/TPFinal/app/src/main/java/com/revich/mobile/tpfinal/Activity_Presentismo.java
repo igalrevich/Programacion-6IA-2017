@@ -1,15 +1,10 @@
 package com.revich.mobile.tpfinal;
 
 import android.content.Context;
-<<<<<<< HEAD
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-=======
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
->>>>>>> cbfe8222f5b8da56efb772a4bd593c14b6e588e9
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,10 +13,7 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-<<<<<<< HEAD
 import android.widget.Toast;
-=======
->>>>>>> cbfe8222f5b8da56efb772a4bd593c14b6e588e9
 
 import java.util.ArrayList;
 
@@ -33,6 +25,7 @@ public class Activity_Presentismo extends AppCompatActivity {
     ArrayList<Ambito> ListaAmbitos = new ArrayList<>();
     ArrayList<Grupo> ListaGrupos;
     Grupo MiGrupo;
+    Ambito MiAmbito;
     ArrayList<Fecha> ListaFechas;
     ArrayList<Janij> ListaJanijimEnGrupo;
     JanijimYGruposManager janijimYGruposManager;
@@ -56,10 +49,7 @@ public class Activity_Presentismo extends AppCompatActivity {
     private void ObtenerReferenciasYSetearListeners()
     {
         lstJanijimPresentismo=(ListView) findViewById(R.id.lstJanijimPresentismo);
-<<<<<<< HEAD
         lstJanijimPresentismo.setOnItemClickListener(lstJanijimPresentismo_click);
-=======
->>>>>>> cbfe8222f5b8da56efb772a4bd593c14b6e588e9
         btnConfirmarPresentismo = (Button) findViewById(R.id.btnConfirmarPresentismo);
         btnConfirmarPresentismo.setOnClickListener(btnConfirmarPresentismo_click);
         spnAmbitos = (Spinner) findViewById(R.id.spnAmbitos);
@@ -117,7 +107,6 @@ public class Activity_Presentismo extends AppCompatActivity {
          {
              for(int i=0;i<lstJanijimPresentismo.getCount();i++)
              {
-<<<<<<< HEAD
              Presentismo MiPresentismo;
                  try
                  {
@@ -166,28 +155,34 @@ public class Activity_Presentismo extends AppCompatActivity {
              }
              Toast msg= Toast.makeText(getApplicationContext(),"Se insertaron los datos de presentismo con exito",Toast.LENGTH_SHORT);
              msg.show();
-=======
-                 v = lstJanijimPresentismo.getAdapter().getView(i, null, null);
-                 TextView tvNombreJanijPresentismo= (TextView) v.findViewById(R.id.tvNombreJanijPresentismo);
-                 TextView tvApellidoJanijPresentismo= (TextView) v.findViewById(R.id.tvApellidoJanijPresentismo);
-                 TextView tvDNIJanijPresentismo= (TextView) v.findViewById(R.id.tvDNIJanijPresentismo);
-                 CheckBox chbVinoJanij= (CheckBox) v.findViewById(R.id.chbVinoJanij);
-
-             }
->>>>>>> cbfe8222f5b8da56efb772a4bd593c14b6e588e9
          }
         }
     };
 
-<<<<<<< HEAD
     private ListView.OnItemClickListener lstJanijimPresentismo_click= new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+             Janij MiJanij= ListaJanijimEnGrupo.get(i);
+             String Fecha = spnFechas.getSelectedItem().toString();
+             MiGrupo= ListaGrupos.get(i);
+             MiAmbito= ListaAmbitos.get(i);
+             IrAActivityHabilidades(MiJanij.Nombre,MiJanij.Apellido,Fecha,MiGrupo.Id,MiAmbito.Id,MiJanij.Id);
         }
     };
 
-=======
->>>>>>> cbfe8222f5b8da56efb772a4bd593c14b6e588e9
+    private void IrAActivityHabilidades(String NombreJanij, String ApellidoJanij, String Fecha, int idGrupo, int idAmbito,int idJanij)
+    {
+        Intent intent= new Intent(Activity_Presentismo.this,Activity_Habilidades.class);
+        Bundle ElBundle= new Bundle();
+        ElBundle.putString("NombreJanij",NombreJanij);
+        ElBundle.putString("ApellidoJanij",ApellidoJanij);
+        ElBundle.putString("Fecha",Fecha);
+        ElBundle.putInt("idGrupo",idGrupo);
+        ElBundle.putInt("idAmbito",idAmbito);
+        ElBundle.putInt("idJanij",idJanij);
+        intent.putExtras(ElBundle);
+        startActivity(intent);
+    }
+
 
 }

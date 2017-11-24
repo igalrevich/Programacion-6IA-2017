@@ -417,7 +417,6 @@ public class JanijimYGruposManager {
         return ListaJanijim;
     }
 
-<<<<<<< HEAD
     public void InsertarPresentismo(Presentismo MiPresentismo)
     {
         SQLiteDatabase db=Abrir(false);
@@ -496,9 +495,25 @@ public class JanijimYGruposManager {
         return ListaHabilidades;
     }
 
+    public void InsertarOModificarHabilidadxJanij(HabilidadxJanij MiHabilidadxJanij)
+    {
+        SQLiteDatabase db =Abrir(false);
+        Cursor c= db.rawQuery("SELECT _id FROM HabilidadesxJanij WHERE idJanij="+String.valueOf(MiHabilidadxJanij.idJanij)+" AND idGrupo="+String.valueOf(MiHabilidadxJanij.idGrupo)+" AND idAmbito="+String.valueOf(MiHabilidadxJanij.idAmbito)+" AND idFecha="+String.valueOf(MiHabilidadxJanij.idFecha), null);
+        int IdDevuel
+        if(c.moveToFirst())
+        {
+            do
+            {   Habilidades MiHabilidad= new Habilidades();
+                MiHabilidad.Id= c.getInt(0);
+                MiHabilidad.Nombre = c.getString(1);
+                MiHabilidad.esPositiva = Boolean.parseBoolean(c.getString(2));
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+    }
 
-=======
->>>>>>> cbfe8222f5b8da56efb772a4bd593c14b6e588e9
+
 
 
 

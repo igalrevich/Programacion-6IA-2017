@@ -45,9 +45,22 @@
         <ListView
             android:id="@+id/lstHabilidades"
             android:layout_width="match_parent"
-            android:layout_height="224dp"
-            android:layout_marginBottom="40dp"
-            android:layout_weight="0.24" />
+            android:layout_height="166dp"
+            android:layout_marginBottom="40dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Observaciones"
+            android:layout_gravity="center_horizontal"
+            android:textSize="25dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edtObservaciones"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp" />
 
         <Button
             android:id="@+id/btnConfirmarHabilidades"

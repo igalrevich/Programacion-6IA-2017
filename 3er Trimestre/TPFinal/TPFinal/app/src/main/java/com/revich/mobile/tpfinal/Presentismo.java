@@ -92,13 +92,8 @@ public class Presentismo {
     }
 
     // Constructor
-<<<<<<< HEAD
     public Presentismo() {
         this(0,0,0,0,0,false,false);
-=======
-    public Ambito() {
-        this(0,"");
->>>>>>> cbfe8222f5b8da56efb772a4bd593c14b6e588e9
     }
 
 

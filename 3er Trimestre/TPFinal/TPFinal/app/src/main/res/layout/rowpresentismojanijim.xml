@@ -57,11 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
-<<<<<<< HEAD
         android:text="Tarde:"
-=======
-        android:text="Llego tarde:"
->>>>>>> cbfe8222f5b8da56efb772a4bd593c14b6e588e9
         android:textColor="#000000" />
     <CheckBox
         android:layout_width="wrap_content"
