@@ -130,7 +130,7 @@ public class Activity_Presentismo extends AppCompatActivity {
                      String NombreFecha= spnFechas.getSelectedItem().toString();
                      MiPresentismo.idAmbito= janijimYGruposManager.SelectIdAmbitoOFecha(NombreAmbito,NombreFecha,true);
                      MiPresentismo.Fecha= janijimYGruposManager.SelectIdAmbitoOFecha(NombreAmbito,NombreFecha,false);
-                     if(chbVinoJanij.isChecked())
+                     if((chbVinoJanij).isChecked())
                      {
                          MiPresentismo.asistio=true;
                      }
@@ -138,7 +138,7 @@ public class Activity_Presentismo extends AppCompatActivity {
                      {
                          MiPresentismo.asistio=false;
                      }
-                     if(chbLlegoTardeJanij.isChecked())
+                     if((chbLlegoTardeJanij).isChecked())
                      {
                          MiPresentismo.tarde=true;
                      }
@@ -159,14 +159,15 @@ public class Activity_Presentismo extends AppCompatActivity {
         }
     };
 
+
     private ListView.OnItemClickListener lstJanijimPresentismo_click= new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-             Janij MiJanij= ListaJanijimEnGrupo.get(i);
-             String Fecha = spnFechas.getSelectedItem().toString();
-             MiGrupo= ListaGrupos.get(i);
-             MiAmbito= ListaAmbitos.get(i);
-             IrAActivityHabilidades(MiJanij.Nombre,MiJanij.Apellido,Fecha,MiGrupo.Id,MiAmbito.Id,MiJanij.Id);
+            Janij MiJanij = ListaJanijimEnGrupo.get(i);
+            String Fecha = spnFechas.getSelectedItem().toString();
+            MiGrupo = ListaGrupos.get(i);
+            MiAmbito = ListaAmbitos.get(i);
+            IrAActivityHabilidades(MiJanij.Nombre, MiJanij.Apellido, Fecha, MiGrupo.Id, MiAmbito.Id, MiJanij.Id);
         }
     };
 

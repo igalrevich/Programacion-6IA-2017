@@ -445,7 +445,10 @@ public class JanijimYGruposManager {
         }
         else
         {
-            db.execSQL("UPDATE Presentismo SET tarde="+String.valueOf(MiPresentismo.tarde)+", asisito="+String.valueOf(MiPresentismo.asistio)+" WHERE _id="+String.valueOf(IdPresentismo));
+            ContentValues nuevoRegistro= new ContentValues();
+            nuevoRegistro.put("asistio",MiPresentismo.asistio);
+            nuevoRegistro.put("tarde",MiPresentismo.tarde);
+            db.update("Presentismo",nuevoRegistro,"WHERE _id="+String.valueOf(IdPresentismo),null);
         }
 
         db.close();
@@ -499,18 +502,49 @@ public class JanijimYGruposManager {
     {
         SQLiteDatabase db =Abrir(false);
         Cursor c= db.rawQuery("SELECT _id FROM HabilidadesxJanij WHERE idJanij="+String.valueOf(MiHabilidadxJanij.idJanij)+" AND idGrupo="+String.valueOf(MiHabilidadxJanij.idGrupo)+" AND idAmbito="+String.valueOf(MiHabilidadxJanij.idAmbito)+" AND idFecha="+String.valueOf(MiHabilidadxJanij.idFecha), null);
-        int IdDevuel
+        int IdDevuelto=0;
         if(c.moveToFirst())
         {
             do
-            {   Habilidades MiHabilidad= new Habilidades();
-                MiHabilidad.Id= c.getInt(0);
-                MiHabilidad.Nombre = c.getString(1);
-                MiHabilidad.esPositiva = Boolean.parseBoolean(c.getString(2));
+            {   IdDevuelto=c.getInt(0);
             } while (c.moveToNext());
         }
         c.close();
         db.close();
+        db =Abrir(true);
+        if(IdDevuelto==0)
+        {
+            ContentValues nuevoRegistro= new ContentValues();
+            nuevoRegistro.put("idJanij",MiHabilidadxJanij.idJanij);
+            nuevoRegistro.put("idGrupo",MiHabilidadxJanij.idGrupo);
+            nuevoRegistro.put("idAmbito",MiHabilidadxJanij.idAmbito);
+            nuevoRegistro.put("idFecha",MiHabilidadxJanij.idFecha);
+            nuevoRegistro.put("idHabilidad",MiHabilidadxJanij.idHabilidad);
+            nuevoRegistro.put("Observaciones",MiHabilidadxJanij.Observaciones);
+            db.insert("HabilidadesxJanij",null,nuevoRegistro);
+        }
+        else
+        {
+            db.execSQL("UPDATE HabilidadesxJanij SET idHabilidad="+String.valueOf(MiHabilidadxJanij.idHabilidad)+", Observaciones="+MiHabilidadxJanij.Observaciones+" WHERE _id="+String.valueOf(IdDevuelto));
+        }
+        db.close();
+    }
+
+    public int SelectIdHabilidad(String NombreHabilidad)
+    {
+        SQLiteDatabase db=Abrir(false);
+        Cursor c= db.rawQuery("SELECT _id FROM Habilidades WHERE nombre="+NombreHabilidad, null);
+        int IdHabilidad=0;
+        if(c.moveToFirst())
+        {
+            do
+            {
+                IdHabilidad=c.getInt(0);
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+        return IdHabilidad;
     }
 
 

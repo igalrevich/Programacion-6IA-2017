@@ -76,14 +76,21 @@ public class Activity_Habilidades extends AppCompatActivity {
                         MiHabilidadxJanij.idFecha=janijimYGruposManager.SelectIdAmbitoOFecha("",Fecha,false);
                         MiHabilidadxJanij.idJanij=idJanij;
                         MiHabilidadxJanij.Observaciones= edtObservaciones.getText().toString();
+                        if(chbHabilidad.isChecked())
+                        {
+                            String NombreHabilidad= tvNombreHabilidad.getText().toString();
+                            MiHabilidadxJanij.idHabilidad=janijimYGruposManager.SelectIdHabilidad(NombreHabilidad);
+                            janijimYGruposManager.InsertarOModificarHabilidadxJanij(MiHabilidadxJanij);
+                            Toast msg= Toast.makeText(getApplicationContext(),"Se inserto la habilidad al janij correspondiente con exito",Toast.LENGTH_SHORT);
+                            msg.show();
+                        }
                     }
                     catch (Exception ex)
                     {
                         Log.e("Exception", ex.getMessage() );
                     }
                 }
-                Toast msg= Toast.makeText(getApplicationContext(),"Se insertaron los datos de presentismo con exito",Toast.LENGTH_SHORT);
-                msg.show();
+
             }
         }
     };
