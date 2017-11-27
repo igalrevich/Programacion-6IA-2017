@@ -593,7 +593,31 @@ public class JanijimYGruposManager {
         return ListaHabilidadesxJanij;
     }
 
-    
+    public String SelectNombreFechaOAmbitoById(int id,boolean BuscaNombreFecha)
+    {
+        SQLiteDatabase db =Abrir(false);
+        Cursor c;
+        if(BuscaNombreFecha)
+        {
+            c= db.rawQuery("SELECT nombre FROM Fechas WHERE _id="+String.valueOf(id), null);
+        }
+        else
+        {
+            c= db.rawQuery("SELECT nombre FROM Ambitos WHERE _id="+String.valueOf(id), null);
+        }
+        String NombreARetornar="";
+        if(c.moveToFirst())
+        {
+            do
+            {   NombreARetornar=c.getString(0);
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+        return NombreARetornar;
+    }
+
+
 
 
 

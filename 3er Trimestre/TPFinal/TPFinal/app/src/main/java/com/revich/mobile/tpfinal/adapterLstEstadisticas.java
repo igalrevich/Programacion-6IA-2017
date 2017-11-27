@@ -15,6 +15,7 @@ import java.util.ArrayList;
  */
 public class adapterLstEstadisticas extends BaseAdapter {
     Context context;
+    int ContHabilidadesBuenas=0,ContHabilidadesMalas=0;
     ArrayList<Presentismo> ListaPresentismo;
     boolean BuscaHabilidadesxJanij=false;
     ArrayList<HabilidadxJanij> ListaHabilidadesxJanij;
@@ -75,6 +76,32 @@ public class adapterLstEstadisticas extends BaseAdapter {
         TextView tvTardeJanij= (TextView) vi.findViewById(R.id.tvTardeJanij);
         TextView tvAmbitoJanij= (TextView) vi.findViewById(R.id.tvAmbitoJanij);
         JanijimYGruposManager janijimYGruposManager= new JanijimYGruposManager(context);
+        Presentismo MiPresentismo= getItem(position);
+        tvFechaEstadisticas.setText(janijimYGruposManager.SelectNombreFechaOAmbitoById(MiPresentismo.Fecha,true));
+        if(MiPresentismo.asistio)
+        {
+            tvVinoJanij.setText("Si");
+        }
+        else
+        {
+            tvVinoJanij.setText("No");
+        }
+        if(MiPresentismo.tarde)
+        {
+            tvTardeJanij.setText("Si");
+        }
+        else
+        {
+            tvTardeJanij.setText("No");
+        }
+        for(int i=0;i<ListaHabilidadesxJanij.size();i++)
+        {
+            HabilidadxJanij MiHabilidadxJanij= ListaHabilidadesxJanij.get(i);
+            if(MiHabilidadxJanij.idFecha==MiPresentismo.Fecha)
+            {
+
+            }
+        }
         return vi;
     }
 
