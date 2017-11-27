@@ -547,6 +547,56 @@ public class JanijimYGruposManager {
         return IdHabilidad;
     }
 
+    public ArrayList<Presentismo> SelectPresentismoDeUnJanij(int IdJanij)
+    {
+        SQLiteDatabase db =Abrir(false);
+        Cursor c= db.rawQuery("SELECT * FROM Presentismo WHERE Janij="+String.valueOf(IdJanij), null);
+        ArrayList<Presentismo> ListaPresentismo= new ArrayList<>();
+        if(c.moveToFirst())
+        {
+            do
+            {   Presentismo MiPresentismo= new Presentismo();
+                MiPresentismo.Id= c.getInt(0);
+                MiPresentismo.Janij = c.getInt(1);
+                MiPresentismo.Fecha= c.getInt(2);
+                MiPresentismo.idGrupo = c.getInt(3);
+                MiPresentismo.idAmbito= c.getInt(4);
+                MiPresentismo.asistio= Boolean.parseBoolean(c.getString(5));
+                MiPresentismo.tarde = Boolean.parseBoolean(c.getString(6));
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+        return ListaPresentismo;
+    }
+
+    public ArrayList<HabilidadxJanij> SelectHabilidadesDeUnJanij(int IdJanij)
+    {
+        SQLiteDatabase db =Abrir(false);
+        Cursor c= db.rawQuery("SELECT * FROM HabilidadesxJanij WHERE idJanij="+String.valueOf(IdJanij), null);
+        ArrayList<HabilidadxJanij> ListaHabilidadesxJanij= new ArrayList<>();
+        if(c.moveToFirst())
+        {
+            do
+            {   HabilidadxJanij MiHabilidadxJanij= new HabilidadxJanij();
+                MiHabilidadxJanij.Id= c.getInt(0);
+                MiHabilidadxJanij.idFecha = c.getInt(1);
+                MiHabilidadxJanij.idAmbito= c.getInt(2);
+                MiHabilidadxJanij.idGrupo = c.getInt(3);
+                MiHabilidadxJanij.idJanij= c.getInt(4);
+                MiHabilidadxJanij.idHabilidad= c.getInt(5);
+                MiHabilidadxJanij.Observaciones = c.getString(6);
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+        return ListaHabilidadesxJanij;
+    }
+
+    
+
+
+
 
 
 

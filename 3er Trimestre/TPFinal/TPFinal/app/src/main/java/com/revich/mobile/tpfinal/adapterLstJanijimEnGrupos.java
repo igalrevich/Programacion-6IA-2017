@@ -60,7 +60,6 @@ public class adapterLstJanijimEnGrupos extends BaseAdapter {
         tvNombreJanijPresentismo.setText(MiJanij.Nombre);
         tvApellidoJanijPresentismo.setText(MiJanij.Apellido);
         tvDNIJanijPresentismo.setText(String.valueOf(MiJanij.DNI));
-       
         //text.setText(data[position]);
         return vi;
     }

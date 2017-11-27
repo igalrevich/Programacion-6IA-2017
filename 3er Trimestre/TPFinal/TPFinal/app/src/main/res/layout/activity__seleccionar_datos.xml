@@ -26,4 +26,14 @@
         android:id="@+id/btnUsoDiario"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Estadisticas"
+        android:id="@+id/btnEstadisticas"
+        android:layout_below="@+id/btnUsoDiario"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="78dp" />
 </RelativeLayout>

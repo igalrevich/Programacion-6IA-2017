@@ -49,7 +49,7 @@ public class Activity_Presentismo extends AppCompatActivity {
     private void ObtenerReferenciasYSetearListeners()
     {
         lstJanijimPresentismo=(ListView) findViewById(R.id.lstJanijimPresentismo);
-        lstJanijimPresentismo.setOnItemClickListener(lstJanijimPresentismo_click);
+        lstJanijimPresentismo.setOnItemClickListener(lstJanijimPresentismo_click1);
         btnConfirmarPresentismo = (Button) findViewById(R.id.btnConfirmarPresentismo);
         btnConfirmarPresentismo.setOnClickListener(btnConfirmarPresentismo_click);
         spnAmbitos = (Spinner) findViewById(R.id.spnAmbitos);
@@ -160,7 +160,7 @@ public class Activity_Presentismo extends AppCompatActivity {
     };
 
 
-    private ListView.OnItemClickListener lstJanijimPresentismo_click= new AdapterView.OnItemClickListener() {
+    private ListView.OnItemClickListener lstJanijimPresentismo_click1= new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             Janij MiJanij = ListaJanijimEnGrupo.get(i);
