@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -29,6 +30,8 @@ public class Activity_Presentismo extends AppCompatActivity {
     ArrayList<Fecha> ListaFechas;
     ArrayList<Janij> ListaJanijimEnGrupo;
     JanijimYGruposManager janijimYGruposManager;
+    CheckBox chbVinoJanij,chbLlegoTardeJanij;
+    adapterLstJanijimEnGrupos adapterLstJanijimEnGrupos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,6 @@ public class Activity_Presentismo extends AppCompatActivity {
         ListaFechas= janijimYGruposManager.SelectFechas();
         ArrayAdapter<Fecha> adapterFechas= new ArrayAdapter<Fecha>(this,android.R.layout.simple_spinner_item,ListaFechas);
         spnFechas.setAdapter(adapterFechas);
-
 
     }
 
@@ -69,7 +71,8 @@ public class Activity_Presentismo extends AppCompatActivity {
             if(spnFechas.getSelectedItem()!=null)
             {
                 ListaJanijimEnGrupo= janijimYGruposManager.SelectJanijimDeUnGrupo(MiGrupo.Id);
-                lstJanijimPresentismo.setAdapter(new adapterLstJanijimEnGrupos(getApplicationContext(), ListaJanijimEnGrupo));
+                adapterLstJanijimEnGrupos= new adapterLstJanijimEnGrupos(getApplicationContext(),ListaJanijimEnGrupo);
+                lstJanijimPresentismo.setAdapter(adapterLstJanijimEnGrupos);
             }
         }
 
@@ -89,7 +92,8 @@ public class Activity_Presentismo extends AppCompatActivity {
             if(spnFechas.getSelectedItem()!=null)
             {
                 ListaJanijimEnGrupo= janijimYGruposManager.SelectJanijimDeUnGrupo(MiGrupo.Id);
-                lstJanijimPresentismo.setAdapter(new adapterLstJanijimEnGrupos(getApplicationContext(), ListaJanijimEnGrupo));
+                adapterLstJanijimEnGrupos= new adapterLstJanijimEnGrupos(getApplicationContext(),ListaJanijimEnGrupo);
+                lstJanijimPresentismo.setAdapter(adapterLstJanijimEnGrupos);
             }
         }
 
@@ -114,8 +118,8 @@ public class Activity_Presentismo extends AppCompatActivity {
                      TextView tvNombreJanijPresentismo= (TextView) v.findViewById(R.id.tvNombreJanijPresentismo);
                      TextView tvApellidoJanijPresentismo= (TextView) v.findViewById(R.id.tvApellidoJanijPresentismo);
                      TextView tvDNIJanijPresentismo= (TextView) v.findViewById(R.id.tvDNIJanijPresentismo);
-                     CheckBox chbVinoJanij= (CheckBox) v.findViewById(R.id.chbVinoJanij);
-                     CheckBox chbLlegoTardeJanij= (CheckBox) v.findViewById(R.id.chbLlegoTardeJanij);
+                     chbVinoJanij= (CheckBox) v.findViewById(R.id.chbVinoJanij);
+                     chbLlegoTardeJanij= (CheckBox) v.findViewById(R.id.chbLlegoTardeJanij);
                      MiPresentismo=new Presentismo();
                      int DniJanij= Integer.parseInt(tvDNIJanijPresentismo.getText().toString());
                      Janij MiJanij= new Janij();
@@ -130,7 +134,7 @@ public class Activity_Presentismo extends AppCompatActivity {
                      String NombreFecha= spnFechas.getSelectedItem().toString();
                      MiPresentismo.idAmbito= janijimYGruposManager.SelectIdAmbitoOFecha(NombreAmbito,NombreFecha,true);
                      MiPresentismo.Fecha= janijimYGruposManager.SelectIdAmbitoOFecha(NombreAmbito,NombreFecha,false);
-                     if((chbVinoJanij).isChecked())
+                     if(adapterLstJanijimEnGrupos.checkedVino[i])
                      {
                          MiPresentismo.asistio=true;
                      }
@@ -138,7 +142,7 @@ public class Activity_Presentismo extends AppCompatActivity {
                      {
                          MiPresentismo.asistio=false;
                      }
-                     if((chbLlegoTardeJanij).isChecked())
+                     if(adapterLstJanijimEnGrupos.checkedTarde[i])
                      {
                          MiPresentismo.tarde=true;
                      }
@@ -184,6 +188,10 @@ public class Activity_Presentismo extends AppCompatActivity {
         intent.putExtras(ElBundle);
         startActivity(intent);
     }
+
+
+
+
 
 
 }

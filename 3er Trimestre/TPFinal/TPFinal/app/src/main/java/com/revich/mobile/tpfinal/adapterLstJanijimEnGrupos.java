@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -17,12 +18,17 @@ import java.util.ArrayList;
 public class adapterLstJanijimEnGrupos extends BaseAdapter {
     Context context;
     ArrayList<Janij> Janijim;
+    Boolean [] checkedVino;
+    Boolean [] checkedTarde;
+    int Indice=0;
     private static LayoutInflater inflater = null;
 
     public adapterLstJanijimEnGrupos(Context context,  ArrayList<Janij> Janijim) {
         // TODO Auto-generated constructor stub
         this.context = context;
         this.Janijim = Janijim;
+        this.checkedVino= new Boolean[Janijim.size()];
+        this.checkedTarde= new Boolean[Janijim.size()];
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -56,6 +62,11 @@ public class adapterLstJanijimEnGrupos extends BaseAdapter {
         TextView tvDNIJanijPresentismo = (TextView) vi.findViewById(R.id.tvDNIJanijPresentismo);
         CheckBox chbVinoJanij = (CheckBox) vi.findViewById(R.id.chbVinoJanij);
         CheckBox chbLlegoTardeJanij = (CheckBox) vi.findViewById(R.id.chbLlegoTardeJanij);
+        checkedVino[position]=chbVinoJanij.isChecked();
+        checkedTarde[position]=chbLlegoTardeJanij.isChecked();
+        chbVinoJanij.setOnCheckedChangeListener(chbVinoJanij_changelistener);
+        Indice=position;
+        chbLlegoTardeJanij.setOnCheckedChangeListener(chbLlegoTardeJanij_changelistener);
         final Janij MiJanij = getItem(position);
         tvNombreJanijPresentismo.setText(MiJanij.Nombre);
         tvApellidoJanijPresentismo.setText(MiJanij.Apellido);
@@ -63,5 +74,19 @@ public class adapterLstJanijimEnGrupos extends BaseAdapter {
         //text.setText(data[position]);
         return vi;
     }
+
+    private CheckBox.OnCheckedChangeListener chbVinoJanij_changelistener= new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+          checkedVino[Indice]=isChecked;
+        }
+    };
+
+    private CheckBox.OnCheckedChangeListener chbLlegoTardeJanij_changelistener= new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            checkedTarde[Indice]=isChecked;
+        }
+    };
 
 }

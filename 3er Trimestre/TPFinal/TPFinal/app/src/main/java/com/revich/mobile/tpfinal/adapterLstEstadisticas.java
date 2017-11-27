@@ -78,6 +78,7 @@ public class adapterLstEstadisticas extends BaseAdapter {
         JanijimYGruposManager janijimYGruposManager= new JanijimYGruposManager(context);
         Presentismo MiPresentismo= getItem(position);
         tvFechaEstadisticas.setText(janijimYGruposManager.SelectNombreFechaOAmbitoById(MiPresentismo.Fecha,true));
+        tvAmbitoJanij.setText(janijimYGruposManager.SelectNombreFechaOAmbitoById(MiPresentismo.idAmbito,false));
         if(MiPresentismo.asistio)
         {
             tvVinoJanij.setText("Si");
@@ -99,9 +100,21 @@ public class adapterLstEstadisticas extends BaseAdapter {
             HabilidadxJanij MiHabilidadxJanij= ListaHabilidadesxJanij.get(i);
             if(MiHabilidadxJanij.idFecha==MiPresentismo.Fecha)
             {
-
+               Habilidades MiHabilidad= janijimYGruposManager.SelectHabilidadById(MiHabilidadxJanij.idHabilidad);
+               if(MiHabilidad.esPositiva)
+               {
+                   ContHabilidadesBuenas++;
+               }
+               else
+               {
+                   ContHabilidadesMalas++;
+               }
             }
         }
+        tvCosasBienJanij.setText(String.valueOf(ContHabilidadesBuenas));
+        tvCosasMalJanij.setText(String.valueOf(ContHabilidadesMalas));
+        ContHabilidadesMalas=0;
+        ContHabilidadesBuenas=0;
         return vi;
     }
 

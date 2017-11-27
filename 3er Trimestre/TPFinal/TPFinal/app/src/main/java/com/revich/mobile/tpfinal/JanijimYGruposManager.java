@@ -616,6 +616,24 @@ public class JanijimYGruposManager {
         db.close();
         return NombreARetornar;
     }
+    public Habilidades SelectHabilidadById(int idHabilidad)
+    {
+        SQLiteDatabase db =Abrir(false);
+        Cursor c= db.rawQuery("SELECT * FROM Habilidades WHERE _id="+String.valueOf(idHabilidad), null);
+        Habilidades MiHabilidad=new Habilidades();
+        if(c.moveToFirst())
+        {
+            do
+            {
+                MiHabilidad.Id=c.getInt(0);
+                MiHabilidad.Nombre=c.getString(1);
+                MiHabilidad.esPositiva=Boolean.parseBoolean(c.getString(2));
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+        return MiHabilidad;
+    }
 
 
 

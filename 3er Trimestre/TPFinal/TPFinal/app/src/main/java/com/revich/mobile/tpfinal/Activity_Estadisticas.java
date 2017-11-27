@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -30,6 +31,9 @@ public class Activity_Estadisticas extends AppCompatActivity {
         setContentView(R.layout.activity_estadisticas);
         ObtenerReferenciasYSetearListeners();
         janijimYGruposManager= new JanijimYGruposManager(this);
+        ListaGrupos= janijimYGruposManager.SelectGrupos();
+        ArrayAdapter<Grupo> adapterGrupos= new ArrayAdapter<Grupo>(this,android.R.layout.simple_spinner_item,ListaGrupos);
+        spnGruposEstadisticas.setAdapter(adapterGrupos);
     }
 
     private void ObtenerReferenciasYSetearListeners()
@@ -64,9 +68,11 @@ public class Activity_Estadisticas extends AppCompatActivity {
             String TextoJanij=spnJanijimEstadisticas.getSelectedItem().toString();
             String[] VecDatosJanij= TextoJanij.split(" ");
             VecDatosJanij[0]= VecDatosJanij[0].replace(".","");
+            MiJanij= new Janij();
             MiJanij.Id= Integer.parseInt(VecDatosJanij[0]);
             ListaPresentismo= janijimYGruposManager.SelectPresentismoDeUnJanij(MiJanij.Id);
             ListaHabilidadesxJanij=janijimYGruposManager.SelectHabilidadesDeUnJanij(MiJanij.Id);
+            lstEstadisticas.setAdapter(new adapterLstEstadisticas(getApplicationContext(),ListaPresentismo,ListaHabilidadesxJanij));
         }
 
         @Override
@@ -78,8 +84,28 @@ public class Activity_Estadisticas extends AppCompatActivity {
     private ListView.OnItemClickListener lstEstadisticas_click= new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+            View v = lstEstadisticas.getAdapter().getView(i, null, null);
+            TextView tvFechaEstadisticas= (TextView) v.findViewById(R.id.tvFechaEstadisticas);
+            TextView tvAmbitoJanij= (TextView) v.findViewById(R.id.tvAmbitoJanij);
+            String NombreAmbito= tvAmbitoJanij.getText().toString();
+            int IdAmbito= janijimYGruposManager.SelectIdAmbitoOFecha(NombreAmbito,"",true);
+            String Fecha= tvFechaEstadisticas.getText().toString();
+            IrAActivityHabilidades(MiJanij.Nombre, MiJanij.Apellido, Fecha, MiGrupo.Id, IdAmbito, MiJanij.Id);
 
         }
     };
+
+    private void IrAActivityHabilidades(String NombreJanij, String ApellidoJanij, String Fecha, int idGrupo, int idAmbito,int idJanij)
+    {
+        Intent intent= new Intent(Activity_Estadisticas.this,Activity_Habilidades.class);
+        Bundle ElBundle= new Bundle();
+        ElBundle.putString("NombreJanij",NombreJanij);
+        ElBundle.putString("ApellidoJanij",ApellidoJanij);
+        ElBundle.putString("Fecha",Fecha);
+        ElBundle.putInt("idGrupo",idGrupo);
+        ElBundle.putInt("idAmbito",idAmbito);
+        ElBundle.putInt("idJanij",idJanij);
+        intent.putExtras(ElBundle);
+        startActivity(intent);
+    }
 }
