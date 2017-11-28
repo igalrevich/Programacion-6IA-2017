@@ -1,11 +1,13 @@
 package com.revich.mobile.tpfinal;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,12 +18,20 @@ import java.util.ArrayList;
 public class adapterLstHabilidades extends BaseAdapter {
     Context context;
     ArrayList<Habilidades> Habilidades;
+    ArrayList<HabilidadxJanij> HabilidadesxJanij;
+    Boolean [] TieneHabilidad;
     private static LayoutInflater inflater = null;
 
-    public adapterLstHabilidades(Context context, ArrayList<Habilidades> Habilidades) {
+    public adapterLstHabilidades(Context context, ArrayList<Habilidades> Habilidades,ArrayList<HabilidadxJanij> habilidadesxJanij) {
         // TODO Auto-generated constructor stub
         this.context = context;
         this.Habilidades = Habilidades;
+        this.HabilidadesxJanij=habilidadesxJanij;
+        this.TieneHabilidad= new Boolean[Habilidades.size()];
+        for(int i=0;i<TieneHabilidad.length;i++)
+        {
+            TieneHabilidad[i]=false;
+        }
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -52,8 +62,37 @@ public class adapterLstHabilidades extends BaseAdapter {
             vi = inflater.inflate(R.layout.rowhabilidades, null);
         TextView tvNombreHabilidad= (TextView) vi.findViewById(R.id.tvNombreHabilidad);
         CheckBox chbHabilidad = (CheckBox) vi.findViewById(R.id.chbHabilidad);
+        chbHabilidad.setTag(position);
+        chbHabilidad.setOnCheckedChangeListener(chbHabilidad_changelistener);
         tvNombreHabilidad.setText(Habilidades.get(position).Nombre);
+        if(HabilidadesxJanij.size()>0)
+        {
+            Boolean EncontroNombreHabilidad=false;
+            JanijimYGruposManager janijimYGruposManager= new JanijimYGruposManager(context);
+            int Indice=0;
+            while(EncontroNombreHabilidad==false && Indice<HabilidadesxJanij.size())
+            {
+                int IdHabilidad= janijimYGruposManager.SelectIdHabilidad(tvNombreHabilidad.getText().toString());
+                if(IdHabilidad==HabilidadesxJanij.get(Indice).idHabilidad)
+                {
+                    EncontroNombreHabilidad=true;
+                    chbHabilidad.setChecked(true);
+                }
+                else
+                {
+                    Indice++;
+                }
+            }
+        }
         return vi;
     }
+
+    private CheckBox.OnCheckedChangeListener chbHabilidad_changelistener= new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            int position = (Integer) buttonView.getTag();
+            TieneHabilidad[position]=isChecked;
+        }
+    };
 
 }

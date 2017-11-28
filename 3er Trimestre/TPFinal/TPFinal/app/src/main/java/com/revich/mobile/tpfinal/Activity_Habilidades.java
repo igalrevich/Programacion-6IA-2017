@@ -21,8 +21,11 @@ public class Activity_Habilidades extends AppCompatActivity {
     EditText edtObservaciones;
     ListView lstHabilidades;
     ArrayList<Habilidades> ListaHabilidades;
+    ArrayList<HabilidadxJanij> ListaHabilidadesxJanij;
     int idGrupo,idAmbito,idJanij;
     String Fecha;
+    Boolean TieneHabilidad;
+    adapterLstHabilidades AdapterLstHabilidades;
     JanijimYGruposManager janijimYGruposManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,6 @@ public class Activity_Habilidades extends AppCompatActivity {
         ObtenerReferenciasYSetearListeners();
         janijimYGruposManager= new JanijimYGruposManager(this);
         ListaHabilidades= janijimYGruposManager.SelectHabilidades();
-        lstHabilidades.setAdapter(new adapterLstHabilidades(this,ListaHabilidades));
         Intent ElIntentQueVino= getIntent();
         Bundle ElBundleQueVino= ElIntentQueVino.getExtras();
         String NombreJanij=ElBundleQueVino.getString("NombreJanij");
@@ -41,6 +43,18 @@ public class Activity_Habilidades extends AppCompatActivity {
         idAmbito= ElBundleQueVino.getInt("idAmbito");
         idJanij= ElBundleQueVino.getInt("idJanij");
         idGrupo= ElBundleQueVino.getInt("idGrupo");
+        HabilidadxJanij MihabilidadxJanij= new HabilidadxJanij();
+        MihabilidadxJanij.idAmbito=idAmbito;
+        MihabilidadxJanij.idGrupo=idGrupo;
+        MihabilidadxJanij.idJanij=idJanij;
+        MihabilidadxJanij.idFecha=janijimYGruposManager.SelectIdAmbitoOFecha("",Fecha,false);
+        ListaHabilidadesxJanij=janijimYGruposManager.SelectHabilidadesDeUnJanijCompleta(MihabilidadxJanij);
+        AdapterLstHabilidades=new adapterLstHabilidades(this,ListaHabilidades,ListaHabilidadesxJanij);
+        lstHabilidades.setAdapter(AdapterLstHabilidades);
+        if(ListaHabilidadesxJanij.get(0).Observaciones.equals("")!=false)
+        {
+           edtObservaciones.setText(ListaHabilidadesxJanij.get(0).Observaciones);
+        }
         tvFechaHabilidades.setText(Fecha);
 
     }
@@ -68,7 +82,7 @@ public class Activity_Habilidades extends AppCompatActivity {
                     try
                     {
 
-                        //lstHabilidades.isItemChecked()
+                        TieneHabilidad=AdapterLstHabilidades.TieneHabilidad[i];
                         v = lstHabilidades.getAdapter().getView(i, null, null);
                         TextView tvNombreHabilidad= (TextView) v.findViewById(R.id.tvNombreHabilidad);
                         CheckBox chbHabilidad= (CheckBox) v.findViewById(R.id.chbHabilidad);
@@ -78,13 +92,21 @@ public class Activity_Habilidades extends AppCompatActivity {
                         MiHabilidadxJanij.idFecha=janijimYGruposManager.SelectIdAmbitoOFecha("",Fecha,false);
                         MiHabilidadxJanij.idJanij=idJanij;
                         MiHabilidadxJanij.Observaciones= edtObservaciones.getText().toString();
-                        if(chbHabilidad.isChecked())
+                        if(TieneHabilidad)
                         {
                             String NombreHabilidad= tvNombreHabilidad.getText().toString();
                             MiHabilidadxJanij.idHabilidad=janijimYGruposManager.SelectIdHabilidad(NombreHabilidad);
                             janijimYGruposManager.InsertarOModificarHabilidadxJanij(MiHabilidadxJanij);
                             Toast msg= Toast.makeText(getApplicationContext(),"Se inserto la habilidad al janij correspondiente con exito",Toast.LENGTH_SHORT);
                             msg.show();
+                        }
+                        else
+                        {
+                           int IdHabilidadxJanij= janijimYGruposManager.SelectIdHabilidadxJanij(MiHabilidadxJanij);
+                           if(IdHabilidadxJanij!=0)
+                           {
+                             janijimYGruposManager.EliminarHabilidadxJanij(IdHabilidadxJanij);
+                           }
                         }
                     }
                     catch (Exception ex)

@@ -46,7 +46,7 @@
             android:id="@+id/lstHabilidades"
             android:layout_width="match_parent"
             android:layout_height="166dp"
-            android:layout_marginBottom="40dp" />
+            android:layout_marginBottom="10dp" />
 
         <TextView
             android:layout_width="wrap_content"

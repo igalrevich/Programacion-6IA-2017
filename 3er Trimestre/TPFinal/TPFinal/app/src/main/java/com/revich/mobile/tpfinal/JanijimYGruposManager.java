@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -501,10 +502,10 @@ public class JanijimYGruposManager {
         return ListaHabilidades;
     }
 
-    public void InsertarOModificarHabilidadxJanij(HabilidadxJanij MiHabilidadxJanij)
+    public int SelectIdHabilidadxJanij(HabilidadxJanij MiHabilidadxJanij)
     {
         SQLiteDatabase db =Abrir(false);
-        Cursor c= db.rawQuery("SELECT _id FROM HabilidadesxJanij WHERE idJanij="+String.valueOf(MiHabilidadxJanij.idJanij)+" AND idGrupo="+String.valueOf(MiHabilidadxJanij.idGrupo)+" AND idAmbito="+String.valueOf(MiHabilidadxJanij.idAmbito)+" AND idFecha="+String.valueOf(MiHabilidadxJanij.idFecha), null);
+        Cursor c= db.rawQuery("SELECT _id FROM HabilidadesxJanij WHERE idJanij="+String.valueOf(MiHabilidadxJanij.idJanij)+" AND idGrupo="+String.valueOf(MiHabilidadxJanij.idGrupo)+" AND idAmbito="+String.valueOf(MiHabilidadxJanij.idAmbito)+" AND idFecha="+String.valueOf(MiHabilidadxJanij.idFecha)+" AND idHabilidad="+String.valueOf(MiHabilidadxJanij.idHabilidad), null);
         int IdDevuelto=0;
         if(c.moveToFirst())
         {
@@ -514,7 +515,12 @@ public class JanijimYGruposManager {
         }
         c.close();
         db.close();
-        db =Abrir(true);
+        return IdDevuelto;
+    }
+
+    public void InsertarOModificarHabilidadxJanij(HabilidadxJanij MiHabilidadxJanij)
+    {   SQLiteDatabase db =Abrir(true);
+        int IdDevuelto= SelectIdHabilidadxJanij(MiHabilidadxJanij);
         if(IdDevuelto==0)
         {
             ContentValues nuevoRegistro= new ContentValues();
@@ -528,7 +534,7 @@ public class JanijimYGruposManager {
         }
         else
         {
-            db.execSQL("UPDATE HabilidadesxJanij SET idHabilidad="+String.valueOf(MiHabilidadxJanij.idHabilidad)+", Observaciones="+MiHabilidadxJanij.Observaciones+" WHERE _id="+String.valueOf(IdDevuelto));
+            db.execSQL("UPDATE HabilidadesxJanij SET idHabilidad="+String.valueOf(MiHabilidadxJanij.idHabilidad)+", Observaciones=\""+MiHabilidadxJanij.Observaciones+"\" WHERE _id="+String.valueOf(IdDevuelto));
         }
         db.close();
     }
@@ -536,7 +542,7 @@ public class JanijimYGruposManager {
     public int SelectIdHabilidad(String NombreHabilidad)
     {
         SQLiteDatabase db=Abrir(false);
-        Cursor c= db.rawQuery("SELECT _id FROM Habilidades WHERE nombre="+NombreHabilidad, null);
+        Cursor c= db.rawQuery("SELECT _id FROM Habilidades WHERE nombre=\""+NombreHabilidad+"\"", null);
         int IdHabilidad=0;
         if(c.moveToFirst())
         {
@@ -564,8 +570,22 @@ public class JanijimYGruposManager {
                 MiPresentismo.Fecha= c.getInt(2);
                 MiPresentismo.idGrupo = c.getInt(3);
                 MiPresentismo.idAmbito= c.getInt(4);
-                MiPresentismo.asistio= Boolean.parseBoolean(c.getString(5));
-                MiPresentismo.tarde = Boolean.parseBoolean(c.getString(6));
+                if(c.getInt(5)==1)
+                {
+                    MiPresentismo.asistio=true;
+                }
+                else
+                {
+                    MiPresentismo.asistio=false;
+                }
+                if(c.getInt(6)==1)
+                {
+                    MiPresentismo.tarde=true;
+                }
+                else
+                {
+                    MiPresentismo.tarde=false;
+                }
                 ListaPresentismo.add(MiPresentismo);
             } while (c.moveToNext());
         }
@@ -638,6 +658,37 @@ public class JanijimYGruposManager {
         c.close();
         db.close();
         return MiHabilidad;
+    }
+
+    public void EliminarHabilidadxJanij( int id)
+    {
+        SQLiteDatabase db =Abrir(true);
+        db.execSQL("DELETE FROM HabilidadesxJanij WHERE _id="+String.valueOf(id));
+        db.close();
+    }
+
+    public ArrayList<HabilidadxJanij> SelectHabilidadesDeUnJanijCompleta(HabilidadxJanij MiHabilidadxJanij)
+    {
+        SQLiteDatabase db =Abrir(false);
+        Cursor c= db.rawQuery("SELECT * FROM HabilidadesxJanij WHERE idJanij="+String.valueOf(MiHabilidadxJanij.idJanij)+ " AND idGrupo="+String.valueOf(MiHabilidadxJanij.idGrupo)+" AND idAmbito="+String.valueOf(MiHabilidadxJanij.idAmbito)+" AND idFecha="+String.valueOf(MiHabilidadxJanij.idFecha), null);
+        ArrayList<HabilidadxJanij> ListaHabilidadesxJanij= new ArrayList<>();
+        if(c.moveToFirst())
+        {
+            do
+            {   MiHabilidadxJanij= new HabilidadxJanij();
+                MiHabilidadxJanij.Id= c.getInt(0);
+                MiHabilidadxJanij.idFecha = c.getInt(1);
+                MiHabilidadxJanij.idAmbito= c.getInt(2);
+                MiHabilidadxJanij.idGrupo = c.getInt(3);
+                MiHabilidadxJanij.idJanij= c.getInt(4);
+                MiHabilidadxJanij.idHabilidad= c.getInt(5);
+                MiHabilidadxJanij.Observaciones = c.getString(6);
+                ListaHabilidadesxJanij.add(MiHabilidadxJanij);
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+        return ListaHabilidadesxJanij;
     }
 
 
