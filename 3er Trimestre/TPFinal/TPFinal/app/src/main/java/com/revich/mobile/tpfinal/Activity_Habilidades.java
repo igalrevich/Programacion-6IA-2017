@@ -67,6 +67,8 @@ public class Activity_Habilidades extends AppCompatActivity {
                     HabilidadxJanij MiHabilidadxJanij;
                     try
                     {
+
+                        //lstHabilidades.isItemChecked()
                         v = lstHabilidades.getAdapter().getView(i, null, null);
                         TextView tvNombreHabilidad= (TextView) v.findViewById(R.id.tvNombreHabilidad);
                         CheckBox chbHabilidad= (CheckBox) v.findViewById(R.id.chbHabilidad);

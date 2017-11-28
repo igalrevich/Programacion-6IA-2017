@@ -448,7 +448,9 @@ public class JanijimYGruposManager {
             ContentValues nuevoRegistro= new ContentValues();
             nuevoRegistro.put("asistio",MiPresentismo.asistio);
             nuevoRegistro.put("tarde",MiPresentismo.tarde);
-            db.update("Presentismo",nuevoRegistro,"WHERE _id="+String.valueOf(IdPresentismo),null);
+            String where = "_id=?";
+            String[] whereArgs = new String[] {String.valueOf(IdPresentismo)};
+            db.update("Presentismo",nuevoRegistro,where,whereArgs);
         }
 
         db.close();
@@ -491,6 +493,7 @@ public class JanijimYGruposManager {
                 MiHabilidad.Id= c.getInt(0);
                 MiHabilidad.Nombre = c.getString(1);
                 MiHabilidad.esPositiva = Boolean.parseBoolean(c.getString(2));
+                ListaHabilidades.add(MiHabilidad);
             } while (c.moveToNext());
         }
         c.close();
@@ -563,6 +566,7 @@ public class JanijimYGruposManager {
                 MiPresentismo.idAmbito= c.getInt(4);
                 MiPresentismo.asistio= Boolean.parseBoolean(c.getString(5));
                 MiPresentismo.tarde = Boolean.parseBoolean(c.getString(6));
+                ListaPresentismo.add(MiPresentismo);
             } while (c.moveToNext());
         }
         c.close();
@@ -586,6 +590,7 @@ public class JanijimYGruposManager {
                 MiHabilidadxJanij.idJanij= c.getInt(4);
                 MiHabilidadxJanij.idHabilidad= c.getInt(5);
                 MiHabilidadxJanij.Observaciones = c.getString(6);
+                ListaHabilidadesxJanij.add(MiHabilidadxJanij);
             } while (c.moveToNext());
         }
         c.close();
@@ -599,7 +604,7 @@ public class JanijimYGruposManager {
         Cursor c;
         if(BuscaNombreFecha)
         {
-            c= db.rawQuery("SELECT nombre FROM Fechas WHERE _id="+String.valueOf(id), null);
+            c= db.rawQuery("SELECT Fecha FROM Fechas WHERE _id="+String.valueOf(id), null);
         }
         else
         {

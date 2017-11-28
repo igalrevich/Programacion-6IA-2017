@@ -1,6 +1,7 @@
 package com.revich.mobile.tpfinal;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +64,8 @@ public class adapterLstJanijimEnGrupos extends BaseAdapter {
         CheckBox chbVinoJanij = (CheckBox) vi.findViewById(R.id.chbVinoJanij);
         CheckBox chbLlegoTardeJanij = (CheckBox) vi.findViewById(R.id.chbLlegoTardeJanij);
         checkedVino[position]=chbVinoJanij.isChecked();
+        chbVinoJanij.setTag(position);
+        chbLlegoTardeJanij.setTag(position);
         checkedTarde[position]=chbLlegoTardeJanij.isChecked();
         chbVinoJanij.setOnCheckedChangeListener(chbVinoJanij_changelistener);
         Indice=position;
@@ -78,14 +81,18 @@ public class adapterLstJanijimEnGrupos extends BaseAdapter {
     private CheckBox.OnCheckedChangeListener chbVinoJanij_changelistener= new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-          checkedVino[Indice]=isChecked;
+            int position = (Integer) buttonView.getTag();
+            checkedVino[position]=isChecked;
+            Log.d("CheckedVinoadapter_pos "+String.valueOf(position), String.valueOf(checkedVino[position]));
         }
     };
 
     private CheckBox.OnCheckedChangeListener chbLlegoTardeJanij_changelistener= new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            checkedTarde[Indice]=isChecked;
+            int position = (Integer)buttonView.getTag();
+            checkedTarde[position]=isChecked;
+            Log.d("CheckTardeadapter_pos "+String.valueOf(position), String.valueOf(checkedTarde[position]));
         }
     };
 

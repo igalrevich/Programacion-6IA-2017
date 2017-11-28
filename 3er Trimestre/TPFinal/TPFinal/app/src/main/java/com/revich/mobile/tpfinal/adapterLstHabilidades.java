@@ -49,9 +49,10 @@ public class adapterLstHabilidades extends BaseAdapter {
         // TODO Auto-generated method stub
         View vi = convertView;
         if (vi == null)
-            vi = inflater.inflate(R.layout.row_lstjanijimengrupo, null);
+            vi = inflater.inflate(R.layout.rowhabilidades, null);
         TextView tvNombreHabilidad= (TextView) vi.findViewById(R.id.tvNombreHabilidad);
         CheckBox chbHabilidad = (CheckBox) vi.findViewById(R.id.chbHabilidad);
+        tvNombreHabilidad.setText(Habilidades.get(position).Nombre);
         return vi;
     }
 

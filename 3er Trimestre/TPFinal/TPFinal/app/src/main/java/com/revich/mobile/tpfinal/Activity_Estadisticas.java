@@ -70,6 +70,8 @@ public class Activity_Estadisticas extends AppCompatActivity {
             VecDatosJanij[0]= VecDatosJanij[0].replace(".","");
             MiJanij= new Janij();
             MiJanij.Id= Integer.parseInt(VecDatosJanij[0]);
+            MiJanij.Nombre=VecDatosJanij[1];
+            MiJanij.Apellido=VecDatosJanij[2];
             ListaPresentismo= janijimYGruposManager.SelectPresentismoDeUnJanij(MiJanij.Id);
             ListaHabilidadesxJanij=janijimYGruposManager.SelectHabilidadesDeUnJanij(MiJanij.Id);
             lstEstadisticas.setAdapter(new adapterLstEstadisticas(getApplicationContext(),ListaPresentismo,ListaHabilidadesxJanij));

@@ -25,6 +25,7 @@ public class Activity_Presentismo extends AppCompatActivity {
     Context context=this;
     ArrayList<Ambito> ListaAmbitos = new ArrayList<>();
     ArrayList<Grupo> ListaGrupos;
+    Boolean Vino,LlegoTarde;
     Grupo MiGrupo;
     Ambito MiAmbito;
     ArrayList<Fecha> ListaFechas;
@@ -70,9 +71,9 @@ public class Activity_Presentismo extends AppCompatActivity {
             spnAmbitos.setAdapter(adapterAmbitos);
             if(spnFechas.getSelectedItem()!=null)
             {
-                ListaJanijimEnGrupo= janijimYGruposManager.SelectJanijimDeUnGrupo(MiGrupo.Id);
+                /*ListaJanijimEnGrupo= janijimYGruposManager.SelectJanijimDeUnGrupo(MiGrupo.Id);
                 adapterLstJanijimEnGrupos= new adapterLstJanijimEnGrupos(getApplicationContext(),ListaJanijimEnGrupo);
-                lstJanijimPresentismo.setAdapter(adapterLstJanijimEnGrupos);
+                lstJanijimPresentismo.setAdapter(adapterLstJanijimEnGrupos);*/
             }
         }
 
@@ -92,8 +93,10 @@ public class Activity_Presentismo extends AppCompatActivity {
             if(spnFechas.getSelectedItem()!=null)
             {
                 ListaJanijimEnGrupo= janijimYGruposManager.SelectJanijimDeUnGrupo(MiGrupo.Id);
-                adapterLstJanijimEnGrupos= new adapterLstJanijimEnGrupos(getApplicationContext(),ListaJanijimEnGrupo);
+                adapterLstJanijimEnGrupos= new adapterLstJanijimEnGrupos(context,ListaJanijimEnGrupo);
+                Log.d("CheckedVino1", String.valueOf(adapterLstJanijimEnGrupos.checkedVino[0]));
                 lstJanijimPresentismo.setAdapter(adapterLstJanijimEnGrupos);
+                Log.d("CheckedVino2", String.valueOf(adapterLstJanijimEnGrupos.checkedVino[0]));
             }
         }
 
@@ -108,33 +111,78 @@ public class Activity_Presentismo extends AppCompatActivity {
         public void onClick(View view) {
          View v;
          if(lstJanijimPresentismo.getCount()>0)
-         {
+         {   Log.d("CheckedVino-2[0] ", String.valueOf(adapterLstJanijimEnGrupos.checkedVino[0]));
+             Log.d("CheckedTarde-2[0] ", String.valueOf(adapterLstJanijimEnGrupos.checkedTarde[0]));
+             Log.d("CheckedVino-2[1] ", String.valueOf(adapterLstJanijimEnGrupos.checkedVino[1]));
+             Log.d("CheckedTarde-2[1] ", String.valueOf(adapterLstJanijimEnGrupos.checkedTarde[1]));
              for(int i=0;i<lstJanijimPresentismo.getCount();i++)
              {
-             Presentismo MiPresentismo;
+                 Presentismo MiPresentismo;
                  try
-                 {
+                 {   Vino= adapterLstJanijimEnGrupos.checkedVino[i];
+                     LlegoTarde=adapterLstJanijimEnGrupos.checkedTarde[i];
+                     Log.d("CheckedTarde-1 "+String.valueOf(i), String.valueOf(LlegoTarde));
                      v = lstJanijimPresentismo.getAdapter().getView(i, null, null);
+                     Log.d("CheckedVino1 "+String.valueOf(i), String.valueOf(Vino));
+                     Log.d("CheckedTarde1 "+String.valueOf(i), String.valueOf(LlegoTarde));
                      TextView tvNombreJanijPresentismo= (TextView) v.findViewById(R.id.tvNombreJanijPresentismo);
+                     Log.d("CheckedVino2 "+String.valueOf(i), String.valueOf(Vino));
+                     Log.d("CheckedTarde2 "+String.valueOf(i), String.valueOf(LlegoTarde));
                      TextView tvApellidoJanijPresentismo= (TextView) v.findViewById(R.id.tvApellidoJanijPresentismo);
+                     Log.d("CheckedVino3 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedVino[i]));
+                     Log.d("CheckedTarde3 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedTarde[i]));
                      TextView tvDNIJanijPresentismo= (TextView) v.findViewById(R.id.tvDNIJanijPresentismo);
+                     Log.d("CheckedVino4 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedVino[i]));
+                     Log.d("CheckedTarde4 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedTarde[i]));
                      chbVinoJanij= (CheckBox) v.findViewById(R.id.chbVinoJanij);
+                     Log.d("CheckedVino5 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedVino[i]));
+                     Log.d("CheckedTarde5 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedTarde[i]));
                      chbLlegoTardeJanij= (CheckBox) v.findViewById(R.id.chbLlegoTardeJanij);
+                     Log.d("CheckedVino6 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedVino[i]));
+                     Log.d("CheckedTarde6 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedTarde[i]));
                      MiPresentismo=new Presentismo();
+                     Log.d("CheckedVino7 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedVino[i]));
+                     Log.d("CheckedTarde7 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedTarde[i]));
                      int DniJanij= Integer.parseInt(tvDNIJanijPresentismo.getText().toString());
+                     Log.d("CheckedVino8 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedVino[i]));
+                     Log.d("CheckedTarde8 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedTarde[i]));
                      Janij MiJanij= new Janij();
+                     Log.d("CheckedVino9 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedVino[i]));
+                     Log.d("CheckedTarde9 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedTarde[i]));
                      Grupo MiGrupo= new Grupo();
+                     Log.d("CheckedVino10 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedVino[i]));
+                     Log.d("CheckedTarde10 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedTarde[i]));
                      MiJanij.DNI= DniJanij;
+                     Log.d("CheckedVino11 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedVino[i]));
+                     Log.d("CheckedTarde11 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedTarde[i]));
                      MiPresentismo.Janij= janijimYGruposManager.SelectId(MiJanij,MiGrupo,true);
+                     Log.d("CheckedVino12 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedVino[i]));
+                     Log.d("CheckedTarde12 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedTarde[i]));
                      String [] TextoGrupos= spnGrupos.getSelectedItem().toString().split(" ");
+                     Log.d("CheckedVino13 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedVino[i]));
+                     Log.d("CheckedTarde13 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedTarde[i]));
                      MiGrupo.Nombre=TextoGrupos[1];
+                     Log.d("CheckedVino14 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedVino[i]));
+                     Log.d("CheckedTarde14 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedTarde[i]));
                      MiGrupo.Año= Integer.parseInt(TextoGrupos[2]);
+                     Log.d("CheckedVino15 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedVino[i]));
+                     Log.d("CheckedTarde15 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedTarde[i]));
                      MiPresentismo.idGrupo= janijimYGruposManager.SelectId(MiJanij,MiGrupo,false);
+                     Log.d("CheckedVino16 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedVino[i]));
+                     Log.d("CheckedTarde16 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedTarde[i]));
                      String NombreAmbito=spnAmbitos.getSelectedItem().toString();
+                     Log.d("CheckedVino17 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedVino[i]));
+                     Log.d("CheckedTarde17 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedTarde[i]));
                      String NombreFecha= spnFechas.getSelectedItem().toString();
+                     Log.d("CheckedVino18 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedVino[i]));
+                     Log.d("CheckedTarde18 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedTarde[i]));
                      MiPresentismo.idAmbito= janijimYGruposManager.SelectIdAmbitoOFecha(NombreAmbito,NombreFecha,true);
+                     Log.d("CheckedVino19 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedVino[i]));
+                     Log.d("CheckedTarde19 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedTarde[i]));
                      MiPresentismo.Fecha= janijimYGruposManager.SelectIdAmbitoOFecha(NombreAmbito,NombreFecha,false);
-                     if(adapterLstJanijimEnGrupos.checkedVino[i])
+                     Log.d("CheckedVino20 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedVino[i]));
+                     Log.d("CheckedTarde20 "+String.valueOf(i), String.valueOf(adapterLstJanijimEnGrupos.checkedTarde[i]));
+                     if(Vino)
                      {
                          MiPresentismo.asistio=true;
                      }
@@ -142,7 +190,7 @@ public class Activity_Presentismo extends AppCompatActivity {
                      {
                          MiPresentismo.asistio=false;
                      }
-                     if(adapterLstJanijimEnGrupos.checkedTarde[i])
+                     if(LlegoTarde)
                      {
                          MiPresentismo.tarde=true;
                      }
