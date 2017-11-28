@@ -51,9 +51,12 @@ public class Activity_Habilidades extends AppCompatActivity {
         ListaHabilidadesxJanij=janijimYGruposManager.SelectHabilidadesDeUnJanijCompleta(MihabilidadxJanij);
         AdapterLstHabilidades=new adapterLstHabilidades(this,ListaHabilidades,ListaHabilidadesxJanij);
         lstHabilidades.setAdapter(AdapterLstHabilidades);
-        if(ListaHabilidadesxJanij.get(0).Observaciones.equals("")!=false)
+        if(ListaHabilidadesxJanij.size()>0)
         {
-           edtObservaciones.setText(ListaHabilidadesxJanij.get(0).Observaciones);
+            if(ListaHabilidadesxJanij.get(0).Observaciones.equals("")!=false)
+            {
+                edtObservaciones.setText(ListaHabilidadesxJanij.get(0).Observaciones);
+            }
         }
         tvFechaHabilidades.setText(Fecha);
 
